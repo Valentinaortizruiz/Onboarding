@@ -1,0 +1,1191 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Recorrido de bienvenida por la sede de Sitti para nuevos talentos.">
+<title>Mapa Sitti por Zonas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+/* Layout: edificio 3D por zonas (naranja, verde, azul) a la izquierda con selector de zona y los perritos guía; a la derecha ficha del área y destinos agrupados por nivel; abajo los cambios aplicados */
+:root{
+  --navy:#33357e; --amber:#f7a82c; --yellow:#ffb607; --coral:#ec623b; --teal:#3fa9ac; --lav:#ebedfc;
+  --bg:#f4f5fc; --surface:#ffffff; --fg:#191b2b; --muted:#5d607e; --line:#dcdff3;
+  --body:"Lato", Arial, sans-serif; --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12131f; --surface:#1b1d2e; --fg:#eceefb; --muted:#a3a6c6; --line:#2c2f48; --navy:#8d90e6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12131f; --surface:#1b1d2e; --fg:#eceefb; --muted:#a3a6c6; --line:#2c2f48; --navy:#8d90e6; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);padding-inline:16px;padding-block:22px 34px}
+.wrap{max-width:1320px;margin:0 auto;display:grid;gap:20px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px}
+.brand{display:inline-flex;align-items:center;gap:8px;font:900 22px/1 var(--body);color:var(--navy);letter-spacing:-.02em}
+.brand i{width:12px;height:12px;border-radius:50%;background:var(--amber)}
+h1{font:900 clamp(2rem,4.8vw,3.2rem)/1 var(--body);margin:10px 0 0;letter-spacing:-.02em;text-wrap:balance}
+h1 span{color:var(--amber)}
+.sub{margin:0;color:var(--muted);max-width:52ch}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+@media (max-width:960px){.main{grid-template-columns:1fr}}
+.stage{position:relative;border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--line);aspect-ratio:5/4;max-width:100%}
+@media (max-width:960px){.stage{aspect-ratio:4/5}}
+.stage canvas{display:block;width:100%;height:100%;cursor:grab}
+.labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.tag{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;white-space:nowrap;font:700 11.5px/1 var(--body);padding:4px 9px 4px 4px;border-radius:999px;background:var(--surface);color:var(--fg);box-shadow:0 4px 14px -6px rgba(25,27,43,.45);pointer-events:auto;cursor:pointer;border:0}
+.tag b{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;color:#fff;font:900 10.5px/1 var(--body)}
+.tag.minor{font-size:10.5px;padding:3px 7px 3px 3px;opacity:.92}
+.tag.minor b{min-width:16px;height:16px;font-size:9px}
+.tag.new{box-shadow:0 0 0 2px var(--amber),0 4px 14px -6px rgba(25,27,43,.45)}
+.tag.on{outline:2px solid var(--fg)}
+.flbl{position:absolute;transform:translate(-50%,-50%);font:900 13px/1 var(--body);color:#fff;background:#33357e;padding:6px 10px;border-radius:6px;white-space:nowrap;pointer-events:none}
+.team{position:absolute;transform:translate(-50%,-50%);font:900 9.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#4a4d78;white-space:nowrap;pointer-events:none}
+.you{position:absolute;transform:translate(-50%,-100%);font:900 10.5px/1 var(--body);color:#191b2b;background:var(--yellow);padding:4px 7px;border-radius:4px;white-space:nowrap;pointer-events:none}
+.floors{position:absolute;right:12px;top:12px;display:grid;gap:4px}
+.floors button{font:900 12px/1 var(--body);padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;text-align:left;min-width:100px}
+.floors button small{display:block;font:500 9.5px/1.2 var(--mono);color:var(--muted);margin-top:3px}
+.floors button[aria-pressed="true"]{background:#33357e;border-color:#33357e;color:#fff}
+.floors button[aria-pressed="true"] small{color:#d7d9f7}
+.hud{position:absolute;left:12px;bottom:12px;display:flex;flex-wrap:wrap;gap:6px}
+.hud button{font:700 12px/1 var(--body);padding:9px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.hud button[aria-pressed="true"]{background:#33357e;border-color:#33357e;color:#fff}
+.status{position:absolute;left:12px;top:12px;max-width:58%;font:700 12.5px/1.3 var(--body);background:#33357e;color:#fff;padding:8px 12px;border-radius:8px}
+.status small{display:block;font-weight:400;opacity:.8;margin-top:2px}
+button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+aside{display:grid;gap:14px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h2{font:900 1.05rem/1.2 var(--body);margin:0 0 10px}
+.dest{display:grid;gap:6px;max-height:560px;overflow:auto}
+.fh{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:8px 0 2px;display:flex;align-items:center;gap:8px}
+.fh:first-child{margin-top:0}
+.fh i{flex:1;height:1px;background:var(--line)}
+.go{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;cursor:pointer}
+.go:hover{border-color:var(--navy)}
+.go.on{border-color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy)}
+.go b.l{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;color:#fff;font:900 11px/1 var(--body)}
+.go strong{display:block;font-weight:700;font-size:14px}
+.go small{color:var(--muted);font-size:12px}
+.go .m{font:500 11px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.go .nw{font:900 9px/1 var(--body);color:#191b2b;background:var(--yellow);padding:2px 5px;border-radius:3px;margin-left:6px;vertical-align:1px}
+.info .kicker{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.info h3{font:900 1.5rem/1.1 var(--body);margin:6px 0 8px}
+.info p{margin:0 0 8px}
+.info .tip{color:var(--muted);font-size:13.5px;border-left:3px solid var(--amber);padding-left:10px;margin:0}
+h2.sec{font:900 1.5rem/1.1 var(--body);margin:0 0 12px}
+.changes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.chg{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.chg .n{font:900 1.8rem/1 var(--body);color:var(--amber);font-variant-numeric:tabular-nums}
+.chg h4{margin:6px 0 4px;font:900 1rem/1.2 var(--body)}
+.chg p{margin:0;color:var(--muted);font-size:13.5px}
+.foot{font:400 12px/1.5 var(--body);color:var(--muted)}
+
+/* Entrada: puerta de bienvenida con la paleta de sitti.com.co (blanco, lavanda, azul #33357E, ámbar #F7A82C, amarillo #FFB607). Vista fija en ambos temas */
+.intro{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:auto;padding:24px 16px;
+  background:radial-gradient(110% 70% at 50% 0%,#ffffff 0%,#f4f5fd 45%,#ebedfc 100%);color:#33357e;font-family:var(--body);
+  transition:opacity .7s ease .5s, transform 1.1s cubic-bezier(.6,0,.2,1) .45s}
+.intro.gone{opacity:0;transform:scale(1.6);pointer-events:none}
+.intro-in{display:grid;justify-items:center;gap:20px;text-align:center;max-width:560px;width:100%}
+.lintel{display:inline-flex;align-items:center;gap:10px;font:900 15px/1 var(--body);letter-spacing:.32em;text-transform:uppercase;color:#33357e}
+.lintel i{width:10px;height:10px;border-radius:50%;background:#f7a82c}
+.intro h1{font:900 clamp(2.2rem,7vw,3.6rem)/1 var(--body);margin:0;letter-spacing:-.02em;color:#33357e}
+.intro h1 span{color:#f7a82c}
+.doorway{position:relative;width:min(70vw,300px,calc(44vh * .714));aspect-ratio:3/4.2;perspective:1100px;cursor:pointer;border:0;padding:0;background:transparent}
+.doorway .frame{position:absolute;inset:-14px -14px 0;border-radius:12px 12px 0 0;background:#f7a82c;box-shadow:0 30px 60px -24px rgba(51,53,126,.55)}
+.doorway .light{position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 55%,#fff6dc 0%,#ffcf6b 45%,#f7a82c 100%);transition:filter .8s}
+.doorway .light b{position:absolute;left:50%;bottom:18%;transform:translateX(-50%);font:900 1.6rem/1 var(--body);color:#33357e;letter-spacing:-.02em;opacity:.0;transition:opacity .6s .5s}
+.leaf{position:absolute;top:0;bottom:0;width:50%;background:#33357e;transition:transform 1.1s cubic-bezier(.55,0,.25,1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.leaf::before{content:"";position:absolute;inset:9% 14%;border:2px solid rgba(235,237,252,.22);border-radius:6px}
+.leaf::after{content:"";position:absolute;top:52%;width:10px;height:38px;border-radius:6px;background:#ffb607;box-shadow:0 0 10px rgba(255,182,7,.6)}
+.leaf.l{left:0;transform-origin:left center}.leaf.l::after{right:10px}
+.leaf.r{right:0;transform-origin:right center}.leaf.r::after{left:10px}
+.intro.open .leaf.l{transform:rotateY(-108deg)}
+.intro.open .leaf.r{transform:rotateY(108deg)}
+.intro.open .light b{opacity:1}
+.intro p.lead2{margin:0;font:400 1.05rem/1.55 var(--body);color:#5d607e;max-width:44ch}
+.intro p.hello{margin:0;font:700 1.12rem/1.5 var(--body);color:#33357e;max-width:42ch}
+.intro p.hello span{color:#f7a82c}
+.enter{font:900 15px/1 var(--body);padding:15px 28px;border-radius:999px;border:0;background:#f7a82c;color:#fff;cursor:pointer;box-shadow:0 10px 26px -10px rgba(247,168,44,.9)}
+.enter:hover{background:#33357e}
+.enter:focus-visible,.doorway:focus-visible{outline:3px solid #33357e;outline-offset:4px}
+
+/* Modo inmersivo: caminar adentro de la sede */
+.hud .imm-btn{background:#f7a82c;border-color:#f7a82c;color:#fff;font-weight:900}
+.imm{position:absolute;inset:0;pointer-events:none}
+.imm-hint{position:absolute;left:50%;top:12px;transform:translateX(-50%);max-width:min(92%,560px);text-align:center;font:700 12px/1.4 var(--body);color:#fff;background:rgba(51,53,126,.88);padding:8px 12px;border-radius:8px}
+.pad{position:absolute;left:14px;bottom:14px;display:grid;grid-template-columns:repeat(3,46px);grid-template-rows:repeat(2,46px);gap:6px;pointer-events:auto}
+.pad button{border:0;border-radius:10px;background:rgba(255,255,255,.92);color:#33357e;font:900 16px/1 var(--body);cursor:pointer;box-shadow:0 4px 12px -4px rgba(25,27,43,.5);touch-action:none;user-select:none}
+.pad button[data-k="f"]{grid-column:2;grid-row:1}.pad button[data-k="tl"]{grid-column:1;grid-row:2}.pad button[data-k="b"]{grid-column:2;grid-row:2}.pad button[data-k="tr"]{grid-column:3;grid-row:2}
+.pad button.on{background:#f7a82c;color:#fff}
+.imm-exit{position:absolute;right:14px;bottom:14px;pointer-events:auto;font:900 12.5px/1 var(--body);padding:11px 14px;border-radius:999px;border:0;background:#33357e;color:#fff;cursor:pointer}
+.stage.inside .floors,.stage.inside .hud,.stage.inside .status{display:none}
+.stage.inside canvas{cursor:grab}
+
+/* Botón de música: siempre visible, encima de la puerta y del mapa */
+.music{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:120;display:inline-flex;align-items:center;gap:8px;font:900 13px/1 var(--body);padding:11px 15px;border-radius:999px;border:0;background:#33357e;color:#fff;cursor:pointer;box-shadow:0 10px 24px -10px rgba(25,27,43,.6)}
+.music svg{width:18px;height:18px}
+.music[aria-pressed="false"]{background:#ffffff;color:#33357e;box-shadow:0 0 0 2px #33357e inset,0 10px 24px -10px rgba(25,27,43,.4)}
+.music .eq{display:inline-flex;gap:2px;align-items:flex-end;height:14px}
+.music .eq i{width:3px;background:#ffb607;border-radius:1px;animation:eq 1s ease-in-out infinite}
+.music .eq i:nth-child(2){animation-delay:.2s}.music .eq i:nth-child(3){animation-delay:.4s}
+.music[aria-pressed="false"] .eq{display:none}
+@keyframes eq{0%,100%{height:4px}50%{height:14px}}
+@media (prefers-reduced-motion: reduce){.music .eq i{animation:none;height:9px}}
+
+/* Video de cada área */
+.vmodal{position:fixed;inset:0;z-index:130;display:grid;place-items:center;padding:20px 16px;background:rgba(20,22,52,.78);backdrop-filter:blur(4px)}
+.vbox{width:min(920px,100%);max-height:100%;display:grid;gap:10px;background:#ffffff;border-radius:16px;padding:14px;box-shadow:0 30px 70px -20px rgba(0,0,0,.6)}
+.vhead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.vhead b{font:900 1.15rem/1.2 var(--body);color:#33357e}
+.vhead small{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#f7a82c;margin-bottom:4px}
+.vclose{font:900 13px/1 var(--body);padding:10px 14px;border-radius:999px;border:0;background:#33357e;color:#fff;cursor:pointer}
+.vbox video{width:100%;max-height:calc(100vh - 150px);border-radius:10px;background:#000}
+.vbtn{margin-top:10px;font:900 13px/1 var(--body);padding:10px 14px;border-radius:999px;border:0;background:#f7a82c;color:#fff;cursor:pointer}
+.go .vid{font:900 9px/1 var(--body);color:#fff;background:#33357e;padding:2px 5px;border-radius:3px;margin-left:6px;vertical-align:1px}
+
+/* ¿Qué hay en cada zona? */
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.zone{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.zone header{display:block;padding:14px 16px;color:#fff}
+.zone header small{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:.9;margin-bottom:6px}
+.zone header b{font:900 1.35rem/1.1 var(--body)}
+.zone ul{list-style:none;margin:0;padding:12px 16px 16px;display:grid;gap:8px}
+.zone li{display:grid;grid-template-columns:10px minmax(0,1fr);gap:10px;align-items:baseline}
+.zone li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--zc);transform:translateY(-1px)}
+.zone li span{display:block;color:var(--muted);font-size:13px}
+.zone button{margin:0 16px 16px;font:700 12.5px/1 var(--body);padding:9px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+@media (prefers-reduced-motion: reduce){.intro,.leaf,.doorway .light b{transition:none}}
+</style>
+
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+  <div class="intro-in">
+    <div class="lintel"><i></i>sitti</div>
+    <h1 id="introTitle">Bienvenidos a <span>Sitti</span></h1>
+    <button type="button" class="doorway" id="door" aria-label="Abrir la puerta y entrar a la sede">
+      <span class="frame"></span>
+      <span class="light"><b>¡Pasa!</b></span>
+      <span class="leaf l"></span>
+      <span class="leaf r"></span>
+    </button>
+    <p class="lead2">A continuación te mostraremos nuestra sede, para que tu experiencia sea mucho más interactiva.</p>
+    <button type="button" class="enter" id="enter">Abrir la puerta</button>
+    <p class="hello">Hoy inicias un proceso con nosotros. Esperamos que te sientas feliz de hacer parte de <span>Sitti</span>.</p>
+  </div>
+</div>
+<audio id="bgm" src="musica-fondo.mp3" loop preload="auto"></audio>
+<div class="vmodal" id="vmodal" role="dialog" aria-modal="true" aria-labelledby="vtitle" hidden>
+  <div class="vbox">
+    <div class="vhead"><div><small>Conoce el área</small><b id="vtitle">Mesa de ayuda</b></div><button type="button" class="vclose" id="vclose">Cerrar video</button></div>
+    <video id="vplayer" controls playsinline preload="metadata"></video>
+  </div>
+</div>
+<button type="button" class="music" id="musicBtn" aria-pressed="true" aria-label="Apagar la música">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span id="musicTxt">Música</span>
+</button>
+<script>
+// Música de fondo: suena bajita durante todo el recorrido. Arranca con el primer clic (los navegadores no permiten sonido antes)
+(function(){
+  const a=document.getElementById('bgm'), b=document.getElementById('musicBtn'), t=document.getElementById('musicTxt');
+  let on=true; a.volume=0.15;
+  try{ if(localStorage.getItem('sitti-music')==='off') on=false; }catch(e){}
+  function paint(){ const playing=!a.paused; b.setAttribute('aria-pressed',playing); b.setAttribute('aria-label',playing?'Pausar la música':'Reproducir la música'); t.textContent=playing?'Pausar música':'Reproducir música'; }
+  function play(){ if(on){ const p=a.play(); if(p&&p.catch) p.catch(()=>{}); } }
+  a.addEventListener('play',paint); a.addEventListener('pause',paint);
+  // El botón decide según si la música está sonando o no
+  b.addEventListener('click',e=>{ e.stopPropagation();
+    if(a.paused){ on=true; const p=a.play(); if(p&&p.catch) p.catch(()=>{}); } else { on=false; a.pause(); }
+    try{localStorage.setItem('sitti-music',on?'on':'off');}catch(err){} paint(); });
+  // Primer gesto en la página (por ejemplo, abrir la puerta) inicia la música; el botón de música no cuenta
+  const first=e=>{ if(e.target instanceof Node && b.contains(e.target)) return; play(); removeEventListener('pointerdown',first,true); removeEventListener('keydown',first,true); };
+  addEventListener('pointerdown',first,true); addEventListener('keydown',first,true);
+  play(); paint();
+})();
+</script>
+<script>
+// Puerta de bienvenida: funciona aunque la vista 3D no cargue
+(function(){
+  const intro=document.getElementById('intro'), reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.style.overflow='hidden';
+  let opened=false;
+  function openDoor(){
+    if(opened) return; opened=true;
+    intro.classList.add('open');
+    window.dispatchEvent(new Event('sitti-door-open'));
+    setTimeout(()=>intro.classList.add('gone'), reduce?0:900);
+    setTimeout(()=>{intro.hidden=true; document.documentElement.style.overflow='';}, reduce?60:2100);
+  }
+  document.getElementById('door').onclick=openDoor;
+  document.getElementById('enter').onclick=openDoor;
+  try{document.getElementById('enter').focus({preventScroll:true});}catch(e){}
+})();
+</script>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand"><i></i>sitti · Bienvenida</div>
+      <h1>Conoce tu nueva <span>casa</span></h1>
+    </div>
+    <p class="sub">La sede tiene tres zonas: naranja, verde y azul. Mírala desde arriba o toca <b>Caminar adentro</b> para recorrerla como si estuvieras ahí, con Oni y Arya a tu lado.</p>
+  </header>
+
+  <div class="main">
+    <div class="stage" id="stage">
+      <div class="labels" id="labels"></div>
+      <div class="status" id="status">Oni y Arya están en el acceso · Zona naranja<small>Toca un área o elige un destino</small></div>
+      <div class="floors" id="floors" role="group" aria-label="Zona visible"></div>
+      <div class="hud">
+        <button type="button" id="bImm" class="imm-btn">Caminar adentro</button>
+        <button type="button" id="bFollow" aria-pressed="false">Seguir a Oni y Arya</button>
+        <button type="button" id="bTour">Recorrido completo</button>
+      </div>
+      <div class="imm" id="imm" hidden>
+        <div class="imm-hint">Estás adentro de Sitti · Arrastra para mirar · Flechas o W A S D para caminar · Elige un destino y Oni y Arya te guían</div>
+        <div class="pad" aria-label="Caminar">
+          <button type="button" data-k="f" aria-label="Avanzar">▲</button>
+          <button type="button" data-k="tl" aria-label="Girar a la izquierda">◀</button>
+          <button type="button" data-k="b" aria-label="Retroceder">▼</button>
+          <button type="button" data-k="tr" aria-label="Girar a la derecha">▶</button>
+        </div>
+        <button type="button" class="imm-exit" id="bExit">Ver desde arriba</button>
+      </div>
+    </div>
+    <aside>
+      <div class="card info" id="info" aria-live="polite"></div>
+      <div class="card">
+        <h2>¿A dónde quieres ir?</h2>
+        <div class="dest" id="dest"></div>
+      </div>
+    </aside>
+  </div>
+
+  <section>
+    <h2 class="sec">¿Qué hay en cada zona?</h2>
+    <div class="zones">
+      <article class="zone" style="--zc:#d9692e">
+        <header style="background:#d9692e"><b>Zona naranja</b></header>
+        <ul>
+          <li><div><strong>Experiencia de servicio</strong><span>Puestos, taquillas de atención a usuarios, sala de audiencias virtuales y oficina de líderes.</span></div></li>
+          <li><div><strong>Mesa de ayuda</strong><span>Seis puestos frente a la cocineta.</span></div></li>
+          <li><div><strong>Gerentes</strong><span>Oficinas de gerentes y gerencia.</span></div></li>
+        </ul>
+        <button type="button" data-floor="1">Ver la zona naranja</button>
+      </article>
+      <article class="zone" style="--zc:#3fa535">
+        <header style="background:#3f8a37"><b>Zona verde</b></header>
+        <ul>
+          <li><div><strong>Experiencia y bienestar</strong></div></li>
+          <li><div><strong>Cobro coactivo</strong><span>Abogados de títulos y abogados de gestión de cobro.</span></div></li>
+          <li><div><strong>Coordinador jurídico</strong></div></li>
+          <li><div><strong>Coordinador jurídico de gestión de cobro</strong></div></li>
+          <li><div><strong>Abogados senior</strong></div></li>
+          <li><div><strong>Equipo de gestión legal</strong></div></li>
+        </ul>
+        <button type="button" data-floor="2">Ver la zona verde</button>
+      </article>
+      <article class="zone" style="--zc:#33357e">
+        <header style="background:#33357e"><b>Zona azul</b></header>
+        <ul>
+          <li><div><strong>Aseguramiento contravencional</strong></div></li>
+          <li><div><strong>CAD</strong><span>Área de archivo.</span></div></li>
+          <li><div><strong>Radicación</strong></div></li>
+          <li><div><strong>Digitalización</strong></div></li>
+          <li><div><strong>Correspondencia</strong><span>Con taquilla de atención a usuarios.</span></div></li>
+          <li><div><strong>Conexión de soluciones</strong></div></li>
+          <li><div><strong>Fotodetección</strong></div></li>
+          <li><div><strong>Financiera y administrativa</strong></div></li>
+          <li><div><strong>Cartera</strong></div></li>
+          <li><div><strong>Aseguramiento contractual</strong></div></li>
+        </ul>
+        <button type="button" data-floor="3">Ver la zona azul</button>
+      </article>
+    </div>
+  </section>
+
+  <p class="foot">Plano esquemático basado en los planos arquitectónicos de la sede. Las proporciones, la alineación entre niveles y la ruta del avatar son aproximadas.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+  const FH=10;
+  const C={navy:'#33357e',amber:'#f7a82c',yellow:'#ffb607',coral:'#ec623b',teal:'#3fa9ac',juntas:'#6b6fc4',bano:'#7fb6d6',work:'#fbd2ad',neutral:'#d5d8ea',office:'#8a8dd0',core:'#b7bad6',
+    green:'#3fa535',orange:'#d9692e',wood:'#d9ccb9',slab:'#e9e5df',cor:'#9ea3aa'};
+  // Cada nivel usa las coordenadas de su propio plano (10 px ≈ 1 unidad). El sótano se alinea con las escaleras del piso 1
+  const X1=px=>(px-345)/10, Z1=py=>(py-400)/10;
+  const FLOORS=[
+    {n:1,name:'Zona naranja',sub:'Acceso y oficinas',y:0,X:X1,Z:Z1,wall:'#f2b68e',div:'#f9d8b8',tag:'#d97a3a',btn:'#f2a46b'},
+    {n:2,name:'Zona verde',sub:'Cobro coactivo',wall:'#a8d99e',div:'#cdeac4',tag:'#3f8a37',btn:'#6dbb60',y:-FH,X:px=>X1(122)+(px-386)/10,Z:py=>Z1(135)+(py-205)/10}
+  ];
+  const F=n=>FLOORS[n-1];
+  // Zona azul: se dibuja desde el boceto (escala 0,045 unidades por píxel) y su escalera remata en la de la zona verde
+  {const X2=F(2).X,Z2=F(2).Z,s=0.045;
+    FLOORS.push({n:3,name:'Zona azul',sub:'Cartera y gestión documental',wall:'#b3b5e0',div:'#d8d9f1',tag:'#33357e',btn:'#33357e',y:-2*FH,
+      X:px=>X2(360)+(px-1030)*s,Z:py=>Z2(214)+(py-180)*s});}
+
+  const AREAS=[
+    // Piso 1 (plano inicial)
+    {f:1,id:'COC',letter:'C',name:'Cocineta',color:C.coral,r:[215,15,360,158],node:'COC',desc:'Cocineta con mesas para comer, preparar tus alimentos y tomar algo durante la jornada.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:1,id:'MA',letter:'MA',name:'Mesa de ayuda',color:C.amber,floor:C.wood,video:'videos/mesa-de-ayuda.mp4',r:[216,168,288,238],node:'MA',isNew:true,desc:'Seis puestos de mesa de ayuda, frente a la cocineta.',tip:''},
+    {f:1,id:'S',letter:'S',name:'Experiencia de servicio',color:C.teal,r:[430,266,545,452],node:'S',desc:'Puestos de trabajo, sala de audiencias virtuales y oficina de líderes del equipo de experiencia de servicio.',tip:'Aquí se atiende a la ciudadanía: mantén un tono de voz bajo al pasar.'},
+    {f:1,id:'G',letter:'G',name:'Gerentes',color:C.navy,r:[428,550,545,650],node:'G',desc:'Oficinas cerradas de los gerentes.',tip:'Si necesitas a alguien, toca la puerta o agenda un espacio.'},
+    {f:1,id:'L',letter:'L',name:'Lockers',color:C.yellow,r:[262,698,392,778],node:'L',desc:'Lockers para guardar tus pertenencias durante la jornada, junto al acceso.',tip:'Pide la asignación de tu locker en tu primer día.'},
+    {f:1,id:'J1',letter:'J',name:'Sala de juntas',color:C.juntas,r:[430,460,490,540],node:'J1',desc:'Sala de juntas para reuniones de equipo.',tip:'Reserva la sala con anticipación en el calendario.'},
+    {f:1,id:'J2',letter:'J',name:'Sala de juntas principal',color:C.juntas,r:[460,660,532,778],node:'J2',desc:'Sala de juntas principal, cerca de gerencia.',tip:'Reserva la sala con anticipación en el calendario.'},
+    {f:1,id:'BM',letter:'WC',name:'Baño mujeres',color:C.bano,r:[492,284,545,345],node:'BM',desc:'Baño de mujeres, dentro del bloque de experiencia de servicio.',tip:''},
+    {f:1,id:'BH',letter:'WC',name:'Baño hombres',color:C.bano,r:[492,466,545,532],node:'BH',desc:'Baño de hombres, junto a la sala de juntas.',tip:''},
+    {f:1,id:'P14',letter:'S',name:'Experiencia de servicio · Puestos',color:C.teal,floor:C.wood,r:[357,245,404,605],node:'P14',desc:'Fila de 14 puestos del equipo de experiencia de servicio, a lo largo del pasillo central.',tip:''},
+    {f:1,id:'TQS',letter:'T',name:'Taquillas · Experiencia de servicio',color:C.teal,r:[250,250,352,600],node:'TQS',isNew:true,desc:'Taquillas donde el equipo de experiencia de servicio atiende a los usuarios.',tip:'Los usuarios esperan en las bancas y pasan a la taquilla que se libere.'},
+    {f:1,id:'BOD',letter:'',name:'Bodega',color:C.neutral,r:[420,188,495,262],node:'BOD',minor:true,desc:'Bodega.',tip:''},
+    {f:1,id:'ESP',letter:'',name:'Sala de espera',color:C.neutral,r:[362,605,410,655],node:'ESP',minor:true,desc:'Sala de espera para visitantes.',tip:''},
+    {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Ingreso a Sitti, tu primera parada al llegar.',tip:'Preséntate aquí al llegar y te indicarán a dónde ir.'},
+    {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[410,728,458,778],node:'GER',minor:true,desc:'Oficina de gerencia.',tip:''},
+    {f:1,id:'ACC',letter:'',name:'Acceso',color:C.neutral,r:[255,682,300,700],node:'acc',minor:true,desc:'Acceso principal al piso.',tip:''},
+    {f:1,id:'ESC1',letter:'↓',name:'Escaleras a la zona verde',color:C.core,r:[80,15,165,140],node:'core',minor:true,desc:'Escaleras para bajar a la zona verde. La sede no tiene ascensor.',tip:''},
+    // Zona verde
+    {f:2,id:'P106',letter:'CC',name:'Cobro coactivo / Gestión legal',color:C.green,floor:C.wood,r:[64,145,276,438],node:'P',floorOnly:true,lbl:[170,292],desc:'Zona abierta de cobro coactivo (abogados de títulos y abogados de gestión de cobro), abogados senior y equipo de gestión legal.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:2,id:'EB',letter:'E',name:'Experiencia y bienestar',color:C.amber,r:[8,220,58,334],node:'EB',isNew:true,desc:'Sala del equipo de experiencia y bienestar, con 7 puestos de trabajo.',tip:'Acércate si tienes dudas sobre bienestar, actividades o tu proceso de bienvenida.'},
+    {f:2,id:'SJ',letter:'J',name:'Sala de juntas',color:C.juntas,r:[8,150,62,210],node:'SJ',isNew:true,desc:'Sala de juntas junto a experiencia y bienestar.',tip:'Reserva la sala con anticipación en el calendario.'},
+    {f:2,id:'COC2',letter:'C',name:'Cocineta',color:C.coral,r:[92,98,200,142],node:'COC2',isNew:true,desc:'Cocineta para preparar y calentar alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:2,id:'BS',letter:'WC',name:'Baño',color:C.bano,r:[204,98,262,142],node:'BS',isNew:true,desc:'Baño, al lado de la cocineta.',tip:''},
+    {f:2,id:'OL',letter:'CJ',name:'Coordinación jurídica y gestión de cobro',color:C.office,r:[280,150,332,208],node:'OL',lbl:[306,200],desc:'Oficina de coordinación jurídica y gestión de cobro.',tip:''},
+    {f:2,id:'JS',letter:'J',name:'Sala de juntas',color:C.juntas,r:[280,208,332,300],node:'JS',desc:'Sala de juntas de la zona de trabajo.',tip:'Reserva la sala con anticipación en el calendario.'},
+    {f:2,id:'ESC2',letter:'↕',name:'Escaleras',color:C.core,r:[326,150,398,214],node:'core',minor:true,desc:'Escaleras para subir a la zona naranja o bajar a la zona azul.',tip:''},
+    // Zona azul (coordenadas del boceto)
+    {f:3,id:'P3',letter:'P',name:'Puestos de trabajo',color:'#33357e',floor:C.wood,r:[215,212,760,515],node:'P',floorOnly:true,desc:'Zona abierta de puestos de trabajo de la zona azul.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:3,id:'CA',letter:'C',name:'Cartera',color:'#5457a8',r:[345,45,760,165],node:'CA',desc:'Área de cartera.',tip:''},
+    {f:3,id:'FA',letter:'F',name:'Financiera y administrativa',color:C.office,r:[775,45,925,150],node:'FA',desc:'Área financiera y administrativa.',tip:''},
+    {f:3,id:'BO3',letter:'B',name:'Bodega',color:C.neutral,r:[775,150,925,235],node:'BO3',desc:'Bodega.',tip:''},
+    {f:3,id:'SJ3',letter:'J',name:'Sala de juntas',color:C.juntas,r:[45,45,195,160],node:'SJ3',desc:'Sala de juntas de la zona azul.',tip:'Reserva la sala con anticipación en el calendario.'},
+    {f:3,id:'OCL',letter:'CL',name:'Coordinadores y líderes',color:C.office,r:[45,160,195,265],node:'OCL',isNew:true,desc:'Oficina de coordinadores y líderes de la zona azul, entre la sala de juntas y la cocina.',tip:''},
+    {f:3,id:'CO3',letter:'C',name:'Cocina',color:C.coral,r:[45,265,185,430],node:'CO3',desc:'Cocina para preparar y calentar alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:3,id:'W3',letter:'WC',name:'Baño',color:C.bano,r:[45,430,135,490],node:'W3',desc:'Baño, junto a la cocina.',tip:''},
+    {f:3,id:'DG',letter:'D',name:'Digitalización',color:C.teal,r:[200,585,345,650],node:'DG',desc:'Área de digitalización, sobre el costado superior del CAD. Una ventana la comunica con el archivo.',tip:''},
+    {f:3,id:'CAD',letter:'CAD',name:'CAD · Archivo',color:'#7c80c8',r:[90,650,640,960],sink:1.4,lbl:[370,800],node:'CAD',desc:'Área de archivo, en un nivel más abajo, como otro sótano. Se baja por unos escalones desde el pasillo y tiene una ventana hacia Digitalización.',tip:'Baja con cuidado: el CAD está a un nivel más bajo que el resto de la zona azul.'},
+    {f:3,id:'CR',letter:'Co',name:'Correspondencia',color:C.amber,r:[700,585,840,860],node:'CR',desc:'Área de correspondencia, con los puestos dispuestos en vertical. Entre correspondencia y el CAD hay un pasillo.',tip:''},
+    {f:3,id:'TQ',letter:'T',name:'Taquilla de correspondencia',color:C.coral,r:[840,585,925,760],node:'TQ',isNew:true,desc:'Taquilla donde correspondencia atiende a los usuarios.',tip:''},
+    {f:3,id:'SEC',letter:'',name:'Usuarios en espera',color:C.neutral,r:[930,595,1072,800],node:'SEC',minor:true,desc:'Sillas para los usuarios que esperan su turno en la taquilla de correspondencia.',tip:''},
+    {f:3,id:'RD',letter:'R',name:'Radicación',color:C.yellow,r:[1000,350,1075,495],node:'RD',desc:'Ventanilla de radicación.',tip:''},
+    {f:3,id:'ESC3',letter:'↑',name:'Escaleras a la zona verde',color:C.core,r:[925,45,1065,185],node:'core',minor:true,desc:'Escaleras para subir a la zona verde.',tip:''}
+  ];
+  const A=Object.fromEntries(AREAS.map(a=>[a.id,a]));
+
+  const NODES={
+    1:{acc:[270,692],lob:[330,692],wait:[385,668],s1:[418,668],s2:[418,600],s3:[418,500],s4:[418,420],s5:[418,330],s6:[418,262],
+       t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
+       cd:[440,252],BOD:[458,226],S:[462,330],BM:[518,315],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
+       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[262,612],TQS:[285,430]},
+    2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,180],JS:[306,255],
+       P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[146,150],COC2:[146,120],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
+    3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],RD:[1035,422],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
+       t2:[500,190],CA:[550,120],P:[490,360],t3:[205,190],l1:[205,100],SJ3:[120,100],ocd:[205,212],OCL:[120,212],l2:[205,350],CO3:[115,350],l25:[205,460],W3:[90,460],
+       l3:[205,550],dgn:[272,560],DG:[272,615],b1:[370,550],cadN:[370,640],cad1:[370,705,-1.4],CAD:[370,820,-1.4],
+       b2:[670,550],pc:[670,800],b3:[770,550],crn:[770,580],CR:[770,720],tqn:[960,560],SEC:[990,700],TQ:[880,670],f1:[940,100],FA:[850,100]}
+  };
+  const EDGES={
+    1:[['acc','lob'],['lob','wait'],['wait','s1'],['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','t1'],['t1','t2'],['t2','t3'],['t3','COC'],
+       ['t2','MA'],['MA','w18'],['w18','sp'],['sp','core'],['s6','cd'],['cd','BOD'],['s5','S'],['S','BM'],['s3','J1'],['J1','BH'],['s2','G'],['lob','L'],['lob','SEG'],
+       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS']],
+    2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','OL'],['v3','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
+       ['v1','k7'],['k7','BS'],['k7','k4'],['k4','COC2'],['k4','k6'],['k6','SJ']],
+    3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
+       ['t3','l2'],['l2','CO3'],['l2','l25'],['l25','W3'],['l25','l3'],['l3','dgn'],['dgn','DG'],['l3','b1'],['b1','cadN'],['cadN','cad1'],['cad1','CAD'],['b1','b2'],['b2','pc'],['b2','b3'],
+       ['b3','crn'],['crn','CR'],['b3','tqn'],['tqn','SEC'],['SEC','TQ'],
+       ['b3','h2'],['h2','h3'],['h3','h1'],['h3','RD'],['core','f1'],['f1','FA']]
+  };
+  const NP={}, adj={};
+  Object.entries(NODES).forEach(([f,ns])=>Object.entries(ns).forEach(([k,p])=>{const fl=F(+f),id=f+':'+k;NP[id]={x:fl.X(p[0]),y:fl.y+(p[2]||0),z:fl.Z(p[1]),f:+f};adj[id]=[];}));
+  const link=(a,b)=>{adj[a].push(b);adj[b].push(a);};
+  Object.entries(EDGES).forEach(([f,es])=>es.forEach(([a,b])=>link(f+':'+a,f+':'+b)));
+  // Escalera del sótano al piso 1: tramo, descanso y segundo tramo
+  {const fl=F(2),h=-FH/2;const pts={a:[362,206,-FH],b:[362,160,h],c:[386,160,h],d:[386,206,0]};
+    Object.entries(pts).forEach(([k,[px,py,y]])=>{NP['st'+k]={x:fl.X(px),y,z:fl.Z(py),f:y>h?1:2};adj['st'+k]=[];});
+    NP.sta.f=2;NP.stb.f=2;NP.stc.f=2;NP.std.f=1;
+    link('2:core','sta');link('sta','stb');link('stb','stc');link('stc','std');link('std','1:core');}
+  // Escalera de la zona azul a la zona verde
+  {const fl=F(3),y0=-2*FH,h=-1.5*FH;const pts={a:[960,180,y0,3],b:[960,70,h,3],c:[1030,70,h,3],d:[1030,180,-FH,2]};
+    Object.entries(pts).forEach(([k,[px,py,y,f]])=>{NP['sz'+k]={x:fl.X(px),y,z:fl.Z(py),f};adj['sz'+k]=[];});
+    link('3:core','sza');link('sza','szb');link('szb','szc');link('szc','szd');link('szd','2:core');}
+  const nd=(a,b)=>{const p=NP[a],q=NP[b];return Math.hypot(p.x-q.x,p.z-q.z)+Math.abs(p.y-q.y)*0.8;};
+  function path(from,to){
+    const d={},prev={},q=new Set(Object.keys(NP)); Object.keys(NP).forEach(k=>d[k]=Infinity); d[from]=0;
+    while(q.size){let u=null;q.forEach(k=>{if(u===null||d[k]<d[u])u=k;}); q.delete(u); if(u===to||d[u]===Infinity)break;
+      adj[u].forEach(v=>{const n=d[u]+nd(u,v); if(n<d[v]){d[v]=n;prev[v]=u;}});}
+    const p=[to]; while(p[0]!==from) p.unshift(prev[p[0]]); return {nodes:p,len:d[to]};
+  }
+  const nodeOf=a=>a.f+':'+a.node;
+
+  const stage=document.getElementById('stage'), labelsEl=document.getElementById('labels');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const tok=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim()||'#888';
+  let renderer;
+  try{ renderer=new THREE.WebGLRenderer({antialias:true}); }catch(e){ stage.insertAdjacentHTML('afterbegin','<p style="padding:24px">Tu navegador no pudo iniciar la vista 3D.</p>'); return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio,1.5)); renderer.shadowMap.enabled=true;
+  stage.prepend(renderer.domElement);
+  const scene=new THREE.Scene();
+  const setBg=()=>{const c=new THREE.Color(tok('--bg'));scene.background=c;renderer.setClearColor(c,1);};
+  setBg();
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',setBg);
+  new MutationObserver(setBg).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+  const camera=new THREE.PerspectiveCamera(38,1,0.5,800);
+  const controls=new THREE.OrbitControls(camera,renderer.domElement);
+  controls.enableDamping=true; controls.maxPolarAngle=Math.PI*0.46; controls.minDistance=10; controls.maxDistance=220;
+  const sc2=[F(2).X(200),F(2).Z(290)];
+  const sc3=[F(3).X(560),F(3).Z(500)];
+  const VIEW={
+    all:{p:new THREE.Vector3(-110,60,105),t:new THREE.Vector3(-26,-10,-10)},
+    1:{p:new THREE.Vector3(-30,70,64),t:new THREE.Vector3(3,0,2)},
+    2:{p:new THREE.Vector3(sc2[0]-14,-FH+46,sc2[1]+40),t:new THREE.Vector3(sc2[0]+2,-FH,sc2[1]-2)},
+    3:{p:new THREE.Vector3(sc3[0]-8,-2*FH+58,sc3[1]+50),t:new THREE.Vector3(sc3[0]+2,-2*FH,sc3[1]-2)}
+  };
+  camera.position.copy(VIEW[1].p); controls.target.copy(VIEW[1].t);
+  scene.add(new THREE.HemisphereLight(0xffffff,0xb8bce0,0.75));
+  const sun=new THREE.DirectionalLight(0xffffff,0.55); sun.position.set(-40,110,45); sun.castShadow=true;
+  sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-80,right:80,top:80,bottom:-80,far:300}); scene.add(sun);
+
+  FLOORS.forEach(fl=>{fl.g=new THREE.Group();fl.g.position.y=fl.y;scene.add(fl.g);fl.mats=[];fl.cache={};});
+  const fm=(fl,color,opts={})=>{const key=color+JSON.stringify(opts.o||{});if(!opts.unique&&fl.cache[key])return fl.cache[key];
+    const m=new THREE.MeshLambertMaterial(Object.assign({color},opts.o||{}));m.userData.base=m.opacity;m.userData.tr=m.transparent;fl.mats.push(m);if(!opts.unique)fl.cache[key]=m;return m;};
+  const mk=fl=>{
+    const box=(w,h,d,m,x,y,z,sh=true)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=sh;o.receiveShadow=true;fl.g.add(o);return o;};
+    const rect=(r,h,m,y0=0,sh=false)=>box(fl.X(r[2])-fl.X(r[0]),h,fl.Z(r[3])-fl.Z(r[1]),m,fl.X((r[0]+r[2])/2),y0+h/2,fl.Z((r[1]+r[3])/2),sh);
+    return {box,rect,m:(c,o)=>fm(fl,c,o?{o}:{}),X:fl.X,Z:fl.Z};
+  };
+  const WH=1.3, WT=0.18;
+  // door admite varios lados ('nw'); sink baja la base del muro para áreas hundidas
+  // opts.win: lados con ventana (antepecho + vidrio); opts.skip: lados que no se dibujan
+  function walls(fl,r,door,sink=0,opts={}){
+    const {box,m}=mk(fl), W=m(fl.wall), H=WH+sink, Y=(WH-sink)/2;
+    const x1=fl.X(r[0]),x2=fl.X(r[2]),z1=fl.Z(r[1]),z2=fl.Z(r[3]),cx=(x1+x2)/2,cz=(z1+z2)/2,w=x2-x1,d=z2-z1;
+    const seg=(side,len,a,b,hz)=>{
+      if(opts.skip&&opts.skip.includes(side)) return;
+      if(opts.win&&opts.win.includes(side)){
+        const sill=0.75+sink, gH=1.1, G=glass(fl), wl=len*0.7;
+        if(hz){box(len,sill,WT,W,a,sill/2-sink,b);box(wl,gH,0.08,G,a,sill-sink+gH/2,b,false);box(len,0.12,WT,W,a,sill-sink+gH+0.06,b);}
+        else{box(WT,sill,len,W,a,sill/2-sink,b);box(0.08,gH,wl,G,a,sill-sink+gH/2,b,false);box(WT,0.12,len,W,a,sill-sink+gH+0.06,b);}
+        return;
+      }
+      if(door&&door.includes(side)){const g=Math.min(2,len*0.4),part=(len-g)/2;[-1,1].forEach(s=>{if(hz)box(part,H,WT,W,a+s*(g/2+part/2),Y,b);else box(WT,H,part,W,a,Y,b+s*(g/2+part/2));});}
+      else{if(hz)box(len,H,WT,W,a,Y,b);else box(WT,H,len,W,a,Y,b);}
+    };
+    seg('n',w,cx,z1,true);seg('s',w,cx,z2,true);seg('w',d,x1,cz,false);seg('e',d,x2,cz,false);
+  }
+  // Puesto: cubierta en madera, cajonera gris y división con el color de la zona
+  const deskG=new THREE.BoxGeometry(1.3,0.06,0.65), legG=new THREE.BoxGeometry(0.4,0.7,0.58), divG=new THREE.BoxGeometry(1.2,0.42,0.04), chairG=new THREE.BoxGeometry(0.48,0.48,0.48), scrG=new THREE.BoxGeometry(0.48,0.3,0.04);
+  function desks(fl,list){
+    const {m}=mk(fl);
+    const dk=new THREE.InstancedMesh(deskG,m('#c9a97f'),list.length), lg=new THREE.InstancedMesh(legG,m('#9b9a95'),list.length), dv=new THREE.InstancedMesh(divG,m(fl.div),list.length), sc=new THREE.InstancedMesh(scrG,m('#2a2c45'),list.length);
+    dk.castShadow=true; dv.castShadow=true; fl.g.add(dk,lg,dv,sc);
+    const dm=new THREE.Object3D(), t=new THREE.Vector3(), byC={};
+    const mat4=d=>{const g=new THREE.Object3D();g.position.set(fl.X(d.px),0,fl.Z(d.py));g.rotation.y=d.rot;g.updateMatrixWorld();return g.matrixWorld;};
+    list.forEach((d,i)=>{const mw=mat4(d);const put=(im,x,y,z)=>{dm.position.copy(t.set(x,y,z).applyMatrix4(mw));dm.rotation.set(0,d.rot,0);dm.updateMatrix();im.setMatrixAt(i,dm.matrix);};
+      put(dk,0,0.75,0);put(lg,0.42,0.36,0);put(dv,0,0.99,-0.32);put(sc,0,0.95,-0.15);(byC[d.c||'#4a4f5c']=byC[d.c||'#4a4f5c']||[]).push(d);});
+    Object.entries(byC).forEach(([c,arr])=>{const ch=new THREE.InstancedMesh(chairG,m(c),arr.length);ch.castShadow=true;
+      arr.forEach((d,i)=>{dm.position.copy(t.set(0,0.28,0.62).applyMatrix4(mat4(d)));dm.rotation.set(0,d.rot,0);dm.updateMatrix();ch.setMatrixAt(i,dm.matrix);});fl.g.add(ch);});
+  }
+  // Matera: maceta, tierra y hojas alargadas en abanico (tipo monstera / lengua de suegra)
+  const POTS=['#c46a3c','#f1efe9','#33357e','#d9c7a8'];
+  let plantN=0;
+  function plant(fl,px,py,s=1){const {m}=mk(fl);const x=fl.X(px),z=fl.Z(py),k=plantN++;
+    const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.32*s,0.24*s,0.55*s,18),m(POTS[k%POTS.length]));pot.position.set(x,0.275*s,z);pot.castShadow=true;fl.g.add(pot);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(0.31*s,0.03*s,6,18),m(POTS[k%POTS.length]));rim.rotation.x=Math.PI/2;rim.position.set(x,0.55*s,z);fl.g.add(rim);
+    const soil=new THREE.Mesh(new THREE.CylinderGeometry(0.28*s,0.28*s,0.02,14),m('#4a3526'));soil.position.set(x,0.53*s,z);fl.g.add(soil);
+    const leafM=[m('#3f7a3a'),m('#56954a'),m('#2f6a34')], tall=k%3===1, n=tall?8:11;
+    for(let i=0;i<n;i++){const a=i/n*Math.PI*2+k, lean=tall?0.18:0.55+Math.random()*0.3;
+      const leaf=new THREE.Mesh(new THREE.SphereGeometry(0.1*s,10,6),leafM[i%3]);
+      leaf.scale.set(tall?0.55:1.4,tall?7:4.2,0.25);
+      const g=new THREE.Group();g.position.set(x,0.55*s,z);g.rotation.set(0,a,0);fl.g.add(g);
+      leaf.position.set(0,(tall?0.62:0.36)*s,0);leaf.rotation.x=lean;leaf.translateY((tall?0.05:0.08)*s);leaf.castShadow=true;g.add(leaf);}
+  }
+  // Cocineta amoblada: gabinetes bajos y altos, mesón, lavaplatos, microondas, cafetera, nevera y dispensador de agua
+  function kitchen(fl,horiz,fixed,from,to,inward){
+    const {box,m,X,Z}=mk(fl), len=Math.abs(horiz?X(to)-X(from):Z(to)-Z(from)), mid=(from+to)/2;
+    const off=inward*0.38, pos=(along,o2)=>horiz?[X(mid)+along,Z(fixed)+o2]:[X(fixed)+o2,Z(mid)+along];
+    const B=(w,h,d,mm,along,y,o2)=>{const [px,pz]=pos(along,o2);return horiz?box(w,h,d,mm,px,y,pz):box(d,h,w,mm,px,y,pz);};
+    const L=len-1.1;
+    B(L,0.85,0.6,m('#f3f3f6'),-0.5,0.43,off); B(L+0.04,0.05,0.66,m('#3b3f4a'),-0.5,0.88,off);
+    B(0.62,0.04,0.42,m('#b9bdc6'),-0.5-L*0.25,0.905,off); B(0.05,0.28,0.05,m('#c7cad2'),-0.5-L*0.25,1.04,off-0.18*inward);
+    B(0.52,0.3,0.36,m('#22242c'),-0.5+L*0.2,1.05,off); B(0.24,0.36,0.26,m('#141414'),-0.5+L*0.36,1.08,off);
+    B(L*0.85,0.62,0.34,m('#e4e6ee'),-0.5,1.75,inward*0.2);
+    B(0.78,1.85,0.7,m('#d9dce3'),L/2+0.05,0.93,off);
+    const [wx,wz]=pos(-L/2-0.35,off);const w=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.42,14),m('#8fc4e8'));w.position.set(wx,1.25,wz);fl.g.add(w);
+    box(0.36,1.05,0.36,m('#f3f3f6'),wx,0.52,wz);
+  }
+  // Baño: sanitarios con divisiones y lavamanos con espejo
+  function bath(fl,r,side,n){
+    const {box,m,X,Z}=mk(fl), x1=X(r[0]),x2=X(r[2]),z1=Z(r[1]),z2=Z(r[3]), wh=m('#ffffff'), part=m('#d6dbe4'), mir=m('#cfe6f3');
+    const along=(side==='e'||side==='w'), wallC=side==='e'?x2:side==='w'?x1:side==='n'?z1:z2, inw=(side==='e'||side==='s')?-1:1;
+    const a0=along?z1:x1, a1=along?z2:x2, step=(a1-a0)/n;
+    for(let i=0;i<n;i++){const c=a0+step*(i+0.5), o=wallC+inw*0.35;
+      const P=(dx,dy,dz,w,h,d,mm)=>along?box(d,h,w,mm,o+inw*dx,dy,c+dz):box(w,h,d,mm,c+dz,dy,o+inw*dx);
+      P(0,0.6,0,0.4,0.45,0.22,wh);                          // tanque
+      const bowl=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.16,0.4,14),wh);
+      if(along) bowl.position.set(o+inw*0.32,0.2,c); else bowl.position.set(c,0.2,o+inw*0.32); bowl.castShadow=true; fl.g.add(bowl);
+      if(i>0) P(0.45,0.8,-step/2,0.05,1.6,1.0,part);       // división
+    }
+    // Lavamanos en el muro opuesto
+    const o=wallC+inw*((along?x2-x1:z2-z1)-0.35), cm=(a0+a1)/2, W=Math.min(1.8,(a1-a0)*0.7);
+    if(along){box(0.5,0.85,W,wh,o,0.43,cm);box(0.06,0.7,W,mir,o+inw*0.24,1.45,cm);}else{box(W,0.85,0.5,wh,cm,0.43,o);box(W,0.7,0.06,mir,cm,1.45,o+inw*0.24);}
+  }
+  function meet(fl,r,n){const {box,m}=mk(fl);const w=(fl.X(r[2])-fl.X(r[0]))*0.42,d=(fl.Z(r[3])-fl.Z(r[1]))*0.55,cx=fl.X((r[0]+r[2])/2),cz=fl.Z((r[1]+r[3])/2);
+    box(w,0.08,d,m('#c9a57a'),cx,0.75,cz);box(w*0.3,0.7,d*0.3,m('#9da1bf'),cx,0.37,cz);
+    for(let i=0;i<n;i++){const t=(i+0.5)/n;box(0.45,0.45,0.45,m('#33357e'),cx-w/2-0.4,0.27,cz-d/2+t*d);box(0.45,0.45,0.45,m('#33357e'),cx+w/2+0.4,0.27,cz-d/2+t*d);}}
+  function roundTables(fl,pts,chairC){const {box,m}=mk(fl);pts.forEach(([x,y])=>{const t=new THREE.Mesh(new THREE.CylinderGeometry(1,1,0.08,24),m('#ffffff'));t.position.set(fl.X(x),0.75,fl.Z(y));t.castShadow=true;fl.g.add(t);
+    box(0.15,0.7,0.15,m('#9da1bf'),fl.X(x),0.37,fl.Z(y));for(let k=0;k<4;k++){const a=k*Math.PI/2;box(0.42,0.42,0.42,m(chairC),fl.X(x)+Math.cos(a)*1.35,0.25,fl.Z(y)+Math.sin(a)*1.35);}});}
+  const glass=fl=>fm(fl,'#bfe3f2',{o:{transparent:true,opacity:0.45}});
+
+  // ---------- Piso 1 ----------
+  {const fl=F(1),{box,rect,m,X,Z}=mk(fl);
+    [[165,155,392,240],[213,13,362,160],[353,235,547,662],[418,186,497,264],[255,605,547,780],[25,155,170,240],[78,13,165,160],[245,240,356,610]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
+    [[405,240,430,662],[290,170,392,238],[300,655,460,700],[165,140,215,165]].forEach(r=>rect(r,0.04,m(C.cor),0.01));
+    rect([216,168,288,238],0.04,m(C.wood),0.012);
+    // Escaleras (bajan al sótano)
+    const stM=m(C.core);
+    for(let i=0;i<10;i++) box(3.4,0.2,1.0,stM,X(100),0.1,Z(30+i*10),true);
+    box(0.12,1,10,m('#33357e'),X(118),0.5,Z(75),false);
+    for(let i=0;i<8;i++) box(1.1,0.25+i*0.18,3.6,m('#c4c7da'),X(36+i*5.5),(0.25+i*0.18)/2,Z(205),true);
+    walls(fl,A.COC.r,'s');walls(fl,A.TQS.r,'s');walls(fl,A.BOD.r,'w');
+    // Taquillas de atención: mostrador corrido con divisiones, personal al oriente y usuarios al occidente
+    {const zA=Z(262),zB=Z(590),len=zB-zA;
+      box(0.5,1.1,len,m('#ffffff'),X(322),0.55,(zA+zB)/2); box(0.7,0.06,len,m(C.teal),X(322),1.12,(zA+zB)/2);
+      const TQ=[];for(let i=0;i<6;i++){const y=290+i*55;TQ.push({px:338,py:y,rot:Math.PI/2,c:C.teal});
+        box(0.9,1.5,0.06,m('#d8eeee'),X(322),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(300),0.25,Z(y));}
+      desks(fl,TQ);
+      for(let k=0;k<4;k++) for(let j=0;j<3;j++) box(0.5,0.45,0.5,m('#5d78a8'),X(268),0.25,Z(300+k*80+j*12));}walls(fl,A.S.r,'w');walls(fl,A.G.r,'w');walls(fl,A.L.r,'n');
+    walls(fl,A.J1.r,'w');walls(fl,A.J2.r,'w');walls(fl,A.BM.r,'w');walls(fl,A.BH.r,'w');walls(fl,A.GER.r,'n');walls(fl,A.SEG.r,'s');
+    [[213,13,362,13],[547,235,547,662],[353,235,353,605]].forEach(([a,b,c,d])=>{const hz=b===d;if(hz)box((c-a)/10,2.4,0.12,glass(fl),X((a+c)/2),1.2,Z(b),false);else box(0.12,2.4,(d-b)/10,glass(fl),X(a),1.2,Z((b+d)/2),false);});
+    const L=[];
+    for(let i=2;i<=4;i++){L.push({px:182+i*23,py:190,rot:0,c:C.amber},{px:182+i*23,py:222,rot:Math.PI,c:C.amber});}
+    for(let i=0;i<7;i++)L.push({px:372,py:270+i*48,rot:Math.PI/2},{px:372,py:292+i*48,rot:Math.PI/2});
+    for(let i=0;i<3;i++)L.push({px:445,py:288+i*24,rot:Math.PI/2},{px:475,py:288+i*24,rot:-Math.PI/2});
+    for(let i=0;i<4;i++)L.push({px:450+i*26,py:400,rot:0});
+    [[452,575],[485,575],[518,575],[452,625],[485,625],[518,625]].forEach(([x,y])=>L.push({px:x,py:y,rot:0}));
+    desks(fl,L);
+    for(let i=1;i<3;i++) box(0.12,WH,10,m('#ffffff'),X(428+i*39),WH/2,Z(600));
+    box(11.6,WH,0.12,m('#ffffff'),X(487),WH/2,Z(600));
+    meet(fl,A.J1.r,3); meet(fl,A.J2.r,4);
+    // Cocineta: mesón, nevera, mesas
+    box(1,0.95,9,m('#ffffff'),X(228),0.48,Z(70)); box(0.9,1.9,0.8,m('#d9dbe8'),X(228),0.95,Z(128));
+    roundTables(fl,[[270,85],[320,85],[270,128],[320,128]],C.coral);
+    [[275,35],[325,35]].forEach(([x,y])=>{box(3.4,0.08,1,m('#c9a57a'),X(x),0.75,Z(y));for(let k=0;k<4;k++){box(0.45,0.45,0.45,m(C.coral),X(x)-1.2+k*0.8,0.27,Z(y)-0.8);box(0.45,0.45,0.45,m(C.coral),X(x)-1.2+k*0.8,0.27,Z(y)+0.8);}});
+    // Letrero de la mesa de ayuda
+    box(5,0.6,0.08,m(C.amber),X(252),1.6,Z(172),false);
+    // Bodega: estantes
+    for(let i=0;i<3;i++) box(5.5,1.8,0.5,m('#d5d8ea'),X(458),0.9,Z(200+i*22));
+    for(let r=0;r<2;r++)for(let c=0;c<4;c++){const x=X(282+c*28),z=Z(722+r*36);box(2.2,1.9,0.6,m('#f2f3fa'),x,0.95,z);box(2.2,0.08,0.62,m(C.yellow),x,1.92,z);}
+    box(4,1.05,0.8,m(C.navy),X(318),0.53,Z(640)); box(4.2,0.06,1,m('#ffffff'),X(318),1.08,Z(640));
+    box(3,0.45,0.9,m(C.teal),X(386),0.25,Z(615)); box(0.9,0.45,2,m(C.teal),X(368),0.25,Z(635));
+    [240,262,284,306,328].forEach(x=>plant(fl,x,150,1));
+    [[385,262],[385,330],[385,410],[385,520],[385,600],[440,440],[500,440]].forEach(([x,y])=>plant(fl,x,y,0.9));
+  }
+  // ---------- Sótano ----------
+  {const fl=F(2),{box,rect,m,X,Z}=mk(fl);
+    [[5,95,400,442],[334,140,404,220]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
+    [[260,145,280,436],[64,272,276,312],[330,140,352,222],[62,145,276,160]].forEach(r=>rect(r,0.04,m(C.cor),0.02));
+    rect([284,372,350,438],0.42,m('#8f93b5'),-0.4);
+    walls(fl,A.EB.r,'e');walls(fl,A.SJ.r,'e');walls(fl,A.COC2.r,'s');walls(fl,A.BS.r,'s');walls(fl,A.OL.r,'w');walls(fl,A.JS.r,'w');
+    box(0.18,WH,(442-95)/10,m(fl.wall),X(5),WH/2,Z(268)); box((400-5)/10,WH,0.18,m(fl.wall),X(202),WH/2,Z(442)); box((400-5)/10,WH,0.18,m(fl.wall),X(202),WH/2,Z(95));
+    const L=[];
+    [80,118,166,214,250].forEach(cx=>{
+      for(let y=170;y<=262;y+=22) L.push({px:cx-10,py:y,rot:Math.PI/2},{px:cx+10,py:y,rot:-Math.PI/2});
+      for(let y=322;y<=426;y+=22) L.push({px:cx-10,py:y,rot:Math.PI/2},{px:cx+10,py:y,rot:-Math.PI/2});
+    });
+    [240,262,284,306].forEach(y=>L.push({px:20,py:y,rot:Math.PI/2,c:C.amber}));
+    [251,273,295].forEach(y=>L.push({px:44,py:y,rot:-Math.PI/2,c:C.amber}));
+    L.push({px:306,py:172,rot:0});
+    desks(fl,L);
+    meet(fl,A.SJ.r,2); meet(fl,A.JS.r,4);
+    roundTables(fl,[[120,126],[168,126]],C.coral);
+    // Baño: lavamanos y cabinas
+    [[44,150],[140,215],[140,375],[240,260],[240,395]].forEach(([x,y])=>plant(fl,x,y,0.9));
+    // Escaleras: dos tramos con descanso hasta el piso 1
+    const stepM=m(C.core), railM=m('#33357e'), n=10, z0=Z(206), z1=Z(160), half=FH/2;
+    for(let i=0;i<n;i++){const t=(i+0.5)/n;
+      box(2.2,0.22,0.42,stepM,X(362),half*(i+1)/n-0.11,z0+(z1-z0)*t);
+      box(2.2,0.22,0.42,stepM,X(386),half+half*(i+1)/n-0.11,z1+(z0-z1)*t);}
+    box(4.6,0.22,1.4,stepM,X(374),half-0.11,Z(153));
+    [[X(362)-1.15,0,1],[X(386)+1.15,half,-1]].forEach(([x,h0,s])=>{const r=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.08,Math.hypot(z1-z0,half)),railM);
+      r.position.set(x,h0+half/2+0.9,(z0+z1)/2);r.rotation.x=s*Math.atan2(half,Math.abs(z1-z0));fl.g.add(r);});
+  }
+  // ---------- Zona azul ----------
+  {const fl=F(3),{box,rect,m,X,Z}=mk(fl);
+    const SK=A.CAD.sink;
+    [[45,45,1075,585],[45,585,1075,650],[45,650,90,960],[640,650,1075,960]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
+    // CAD hundido y ampliado: losa más abajo, como otro sótano
+    rect(A.CAD.r,0.4,m('#d9dbe9'),-SK-0.4);
+    [[195,165,775,212],[195,45,215,520],[45,515,1000,585],[925,185,1000,585],[760,212,775,260],[45,585,200,650],[345,585,700,650],[640,650,700,960],[775,235,925,262]].forEach(r=>rect(r,0.04,m(C.cor),0.02));
+    walls(fl,A.SJ3.r,'e');walls(fl,A.OCL.r,'e');walls(fl,A.CA.r,'s');walls(fl,A.FA.r,'e');walls(fl,A.BO3.r,'s');walls(fl,A.CO3.r,'e');walls(fl,A.W3.r,'e');
+    const W=m(fl.wall), x0=X(45),x1=X(1075),z0=Z(45),z1=Z(960);
+    // Digitalización sobre el costado superior del CAD: su muro sur es una ventana que da al archivo
+    walls(fl,A.DG.r,'n',0,{win:'s'});
+    box(X(345)-X(200),SK,WT,W,(X(200)+X(345))/2,-SK/2,Z(650));
+    walls(fl,A.CAD.r,'',SK,{skip:'n'});
+    const cadN=(xa,xb)=>box(X(xb)-X(xa),WH+SK,WT,W,(X(xa)+X(xb))/2,(WH-SK)/2,Z(650));
+    cadN(90,200); cadN(387,640);
+    walls(fl,A.CR.r,'n');walls(fl,A.TQ.r,'n',0,{skip:'e'});walls(fl,A.RD.r,'w');
+    box(x1-x0,WH,0.18,W,(x0+x1)/2,WH/2,z0); box(x1-x0,WH,0.18,W,(x0+x1)/2,WH/2,z1); box(0.18,WH,z1-z0,W,x0,WH/2,(z0+z1)/2); box(0.18,WH,z1-z0,W,x1,WH/2,(z0+z1)/2);
+    // Escalones de bajada al CAD desde el pasillo
+    const stM=m(C.core);
+    for(let i=0;i<4;i++){const top=-(i+1)*SK/4; box(2.2,SK/4+0.05,0.55,stM,X(365),top-SK/8+0.02,Z(656+i*11));}
+    // Archivo: estanterías rodantes
+    const shelfM=m('#c7c9dc'), shelfTop=m('#7c80c8');
+    for(let i=0;i<12;i++){const x=X(130+i*42); box(0.7,1.9,(Z(940)-Z(745)),shelfM,x,-SK+0.95,(Z(745)+Z(940))/2); box(0.72,0.06,(Z(940)-Z(745)),shelfTop,x,-SK+1.92,(Z(745)+Z(940))/2);}
+    const L=[];
+    [245,320,395,470].forEach(y=>{for(let i=0;i<8;i++){const x=255+i*66;L.push({px:x,py:y,rot:0},{px:x,py:y+30,rot:Math.PI});}});
+    for(let i=0;i<7;i++){const x=380+i*55;L.push({px:x,py:82,rot:0},{px:x,py:118,rot:Math.PI});}
+    [805,850,895].forEach(x=>L.push({px:x,py:80,rot:0},{px:x,py:116,rot:Math.PI}));
+    // Correspondencia en vertical: dos columnas largas
+    for(let i=0;i<6;i++){const y=625+i*40;L.push({px:740,py:y,rot:Math.PI/2},{px:805,py:y,rot:-Math.PI/2});}
+    // Taquilla: personal detrás del mostrador, atendiendo hacia la sala de usuarios (oriente)
+    [630,690].forEach(y=>L.push({px:880,py:y,rot:-Math.PI/2,c:C.coral}));
+    L.push({px:1040,py:395,rot:-Math.PI/2,c:C.yellow},{px:1040,py:450,rot:-Math.PI/2,c:C.yellow});
+    // Digitalización: puestos mirando hacia la ventana del CAD
+    [230,272,314].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.teal}));
+    // Oficina de coordinadores y líderes
+    [85,150].forEach(x=>L.push({px:x,py:190,rot:0},{px:x,py:240,rot:Math.PI}));
+    desks(fl,L);
+    // Puestos del CAD en el nivel hundido, junto a la entrada
+    {const L2=[];[140,190,240,490,540,590].forEach(x=>L2.push({px:x,py:690,rot:0}));const g0=fl.g;const tmp=new THREE.Group();tmp.position.y=-SK;fl.g.add(tmp);fl.g=tmp;desks(fl,L2);fl.g=g0;}
+    // Mostrador de la taquilla sobre el costado oriental, con ventanillas
+    box(0.5,1.1,X(1)*0+(Z(755)-Z(590)),m('#ffffff'),X(922),0.55,(Z(590)+Z(755))/2); box(0.7,0.06,Z(755)-Z(590),m(C.coral),X(922),1.12,(Z(590)+Z(755))/2);
+    [650,710].forEach(y=>box(0.06,1.4,0.9,m('#f6d9cc'),X(922),0.7,Z(y+30)));
+    meet(fl,A.SJ3.r,3);
+    roundTables(fl,[[130,320],[130,395]],C.coral);
+    box(0.9,1.1,0.7,m('#5d6170'),X(330),0.55,Z(600));
+    for(let i=0;i<3;i++) box(5.4,1.8,0.45,m('#d5d8ea'),X(850),0.9,Z(165+i*24));
+    [[230,230],[740,230],[230,500],[740,500],[600,190]].forEach(([x,y])=>plant(fl,x,y,0.9));
+    // Escaleras: suben a la zona verde
+    const stepM=m(C.core),n=10,za=Z(180),zb=Z(70),half=FH/2;
+    for(let i=0;i<n;i++){const t=(i+0.5)/n;
+      box(2.2,0.22,0.42,stepM,X(960),half*(i+1)/n-0.11,za+(zb-za)*t);
+      box(2.2,0.22,0.42,stepM,X(1030),half+half*(i+1)/n-0.11,zb+(za-zb)*t);}
+    box(X(1060)-X(930),0.22,1.4,stepM,X(995),half-0.11,Z(55));
+  }
+
+  // ---------- Ambientación: cocinetas, baños, materas y puestos internos ----------
+  {
+    const f1=F(1),f2=F(2),f3=F(3);
+    kitchen(f1,true,15,222,355,1);            // cocineta de la zona naranja, contra el muro norte
+    kitchen(f2,true,98,95,198,1);             // cocineta de la zona verde
+    kitchen(f3,false,45,272,425,1);           // cocina de la zona azul, contra el muro occidental
+    bath(f1,A.BM.r,'e',2); bath(f1,A.BH.r,'e',2); bath(f2,A.BS.r,'n',2); bath(f3,A.W3.r,'w',2);
+    // Más materas por los pasillos y áreas comunes
+    [[392,300],[392,470],[392,560],[300,232],[200,232],[460,645],[405,690],[250,590],[540,455],[545,560]].forEach(([x,y])=>plant(f1,x,y,1));
+    [[270,148],[270,440],[60,148],[60,440],[340,230],[150,445],[230,445]].forEach(([x,y])=>plant(f2,x,y,1));
+    [[205,200],[770,200],[205,500],[760,500],[930,300],[930,520],[620,560],[690,860-30]].forEach(([x,y])=>plant(f3,x,y,1));
+    // Puestos internos en oficinas
+    desks(f1,[{px:434,py:748,rot:0},{px:470,py:300,rot:0},{px:520,py:300,rot:0}]);
+    desks(f2,[{px:306,py:198,rot:0}]);
+  }
+
+  // Pisos de color por área
+  const areaMeshes=[];
+  AREAS.forEach(a=>{
+    const fl=F(a.f);
+    // Tono pastel: el color del área mezclado con blanco
+    a.pastel='#'+(a.floor?new THREE.Color(a.floor):new THREE.Color(a.color).lerp(new THREE.Color('#ffffff'),0.58)).getHexString();
+    const mm=fm(fl,a.pastel,{unique:true,o:{transparent:!!(a.minor||a.floorOnly),opacity:a.floorOnly?0.6:(a.minor?0.85:1)}});
+    const o=mk(fl).rect(a.r,0.06,mm,(a.sink?-a.sink:0)+(a.floorOnly?0.005:0.02)); o.userData.area=a; areaMeshes.push(o); a.mesh=o; a.baseColor=new THREE.Color(a.pastel);
+  });
+
+  // Avatares: Arya (golden retriever con arnés rosado y carné) y Oni (poodle rojizo de pelo crespo). Miran hacia -z
+  const mat=c=>new THREE.MeshLambertMaterial({color:c});
+  function blob(r,sx,sy,sz,m,x,y,z,parent){const o=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),m);o.scale.set(sx,sy,sz);o.position.set(x,y,z);o.castShadow=true;parent.add(o);return o;}
+  // Carné de Sitti: franja azul con la marca, foto y nombre
+  function badgeTex(name,furHex){
+    const c=document.createElement('canvas');c.width=128;c.height=176;const g=c.getContext('2d');
+    g.fillStyle='#ffffff';g.fillRect(0,0,128,176);
+    g.fillStyle='#33357e';g.fillRect(0,0,128,44);
+    g.fillStyle='#ffffff';g.font='900 28px Lato, Arial, sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('sitti',58,23);
+    g.fillStyle='#f7a82c';g.beginPath();g.arc(96,17,5,0,Math.PI*2);g.fill();
+    g.fillStyle='#ebedfc';g.fillRect(34,54,60,60);g.fillStyle=furHex;g.beginPath();g.arc(64,88,22,0,Math.PI*2);g.fill();
+    g.fillStyle='#1b1512';g.beginPath();g.arc(64,94,4,0,Math.PI*2);g.fill();
+    g.fillStyle='#33357e';g.font='900 22px Lato, Arial, sans-serif';g.fillText(name,64,136);
+    g.fillStyle='#f7a82c';g.fillRect(0,160,128,16);
+    const t=new THREE.CanvasTexture(c);return t;
+  }
+  function addBadge(parent,s,name,furHex,y,z){
+    const white=mat('#ffffff'), front=new THREE.MeshLambertMaterial({map:badgeTex(name,furHex)});
+    const b=new THREE.Mesh(new THREE.BoxGeometry(0.26*s,0.36*s,0.025*s),[white,white,white,white,white,front]);
+    b.position.set(0,y,z);b.castShadow=true;parent.add(b);
+    const strap=new THREE.Mesh(new THREE.BoxGeometry(0.03*s,0.22*s,0.02*s),mat('#33357e'));strap.position.set(0,y+0.28*s,z+0.03*s);parent.add(strap);
+  }
+  // Textura de pelaje: mechones finos sobre el color base, para que el pelo no se vea plano
+  function furTex(base,light,dark,curly){
+    const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d');
+    g.fillStyle=base;g.fillRect(0,0,256,256);
+    for(let i=0;i<1400;i++){const x=Math.random()*256,y=Math.random()*256;g.strokeStyle=Math.random()<0.5?light:dark;g.globalAlpha=0.18+Math.random()*0.25;g.lineWidth=1+Math.random()*1.5;g.beginPath();
+      if(curly){g.arc(x,y,2+Math.random()*4,Math.random()*6,Math.random()*6+3);}else{g.moveTo(x,y);g.quadraticCurveTo(x+3,y+6,x+1,y+12+Math.random()*10);}g.stroke();}
+    const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2,2);return t;
+  }
+  const furMat=(base,light,dark,curly)=>new THREE.MeshStandardMaterial({color:'#ffffff',map:furTex(base,light,dark,curly),roughness:0.95,metalness:0});
+  function camoTex(){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');g.fillStyle='#6b7a3a';g.fillRect(0,0,128,128);
+    ['#3e4a22','#a99a5a','#2d2a1c','#8b9a4a'].forEach(col=>{for(let i=0;i<9;i++){g.fillStyle=col;g.beginPath();g.ellipse(Math.random()*128,Math.random()*128,6+Math.random()*12,4+Math.random()*8,Math.random()*3,0,Math.PI*2);g.fill();}});
+    return new THREE.CanvasTexture(c);}
+  // Perro con proporciones reales: cuerpo, pecho, cuello, cráneo, hocico, orejas caídas, patas con pelo y cola
+  function makeDog(o){
+    const g=new THREE.Group(), s=o.s, F1=o.mat, F2=o.mat2, F3=o.mat3, dark=new THREE.MeshStandardMaterial({color:'#15100d',roughness:0.4}), eyeM=new THREE.MeshStandardMaterial({color:'#20140c',roughness:0.15});
+    const body=new THREE.Group(); g.add(body);
+    const B=(r,sx,sy,sz,m,x,y,z,p=body,seg=20)=>{const q=new THREE.Mesh(new THREE.SphereGeometry(r,seg,Math.round(seg*0.7)),m);q.scale.set(sx,sy,sz);q.position.set(x,y,z);q.castShadow=true;p.add(q);return q;};
+    const curl=(r,m,x,y,z,p=body)=>{const q=new THREE.Mesh(new THREE.IcosahedronGeometry(r,1),m);q.position.set(x,y,z);q.rotation.set(Math.random()*3,Math.random()*3,0);q.castShadow=true;p.add(q);return q;};
+    // Tronco y pecho
+    B(0.4*s,1,0.95,1.65,F1,0,0.86*s,0.05*s);
+    B(0.36*s,1,1.05,1,o.curly?F1:F2,0,0.9*s,-0.5*s);
+    B(0.27*s,1,1.2,1,F1,0,1.12*s,-0.68*s);                         // cuello
+    if(!o.curly){ for(let i=0;i<9;i++){const a=-0.9+i*0.22;B(0.13*s,0.8,1.5,0.7,F2,Math.sin(a)*0.26*s,0.78*s-Math.abs(a)*0.05*s,-0.74*s+Math.cos(a)*0.02*s);} } // pechera de golden
+    const head=new THREE.Group(); head.position.set(0,1.4*s,-0.86*s); body.add(head);
+    B(0.27*s,1,0.95,1.05,F1,0,0,0,head);                             // cráneo
+    B(o.curly?0.13*s:0.15*s,0.9,0.78,o.curly?1.25:1.6,F2,0,-0.1*s,-0.27*s,head); // hocico
+    B(0.055*s,1.25,0.9,1,dark,0,-0.06*s,(o.curly?-0.43:-0.5)*s,head);           // nariz
+    [-1,1].forEach(k=>{const e=B(0.042*s,1,1,0.8,eyeM,k*0.12*s,0.07*s,-0.23*s,head,12);
+      const hl=new THREE.Mesh(new THREE.SphereGeometry(0.012*s,6,4),new THREE.MeshBasicMaterial({color:'#ffffff'}));hl.position.set(k*0.11*s,0.085*s,-0.265*s);head.add(hl);});
+    if(o.tongue){const t=new THREE.Mesh(new THREE.SphereGeometry(0.08*s,12,8),new THREE.MeshStandardMaterial({color:'#e57a93',roughness:0.4}));t.scale.set(0.9,0.35,1.4);t.position.set(0,-0.22*s,-0.36*s);t.rotation.x=0.6;head.add(t);
+      B(0.09*s,1.1,0.45,1.1,dark,0,-0.17*s,-0.33*s,head,12);}
+    // Orejas caídas
+    [-1,1].forEach(k=>{
+      if(o.curly){ for(let i=0;i<4;i++) curl(0.085*s,i%2?F1:F2,k*0.26*s,(0.02-i*0.1)*s,0.02*s,head); }
+      else { // oreja de golden: grande, caída y con flecos lisos que bajan
+        const e=B(0.15*s,0.42,1.5,1,F3,k*0.26*s,-0.1*s,0.03*s,head);e.rotation.z=k*0.18;
+        for(let j=0;j<7;j++){const f=B(0.06*s,1.1,3.2,0.5,j%2?F3:F1,k*(0.27+(j%3)*0.012)*s,(-0.26-j*0.012)*s,(0.09-j*0.028)*s,head,10);f.rotation.z=k*(0.12+j*0.02);f.rotation.x=0.08;}
+        for(let j=0;j<4;j++){const c=B(0.075*s,1.1,0.7,1.5,F2,k*0.17*s,(-0.12-j*0.03)*s,(-0.1+j*0.05)*s,head,10);c.rotation.z=k*0.3;} } // mejillas peludas
+    });
+    if(o.curly){ // poodle: cuerpo y cabeza cubiertos de rizos, con copete
+      for(let i=0;i<70;i++){const u=Math.random()*Math.PI*2,v=Math.acos(2*Math.random()-1);
+        curl(0.1*s,i%3?F1:F2,Math.sin(v)*Math.cos(u)*0.38*s,0.88*s+Math.cos(v)*0.36*s,0.05*s+Math.sin(v)*Math.sin(u)*0.66*s);}
+      for(let i=0;i<26;i++){const u=Math.random()*Math.PI*2,v=Math.random()*Math.PI*0.75;
+        curl(0.09*s,i%2?F1:F2,Math.sin(v)*Math.cos(u)*0.27*s,Math.cos(v)*0.27*s+0.03*s,Math.sin(v)*Math.sin(u)*0.25*s+0.03*s,head);}
+      // Pañoleta de camuflado
+      const band=new THREE.Mesh(new THREE.ConeGeometry(0.3*s,0.4*s,3,1),new THREE.MeshStandardMaterial({map:camoTex(),roughness:0.9}));
+      band.rotation.set(Math.PI,0,0);band.position.set(0,0.95*s,-0.72*s);band.scale.set(1,1,0.45);body.add(band);
+      const knot=new THREE.Mesh(new THREE.TorusGeometry(0.25*s,0.05*s,8,20),new THREE.MeshStandardMaterial({map:camoTex(),roughness:0.9}));knot.position.set(0,1.1*s,-0.66*s);knot.rotation.x=0.5;body.add(knot);
+      addBadge(body,s*1.25,o.name,o.base,0.72*s,-0.92*s);
+    } else {
+      const c=new THREE.Mesh(new THREE.TorusGeometry(0.28*s,0.035*s,8,24),new THREE.MeshStandardMaterial({color:'#33357e',roughness:0.6}));c.position.set(0,1.1*s,-0.68*s);c.rotation.x=0.45;body.add(c);
+      addBadge(body,s,o.name,o.base,0.68*s,-0.98*s);
+    }
+    if(!o.curly){ // golden: manto liso y abundante, en capas que caen hacia atrás y hacia abajo
+      const Zv=new THREE.Vector3(0,0,1), q=new THREE.Quaternion(), nv=new THREE.Vector3();
+      const lay=(r,m,x,y,z,dx,dy,dz,sx=1.25,sy=0.45,sz=2.6)=>{const t=new THREE.Mesh(new THREE.SphereGeometry(r,12,8),m);t.scale.set(sx,sy,sz);t.position.set(x,y,z);
+        q.setFromUnitVectors(Zv,nv.set(dx,dy,dz).normalize());t.quaternion.copy(q);t.castShadow=true;body.add(t);};
+      // Manto: hileras ordenadas de mechones lisos sobre lomo y costados
+      for(let row=0;row<8;row++){const z=(-0.48+row*0.14)*s;
+        for(let k=0;k<11;k++){const a=-2.4+k*0.48, nx=Math.sin(a), ny=Math.cos(a);
+          lay(0.12*s,F1,nx*0.4*s,0.86*s+ny*0.37*s,z,nx*0.2,-0.3-(1-ny)*0.3,1,1.7,0.32,2.8);}}
+      // Flecos largos y lisos del vientre y de la parte trasera de los muslos
+      for(let i=0;i<16;i++){const x=(-0.22+(i%4)*0.15)*s,z=(-0.45+Math.floor(i/4)*0.26)*s; lay(0.09*s,F2,x,0.58*s,z,0,-1,0.35,1.1,0.45,2.8);}
+      for(let i=0;i<8;i++){const sd=i<4?-1:1; lay(0.09*s,F2,sd*0.3*s,0.62*s,(0.45+(i%4)*0.06)*s,sd*0.2,-1,0.5,1.1,0.45,2.6);}
+      // Pechera abundante en cascada
+      for(let r=0;r<3;r++) for(let i=0;i<9;i++){const a=-1+i*0.25; lay(0.1*s,(i+r)%2?F2:F1,Math.sin(a)*0.25*s,(0.98-r*0.14)*s,(-0.78-r*0.03)*s,Math.sin(a)*0.25,-1,-0.25,1.3,0.5,2.6);}
+      // Melena del cuello, lisa hacia atrás
+      for(let i=0;i<16;i++){const a=-2.6+i*(5.2/15), nx=Math.sin(a), ny=Math.cos(a); lay(0.12*s,F1,nx*0.27*s,1.14*s+ny*0.23*s,-0.6*s,nx*0.25,-0.3,1,1.6,0.35,2.4);}
+    }
+    // Patas: las traseras con muslo, todas con pelo y pata redondeada
+    const legs=[[-0.2,-0.5],[0.2,-0.5],[-0.22,0.48],[0.22,0.48]].map(([x,z],i)=>{const p=new THREE.Group();p.position.set(x*s,0.66*s,z*s);
+      if(i>1) B(0.17*s,0.8,1.3,1.1,F1,0,-0.08*s,0.02*s,p,14);
+      const l=new THREE.Mesh(new THREE.CylinderGeometry(0.075*s,0.065*s,0.6*s,12),F1);l.position.y=-0.32*s;l.castShadow=true;p.add(l);
+      if(o.curly){ for(let k=0;k<3;k++) curl(0.09*s,k%2?F2:F1,0,(-0.15-k*0.17)*s,0,p); }
+      else B(0.08*s,0.7,1.8,0.7,F2,0,-0.3*s,0.06*s,p,10); // flecos
+      B(0.085*s,1,0.6,1.3,o.curly?F2:F1,0,-0.62*s,-0.04*s,p,12);
+      body.add(p);return p;});
+    // Cola: penacho de golden o pompón de poodle
+    const tail=new THREE.Group();tail.position.set(0,1.0*s,0.7*s);body.add(tail);
+    if(o.curly){ for(let k=0;k<5;k++) curl(0.1*s,F2,(Math.random()-0.5)*0.08*s,(0.12+Math.random()*0.12)*s,(0.06+Math.random()*0.08)*s,tail); }
+    else { for(let k=0;k<6;k++){const t=k/5;B((0.11-t*0.04)*s,1,0.9,1.3,k%2?F2:F1,0,(0.05+t*0.2-t*t*0.15)*s,(0.12+t*0.55)*s,tail,12);
+      [-1,1].forEach(sd=>B(0.06*s,0.8,2.2,0.9,F2,sd*0.06*s,(-0.06+t*0.18-t*t*0.15)*s,(0.14+t*0.55)*s,tail,8));} } // penacho de golden
+    scene.add(g);
+    return {g,body,legs,tail,head,s};
+  }
+  // Arya: golden retriever crema dorado. Oni: poodle toy rojo, crespo, con pañoleta de camuflado. Oni guía y Arya lo sigue
+  const arya=makeDog({s:1,name:'Arya',base:'#d8ab72',tongue:true,mat:furMat('#d8ab72','#e6c08e','#cb9c62'),mat2:furMat('#ecd3aa','#f6e4c6','#dcbb8c'),mat3:furMat('#c98f52','#d8a46a','#b47a40')});
+  const oni=makeDog({s:0.66,name:'Oni',base:'#a2441c',curly:true,mat:furMat('#a2441c','#c46636','#6e2a10',true),mat2:furMat('#b5522a','#d47444','#7d3214',true)});
+  const lead=oni, foll=arya, avatar=lead.g;
+
+  // ---------- Personas: colaboradores caminando y personal de aseo barriendo ----------
+  function makePerson(fl,o){
+    const {m}=mk(fl), g=new THREE.Group(); fl.g.add(g);
+    const shirt=m(o.shirt), pants=m(o.pants), skin=m(o.skin), hair=m(o.hair), shoe=m('#2a2a2e');
+    const torso=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.17,0.62,12),shirt);torso.position.y=1.12;torso.castShadow=true;g.add(torso);
+    const hip=new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.17,0.16,12),pants);hip.position.y=0.78;g.add(hip);
+    const head=new THREE.Mesh(new THREE.SphereGeometry(0.14,14,10),skin);head.position.y=1.6;head.castShadow=true;g.add(head);
+    const hr=new THREE.Mesh(new THREE.SphereGeometry(0.148,14,8,0,Math.PI*2,0,Math.PI*0.55),hair);hr.position.y=1.62;hr.rotation.x=0.25;g.add(hr);
+    if(o.long){const h2=new THREE.Mesh(new THREE.BoxGeometry(0.26,0.34,0.08),hair);h2.position.set(0,1.47,0.1);g.add(h2);}
+    const legs=[-0.09,0.09].map(x=>{const p=new THREE.Group();p.position.set(x,0.76,0);const l=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.06,0.7,8),pants);l.position.y=-0.36;p.add(l);
+      const s=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.06,0.2),shoe);s.position.set(0,-0.72,-0.04);p.add(s);g.add(p);return p;});
+    const arms=[-0.25,0.25].map(x=>{const p=new THREE.Group();p.position.set(x,1.38,0);const a=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.05,0.6,8),o.sleeve?skin:shirt);a.position.y=-0.3;p.add(a);g.add(p);return p;});
+    const badge=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.11,0.01),m('#ffffff'));badge.position.set(0.08,1.12,-0.19);g.add(badge);
+    let broom=null;
+    if(o.broom){
+      const ap=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.5,0.02),m('#2f6f8f'));ap.position.set(0,1.0,-0.19);g.add(ap);
+      broom=new THREE.Group();broom.position.set(0,1.0,-0.35);g.add(broom);
+      const st=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,1.3,6),m('#c8a26a'));st.rotation.x=0.5;st.position.set(0,-0.35,-0.15);broom.add(st);
+      const br=new THREE.Mesh(new THREE.BoxGeometry(0.42,0.09,0.12),m('#f7a82c'));br.position.set(0,-0.92,-0.45);broom.add(br);
+      arms.forEach(a=>a.rotation.x=-0.9);
+    }
+    return {g,legs,arms,broom};
+  }
+  const SHIRTS=['#33357e','#f7a82c','#3fa9ac','#ffffff','#ec623b','#7c80c8','#4a4f5c','#a8d99e'], SKINS=['#e0b48f','#c68e6a','#8d5a3b','#f1c9a5','#a8714a'], HAIRS=['#2b2230','#5a3a22','#1a1410','#b07a3a','#3d2a1e'];
+  const floorNodes=f=>Object.keys(NP).filter(k=>k.startsWith(f+':')&&!k.endsWith(':core')&&adj[k].length);
+  const sameFloorAdj=(k,f)=>adj[k].filter(x=>x.startsWith(f+':')&&!x.endsWith(':core'));
+  const people=[];
+  [[1,7],[2,5],[3,6]].forEach(([f,n])=>{const ks=floorNodes(f);for(let i=0;i<n;i++){
+    const p=makePerson(F(f),{shirt:SHIRTS[(i*3+f)%SHIRTS.length],pants:i%2?'#2b2f45':'#5b5f6e',skin:SKINS[(i+f)%SKINS.length],hair:HAIRS[(i*2+f)%HAIRS.length],long:i%2===0,sleeve:i%3===0});
+    const k=ks[Math.floor(Math.random()*ks.length)], P=NP[k]; p.g.position.set(P.x,P.y-F(f).y,P.z);
+    people.push(Object.assign(p,{f,at:k,prev:null,to:null,spd:1.2+Math.random()*0.6,ph:Math.random()*6,wait:Math.random()*2}));}});
+  // Aseo: barre de ida y vuelta por un pasillo de cada zona
+  const cleaners=[[1,'1:s3','1:s5'],[2,'2:v2','2:v5'],[3,'3:b1','3:b2']].map(([f,a,b])=>{
+    const p=makePerson(F(f),{shirt:'#7fb6d6',pants:'#2f6f8f',skin:SKINS[f%SKINS.length],hair:HAIRS[f%HAIRS.length],broom:true,long:f===2});
+    const A1=new THREE.Vector3(NP[a].x,NP[a].y-F(f).y,NP[a].z),B1=new THREE.Vector3(NP[b].x,NP[b].y-F(f).y,NP[b].z);
+    p.g.position.copy(A1); return Object.assign(p,{A1,B1,t:Math.random(),dir:1,f});});
+  // Usuarios sentados: en sillas de espera y frente a las taquillas
+  function seated(f,px,py,yaw,chair,i){
+    const fl=F(f),{box,m}=mk(fl), x=fl.X(px), z=fl.Z(py);
+    if(chair){const cm=m('#5d78a8');box(0.5,0.45,0.5,cm,x,0.23,z);const b=box(0.5,0.6,0.06,cm,x+Math.sin(yaw)*0.25,0.75,z+Math.cos(yaw)*0.25);b.rotation.y=yaw;}
+    if(i<0) return;
+    const p=makePerson(fl,{shirt:SHIRTS[i%SHIRTS.length],pants:i%2?'#2b2f45':'#3c5a8a',skin:SKINS[i%SKINS.length],hair:HAIRS[(i+2)%HAIRS.length],long:i%2===1,sleeve:i%3===1});
+    p.g.position.set(x,-0.3,z); p.g.rotation.y=yaw; p.legs.forEach(l=>l.rotation.x=1.45); p.arms.forEach(a=>a.rotation.x=0.55);
+  }
+  {let n=0;[960,1005,1050].forEach(x=>[620,660,700,740,780].forEach(y=>{n++;seated(3,x,y,Math.PI/2,true,n%3===0?-1:n);}));}
+  [0,1,3,4].forEach(i=>seated(1,300,290+i*55,Math.PI*1.5,false,i+20));
+  [[0,0],[1,1],[2,2],[3,0],[2,0]].forEach(([k,j],i)=>seated(1,268,300+k*80+j*12,Math.PI*1.5,false,i+30));
+
+  const tmpD=new THREE.Vector3(), avo=new THREE.Vector3();
+  // Empuje para esquivar a Oni y Arya
+  function avoidDogs(pos,f,out){out.set(0,0,0);const wy=pos.y+F(f).y;
+    [lead.g.position,foll.g.position].forEach(dp=>{if(Math.abs(dp.y-wy)>2)return;const dx=pos.x-dp.x,dz=pos.z-dp.z,d=Math.hypot(dx,dz);
+      if(d<1.8&&d>0.001){const k=(1.8-d)/1.8;out.x+=dx/d*k;out.z+=dz/d*k;}});return out;}
+  function updatePeople(dt,now){
+    people.forEach(p=>{
+      if(p.wait>0){p.wait-=dt;p.legs.forEach(l=>l.rotation.x=0);p.arms.forEach(a=>a.rotation.x=0);
+        avoidDogs(p.g.position,p.f,avo); p.g.position.addScaledVector(avo,dt*2.5); return;}
+      if(!p.to){const all=sameFloorAdj(p.at,p.f), opts=all.filter(x=>x!==p.prev), c=opts.length?opts:all; if(!c.length)return; p.to=c[Math.floor(Math.random()*c.length)];}
+      const T=NP[p.to]; tmpD.set(T.x-p.g.position.x,(T.y-F(p.f).y)-p.g.position.y,T.z-p.g.position.z); const L=tmpD.length();
+      if(L<0.05){p.prev=p.at;p.at=p.to;p.to=null;if(Math.random()<0.25)p.wait=1+Math.random()*3;return;}
+      tmpD.normalize(); avoidDogs(p.g.position,p.f,avo); tmpD.addScaledVector(avo,2.2).normalize();
+      p.g.position.addScaledVector(tmpD,Math.min(L,p.spd*dt*(avo.lengthSq()>0.05?0.7:1)));
+      if(Math.hypot(tmpD.x,tmpD.z)>0.01) p.g.rotation.y=Math.atan2(tmpD.x,tmpD.z)+Math.PI;
+      p.ph+=dt*p.spd*5; const sw=reduce?0:Math.sin(p.ph)*0.5;
+      p.legs[0].rotation.x=sw;p.legs[1].rotation.x=-sw;p.arms[0].rotation.x=-sw*0.7;p.arms[1].rotation.x=sw*0.7;
+    });
+    cleaners.forEach(c=>{
+      if(!reduce){c.t+=dt*0.05*c.dir; if(c.t>1){c.t=1;c.dir=-1;} if(c.t<0){c.t=0;c.dir=1;}}
+      c.g.position.lerpVectors(c.A1,c.B1,c.t); c.off=c.off||new THREE.Vector3();
+      avoidDogs(c.g.position,c.f,avo); c.off.lerp(avo.multiplyScalar(1.4),Math.min(1,dt*3)); c.g.position.add(c.off);
+      tmpD.copy(c.B1).sub(c.A1).multiplyScalar(c.dir); c.g.rotation.y=Math.atan2(tmpD.x,tmpD.z)+Math.PI;
+      const sw=reduce?0:Math.sin(now/260); c.broom.rotation.y=sw*0.5; c.legs[0].rotation.x=sw*0.2; c.legs[1].rotation.x=-sw*0.2;
+    });
+  }
+  const ring=new THREE.Mesh(new THREE.RingGeometry(0.75,0.95,32),new THREE.MeshBasicMaterial({color:C.yellow,transparent:true,opacity:0.7})); ring.rotation.x=-Math.PI/2; ring.position.y=0.08; avatar.add(ring);
+  const P0=NP['1:acc']; avatar.position.set(P0.x,P0.y,P0.z); foll.g.position.set(P0.x+1.3,P0.y,P0.z+1);
+  const trailM=new THREE.MeshBasicMaterial({color:C.amber}); let trail=null;
+
+  // Etiquetas
+  AREAS.forEach(a=>{
+    const fl=F(a.f);
+    const el=document.createElement('button'); el.type='button'; el.className='tag'+(a.minor?' minor':'')+(a.isNew?' new':'');
+    const dark=[C.yellow,C.amber,C.neutral,C.core,C.greenWork].includes(a.color);
+    el.innerHTML=`<b style="background:${a.color===C.work?'#e8955a':a.color};color:${dark?'#191b2b':'#fff'}">${a.letter||'•'}</b>${a.name}`;
+    el.onclick=()=>{tourQ=[];goTo(a.id);};
+    labelsEl.appendChild(el); a.el=el;
+    const c=a.lbl||[(a.r[0]+a.r[2])/2,(a.r[1]+a.r[3])/2];
+    a.lpos=new THREE.Vector3(fl.X(c[0]),fl.y+2.4,fl.Z(c[1]));
+  });
+  const TEAMS=[].map(([t,x,y])=>{
+    const el=document.createElement('div');el.className='team';el.textContent=t;labelsEl.appendChild(el);return {el,f:2,pos:new THREE.Vector3(F(2).X(x),-FH+1.6,F(2).Z(y))};});
+  const FLL=FLOORS.map(fl=>{const el=document.createElement('div');el.className='flbl';el.textContent=fl.name;el.style.background=fl.tag;labelsEl.appendChild(el);
+    const c={1:[547,240],2:[5,95],3:[45,45]}[fl.n];return {el,f:fl.n,pos:new THREE.Vector3(fl.X(c[0]),fl.y+0.5,fl.Z(c[1]))};});
+  const youEl=document.createElement('div'); youEl.className='you'; youEl.textContent='Oni'; labelsEl.appendChild(youEl);
+  const oniEl=document.createElement('div'); oniEl.className='you'; oniEl.textContent='Arya'; oniEl.style.background='#f6c79a'; labelsEl.appendChild(oniEl);
+
+  // Selector de nivel
+  let focus='1', walk=null, follow=false, fly=null;
+  const floorsEl=document.getElementById('floors');
+  [...FLOORS.map(fl=>[String(fl.n),fl.name,fl.sub,fl.btn]),['all','Todas','Vista completa','']].forEach(([k,t,s,col])=>{
+    const b=document.createElement('button');b.type='button';b.id='fl-'+k;b.textContent=t;if(col)b.style.borderLeft='5px solid '+col;b.setAttribute('aria-pressed',k===focus);
+    b.onclick=()=>setFocus(k,true);floorsEl.appendChild(b);});
+  const visible=n=>imm?(n===person.floor||(walk&&walk.floors.has(n))):(focus==='all'||String(n)===focus||(walk&&walk.floors.has(n)));
+  function applyFade(){
+    FLOORS.forEach(fl=>{const on=visible(fl.n);fl.mats.forEach(m=>{m.transparent=!on||m.userData.tr;m.opacity=on?m.userData.base:0.07*(m.userData.base||1);m.depthWrite=on||!m.userData.tr;m.needsUpdate=true;});});
+  }
+  const bF=document.getElementById('bFollow');
+  function setFocus(k,moveCam){
+    focus=k; floorsEl.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.id==='fl-'+k)); applyFade();
+    if(moveCam){follow=false;bF.setAttribute('aria-pressed',false);const v=VIEW[k];fly={fp:camera.position.clone(),tp:v.p.clone(),ft:controls.target.clone(),tt:v.t.clone(),k:reduce?1:0};}
+  }
+
+  // Destinos
+  const ORDER={1:['SEG','MA','COC','S','P14','TQS','G','L','J1','J2','BM','BH','ESP','GER'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','CA','FA','OCL','CAD','DG','CR','TQ','RD','SJ3','CO3','W3','BO3']};
+  const destEl=document.getElementById('dest'), infoEl=document.getElementById('info'), statusEl=document.getElementById('status');
+  let current='1:acc', sel=null, tourQ=[];
+  function renderDest(){
+    destEl.innerHTML='';
+    [1,2,3].forEach(f=>{
+      destEl.insertAdjacentHTML('beforeend',`<div class="fh">${F(f).name}<i></i></div>`);
+      ORDER[f].forEach(id=>{const a=A[id]; const p=path(current,nodeOf(a)); const dark=[C.yellow,C.amber,C.neutral,C.greenWork].includes(a.color);
+        const cf=NP[current].f, change=cf!==a.f?(a.f>cf?' · ↓':' · ↑'):'';
+        const b=document.createElement('button'); b.type='button'; b.className='go'+(id===sel?' on':'');
+        b.innerHTML=`<b class="l" style="background:${a.color===C.work?'#e8955a':a.color};color:${dark?'#191b2b':'#fff'}">${a.letter||'•'}</b><span><strong>${a.name}${a.isNew?'<span class="nw">NUEVO</span>':''}${a.video?'<span class="vid">▶ VIDEO</span>':''}</strong><small>${a.desc.split('.')[0]}.</small></span><span class="m">${current===nodeOf(a)?'aquí':'~'+Math.round(p.len)+' m'+change}</span>`;
+        b.onclick=()=>{tourQ=[];goTo(id);}; destEl.appendChild(b);});
+    });
+  }
+  function renderInfo(a,arrived,via){
+    infoEl.innerHTML=`<div class="kicker">${arrived?'Llegaste a':'Caminando hacia'} · ${F(a.f).name}</div><h3>${a.name}</h3><p>${a.desc}</p>${via?`<p class="tip">${via}</p>`:(a.tip?`<p class="tip">${a.tip}</p>`:'')}${a.video?'<button type="button" class="vbtn" id="vbtnInfo">Ver el video del área</button>':''}`;
+    if(a.video) document.getElementById('vbtnInfo').onclick=()=>openVideo(a);
+  }
+  // Video del área: se abre y reproduce al elegirla; la música de fondo se pausa mientras tanto
+  const vmodal=document.getElementById('vmodal'), vplayer=document.getElementById('vplayer'), bgm=document.getElementById('bgm');
+  let bgmWas=false;
+  function openVideo(a){
+    document.getElementById('vtitle').textContent=a.name;
+    if(vplayer.getAttribute('src')!==a.video) vplayer.src=a.video;
+    vmodal.hidden=false; bgmWas=!bgm.paused; bgm.pause();
+    vplayer.currentTime=0; const p=vplayer.play(); if(p&&p.catch) p.catch(()=>{});
+    document.getElementById('vclose').focus({preventScroll:true});
+  }
+  function closeVideo(){ vplayer.pause(); vmodal.hidden=true; if(bgmWas){const p=bgm.play(); if(p&&p.catch) p.catch(()=>{});} }
+  document.getElementById('vclose').onclick=closeVideo;
+  vmodal.addEventListener('click',e=>{if(e.target===vmodal) closeVideo();});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&!vmodal.hidden) closeVideo();});
+  infoEl.innerHTML=`<div class="kicker">Bienvenida · Zona naranja</div><h3>Oni y Arya te esperan en el acceso</h3><p>Oni, el poodle red, y Arya, la golden, son tus guías. Toca cualquier área del mapa o elige un destino de la lista y ellos te llevan caminando. Si el área está en otra zona, bajan o suben por las escaleras.</p><p class="tip">Usa los botones de la derecha para ver la zona naranja, verde, azul o todas.</p>`;
+
+  function nearestNode(){let best=null,bd=Infinity;Object.keys(NP).forEach(k=>{const p=NP[k];const d=Math.hypot(p.x-avatar.position.x,p.z-avatar.position.z)+Math.abs(p.y-avatar.position.y)*5;if(d<bd){bd=d;best=k;}});return best;}
+  function goTo(id){
+    const a=A[id]; sel=id; AREAS.forEach(x=>x.el.classList.toggle('on',x.id===id));
+    if(a.video&&!tourQ.length) openVideo(a);
+    const target=nodeOf(a);
+    if(target===current&&!walk){arrive(a);return;}
+    const free=walk||imm;
+    const start=free?nearestNode():current;
+    const p=path(start,target);
+    const pts=[avatar.position.clone()].concat(p.nodes.slice(free?0:1).map(k=>new THREE.Vector3(NP[k].x,NP[k].y,NP[k].z)));
+    let total=0;const segs=[];for(let i=0;i<pts.length-1;i++){const l=pts[i].distanceTo(pts[i+1]);segs.push(l);total+=l;}
+    walk={pts,segs,total,t:0,area:a,floors:new Set(p.nodes.map(k=>NP[k].f))};
+    if(trail){scene.remove(trail);trail=null;}
+    if(total>0.01){const cp=new THREE.CurvePath();for(let i=0;i<pts.length-1;i++) if(segs[i]>0.001) cp.add(new THREE.LineCurve3(pts[i].clone().add(new THREE.Vector3(0,0.14,0)),pts[i+1].clone().add(new THREE.Vector3(0,0.14,0))));
+      trail=new THREE.Mesh(new THREE.TubeGeometry(cp,Math.max(16,pts.length*16),0.13,6,false),trailM);scene.add(trail);}
+    const cf=NP[start].f, via=cf!==a.f?`${a.f>cf?'Bajan':'Suben'} por las escaleras a la ${F(a.f).name.toLowerCase()}.`:'';
+    statusEl.innerHTML=`Caminando hacia ${a.name}<small>${F(a.f).name}${via?' · '+via:''}</small>`;
+    renderInfo(a,false,via); renderDest();
+    if(focus!=='all') applyFade();
+    if(reduce) walk.t=walk.total;
+  }
+  function arrive(a){
+    current=nodeOf(a); walk=null; if(trail){scene.remove(trail);trail=null;}
+    sitting=(a.id==='G'||a.id==='GER'); idleT=0;
+    statusEl.innerHTML=`Llegaste a ${a.name}<small>${F(a.f).name} · ${sitting?'Oni y Arya se sientan a esperar':'Elige tu siguiente destino'}</small>`;
+    renderInfo(a,true); renderDest();
+    if(imm) { person.floor=a.f; applyFade(); }
+    else if(focus!=='all') setFocus(String(a.f), focus!==String(a.f)&&!follow);
+    if(tourQ.length) setTimeout(()=>goTo(tourQ.shift()),reduce?600:1100);
+  }
+
+  const ray=new THREE.Raycaster(), mouse=new THREE.Vector2(); let down=null;
+  const pick=e=>{const rc=renderer.domElement.getBoundingClientRect();mouse.set(((e.clientX-rc.left)/rc.width)*2-1,-((e.clientY-rc.top)/rc.height)*2+1);ray.setFromCamera(mouse,camera);
+    const hits=ray.intersectObjects(areaMeshes.filter(o=>visible(o.userData.area.f))); const h=hits.find(h=>!h.object.userData.area.floorOnly)||hits[0]; return h?h.object.userData.area:null;};
+  let drag=null;
+  renderer.domElement.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY];if(imm){drag=[e.clientX,e.clientY];renderer.domElement.setPointerCapture?.(e.pointerId);}});
+  renderer.domElement.addEventListener('pointerup',e=>{drag=null;if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;const a=pick(e);if(a){tourQ=[];goTo(a.id);}});
+  let hovered=null;
+  renderer.domElement.addEventListener('pointermove',e=>{
+    if(imm&&drag){person.yaw-=(e.clientX-drag[0])*0.005;person.pitch=Math.max(-0.9,Math.min(0.6,person.pitch-(e.clientY-drag[1])*0.004));drag=[e.clientX,e.clientY];return;}
+    const a=pick(e);
+    if(hovered&&hovered!==a)hovered.mesh.material.color.copy(hovered.baseColor);
+    if(a)a.mesh.material.color.copy(a.baseColor).lerp(new THREE.Color('#ffffff'),0.35);
+    hovered=a;renderer.domElement.style.cursor=a?'pointer':'grab';});
+  bF.onclick=()=>{follow=!follow;bF.setAttribute('aria-pressed',follow);};
+  document.getElementById('bTour').onclick=()=>{tourQ=['L','MA','COC','S','G','EB','SJ','P106','COC2','CA','CAD','CR','RD']; goTo('SEG');};
+  controls.addEventListener('start',()=>{fly=null;});
+
+  function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+  new ResizeObserver(resize).observe(stage); resize();
+
+  const v=new THREE.Vector3(), yv=new THREE.Vector3();
+  function place(el,p,show=true){if(!show){el.hidden=true;return;}v.copy(p).project(camera);const vis=v.z<1&&Math.abs(v.x)<1.05&&Math.abs(v.y)<1.05;el.hidden=!vis;
+    if(vis){el.style.left=((v.x+1)/2*stage.clientWidth)+'px';el.style.top=((1-v.y)/2*stage.clientHeight)+'px';}}
+  // ---------- Modo inmersivo: caminar adentro, en primera persona, con Oni y Arya ----------
+  let imm=false; const person={pos:new THREE.Vector3(),yaw:0,pitch:-0.12,floor:1,idle:0}, keys={};
+  FLOORS.forEach(fl=>{const wm=fm(fl,fl.wall), gm=glass(fl); fl.walls=[]; fl.g.traverse(o=>{if(o.isMesh&&(o.material===wm||o.material===gm)) fl.walls.push(o);});});
+  const SINKS=AREAS.filter(a=>a.sink).map(a=>{const fl=F(a.f);return {f:a.f,x1:fl.X(a.r[0]),x2:fl.X(a.r[2]),z1:fl.Z(a.r[1]),z2:fl.Z(a.r[3]),d:a.sink};});
+  const sinkAt=(x,z,f)=>{for(const s of SINKS) if(s.f===f&&x>s.x1&&x<s.x2&&z>s.z1&&z<s.z2) return -s.d; return 0;};
+  const floorOfY=y=>FLOORS.reduce((b,fl)=>Math.abs(fl.y-y)<Math.abs(b.y-y)?fl:b,FLOORS[0]).n;
+  const wallRay=new THREE.Raycaster();
+  function blocked(from,dir,dist){wallRay.set(from,dir);wallRay.far=dist+0.4;return wallRay.intersectObjects(F(person.floor).walls,false).length>0;}
+  const immEl=document.getElementById('imm');
+  function enterImm(){
+    imm=true; follow=false; fly=null; controls.enabled=false; stage.classList.add('inside'); immEl.hidden=false;
+    person.floor=floorOfY(avatar.position.y); person.yaw=avatar.rotation.y; person.pitch=-0.12; person.idle=0;
+    // Entras justo donde están Oni y Arya, mirando hacia donde miran ellos
+    person.pos.copy(avatar.position); person.pos.y=F(person.floor).y+sinkAt(person.pos.x,person.pos.z,person.floor);
+    // Los perritos se ubican adelante de ti al entrar
+    const f0=new THREE.Vector3(-Math.sin(person.yaw),0,-Math.cos(person.yaw)), r0=new THREE.Vector3(Math.cos(person.yaw),0,-Math.sin(person.yaw));
+    lead.g.position.copy(person.pos).addScaledVector(f0,3.2).addScaledVector(r0,0.8);
+    foll.g.position.copy(person.pos).addScaledVector(f0,2.7).addScaledVector(r0,-0.9);
+    camera.near=0.1; camera.updateProjectionMatrix(); applyFade();
+  }
+  function exitImm(){
+    imm=false; controls.enabled=true; stage.classList.remove('inside'); immEl.hidden=true; Object.keys(keys).forEach(k=>keys[k]=false);
+    camera.near=0.5; camera.updateProjectionMatrix(); FLOORS.forEach(fl=>fl.g.visible=true);
+    setFocus(String(person.floor),true);
+  }
+  document.getElementById('bImm').onclick=enterImm;
+  document.getElementById('bExit').onclick=exitImm;
+  const KEYMAP={ArrowUp:'f',KeyW:'f',ArrowDown:'b',KeyS:'b',ArrowLeft:'tl',ArrowRight:'tr',KeyA:'l',KeyD:'r'};
+  addEventListener('keydown',e=>{if(!imm||!KEYMAP[e.code])return;keys[KEYMAP[e.code]]=true;e.preventDefault();});
+  addEventListener('keyup',e=>{if(KEYMAP[e.code])keys[KEYMAP[e.code]]=false;});
+  immEl.querySelectorAll('.pad button').forEach(b=>{const k=b.dataset.k;
+    const on=e=>{e.preventDefault();keys[k]=true;b.classList.add('on');}, off=()=>{keys[k]=false;b.classList.remove('on');};
+    b.addEventListener('pointerdown',on);['pointerup','pointerleave','pointercancel'].forEach(t=>b.addEventListener(t,off));});
+  // Botones de la sección "¿Qué hay en cada zona?"
+  document.querySelectorAll('.zone button').forEach(b=>b.onclick=()=>{if(imm)exitImm();setFocus(b.dataset.floor,true);stage.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});});
+
+  const SPEED=9, LAG=2.0; let t0=performance.now(), phase=0, phase2=0;
+  let sitting=false, idleT=0, runT=0, runCool=2, playAng=0; const playC=new THREE.Vector3();
+  [lead,foll].forEach(d=>{d.sitA=0;d.bowA=0;});
+  const followOff=new THREE.Vector3(-9,15,13), UP=new THREE.Vector3(0,1,0), pa=new THREE.Vector3();
+  function pointAt(w,t){t=Math.max(0,Math.min(w.total,t));let d=t,i=0;while(i<w.segs.length-1&&d>w.segs[i]){d-=w.segs[i];i++;}
+    const a=w.pts[i],b=w.pts[i+1]||a,f=w.segs[i]?Math.min(1,d/w.segs[i]):1;return {p:pa.clone().lerpVectors(a,b,f),dx:b.x-a.x,dz:b.z-a.z};}
+  function face(o,dx,dz,dt){if(Math.hypot(dx,dz)<0.01)return;const yaw=Math.atan2(dx,dz)+Math.PI;let dy=((yaw-o.rotation.y+Math.PI)%(Math.PI*2)+Math.PI*2)%(Math.PI*2)-Math.PI;o.rotation.y+=dy*Math.min(1,dt*10);}
+  // Postura: gait 0 quieto, 1 trote, 2 carrera. sitA = sentado, bowA = reverencia de juego
+  function pose(dog,ph,gait,now,dt,hop=0){
+    const s=dog.s, amp=reduce?0:(gait===2?0.9:gait===1?0.55:0), sw=Math.sin(ph)*amp, st=dog.sitA, bw=dog.bowA;
+    const L=dog.legs;
+    if(gait===2){L[0].rotation.x=sw;L[1].rotation.x=sw*0.8;L[2].rotation.x=-sw;L[3].rotation.x=-sw*0.8;}
+    else{L[0].rotation.x=sw;L[3].rotation.x=sw;L[1].rotation.x=-sw;L[2].rotation.x=-sw;}
+    [2,3].forEach(i=>L[i].rotation.x=L[i].rotation.x*(1-st)+1.15*st);
+    [0,1].forEach(i=>L[i].rotation.x=L[i].rotation.x*(1-st)-0.35*st-0.5*bw);
+    dog.body.rotation.x=0.38*st-0.28*bw;
+    dog.body.position.y=(gait?Math.abs(Math.sin(ph))*(gait===2?0.16:0.06)*s:0)-0.16*s*st-0.12*s*bw+hop;
+    dog.tail.rotation.y=reduce?0:Math.sin(now/(gait||bw>0.3?90:220))*(bw>0.3?0.9:0.6);
+    dog.head.rotation.x=(gait||reduce?0:Math.sin(now/900)*0.08)-0.3*st+0.25*bw;
+  }
+  const ease=(d,target,dt,k=5)=>d+(target-d)*Math.min(1,dt*k);
+  function toward(dog,tg,dt,k=4){const dx=tg.x-dog.g.position.x,dz=tg.z-dog.g.position.z,dd=Math.hypot(dx,dz);
+    if(dd>0.06){face(dog.g,dx,dz,dt);dog.g.position.lerp(tg,Math.min(1,dt*k));} dog.g.position.y=tg.y; return dd>0.12;}
+  function loop(now){
+    requestAnimationFrame(loop);
+    const dt=Math.min((now-t0)/1000,0.05); t0=now;
+    let gL=0,gF=0,hopL=0,hopF=0,sitL=0,sitF=0,bowL=0,bowF=0;
+    const fwd=new THREE.Vector3(-Math.sin(person.yaw),0,-Math.cos(person.yaw)), rgt=new THREE.Vector3(Math.cos(person.yaw),0,-Math.sin(person.yaw));
+    if(imm){
+      person.yaw+=((keys.tl?1:0)-(keys.tr?1:0))*dt*1.8;
+      if(walk){
+        // Guiado: vas detrás de Arya y miras hacia Oni
+        const b=pointAt(walk,walk.t-LAG-2.6); person.pos.lerp(b.p,Math.min(1,dt*6));
+        const d=lead.g.position.clone().sub(person.pos);
+        if(!drag&&Math.hypot(d.x,d.z)>0.4){const ty=Math.atan2(-d.x,-d.z);const dy=((ty-person.yaw+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;person.yaw+=dy*Math.min(1,dt*3);}
+        person.idle=0; person.floor=floorOfY(person.pos.y);
+      } else {
+        const mv=(keys.f?1:0)-(keys.b?1:0), st=(keys.r?1:0)-(keys.l?1:0);
+        if(mv||st){
+          const dir=fwd.clone().multiplyScalar(mv).addScaledVector(rgt,st).normalize(), step=4.2*dt;
+          const from=new THREE.Vector3(person.pos.x,person.pos.y+0.6,person.pos.z);
+          if(!blocked(from,dir,step)) person.pos.addScaledVector(dir,step);
+          else if(dir.x&&!blocked(from,new THREE.Vector3(Math.sign(dir.x),0,0),Math.abs(dir.x)*step)) person.pos.x+=dir.x*step;
+          else if(dir.z&&!blocked(from,new THREE.Vector3(0,0,Math.sign(dir.z)),Math.abs(dir.z)*step)) person.pos.z+=dir.z*step;
+          person.idle=0; sitting=false;
+        } else person.idle+=dt;
+        person.pos.y=F(person.floor).y+sinkAt(person.pos.x,person.pos.z,person.floor);
+      }
+      FLOORS.forEach(fl=>fl.g.visible=visible(fl.n));
+    }
+    if(walk){
+      idleT=0; sitting=false;
+      // A veces les dan ganas de correr
+      runCool-=dt; if(runT>0) runT-=dt; else if(runCool<=0&&!reduce&&Math.random()<dt*0.45){runT=1.2+Math.random()*1.2;runCool=3.5;}
+      walk.t=Math.min(walk.total,walk.t+dt*SPEED*(runT>0?1.9:1));
+      const a=pointAt(walk,walk.t); avatar.position.copy(a.p); face(avatar,a.dx,a.dz,dt);
+      const b=pointAt(walk,walk.t-LAG*(runT>0?1.3:1)); foll.g.position.lerp(b.p,Math.min(1,dt*10)); face(foll.g,b.dx,b.dz,dt);
+      gL=gF=runT>0?2:1;
+      if(walk.t>=walk.total){ runT=0; arrive(walk.area); }
+    } else if(imm){
+      // Te acompañan: caminan adelante de ti, se sientan si estás en gerencia y juegan si te quedas quieto
+      const front=person.pos.clone().addScaledVector(fwd,3.2);
+      const tL=front.clone().addScaledVector(rgt,0.8), tF=front.clone().addScaledVector(rgt,-0.9).addScaledVector(fwd,-0.5);
+      if(sitting||reduce||person.idle<3){
+        const dL=lead.g.position.distanceTo(tL), dF=foll.g.position.distanceTo(tF);
+        gL=toward(lead,tL,dt,dL>3?6:4)?(dL>3?2:1):0; gF=toward(foll,tF,dt,dF>3?6:4)?(dF>3?2:1):0;
+        if(!gL) face(lead.g,person.pos.x-lead.g.position.x,person.pos.z-lead.g.position.z,dt);
+        if(!gF) face(foll.g,person.pos.x-foll.g.position.x,person.pos.z-foll.g.position.z,dt);
+        sitL=sitting&&!gL?1:0; sitF=sitting&&!gF?1:0;
+        playC.copy(front);
+      } else {
+        const cyc=(person.idle-3)%9, r=1.5;
+        if(cyc<5.5){ playAng+=dt*2.3;
+          toward(lead,playC.clone().add(new THREE.Vector3(Math.cos(playAng)*r,0,Math.sin(playAng)*r)),dt,7);
+          toward(foll,playC.clone().add(new THREE.Vector3(Math.cos(playAng-1.2)*r,0,Math.sin(playAng-1.2)*r)),dt,7);
+          gL=gF=2; hopL=Math.abs(Math.sin(now/170))*0.12;
+        } else { const dLF=foll.g.position.clone().sub(lead.g.position); face(lead.g,dLF.x,dLF.z,dt); face(foll.g,-dLF.x,-dLF.z,dt);
+          bowF=1; hopL=cyc>6.2&&cyc<8?Math.abs(Math.sin(now/150))*0.35:0; }
+      }
+    } else {
+      idleT+=dt;
+      const beside=avatar.position.clone().add(new THREE.Vector3(1.2,0,0.6).applyAxisAngle(UP,avatar.rotation.y));
+      if(sitting||reduce){
+        // En gerencia se sientan juntos, con buen comportamiento
+        gF=toward(foll,beside,dt,3)?1:0;
+        if(!gF) face(foll.g,-Math.sin(avatar.rotation.y),-Math.cos(avatar.rotation.y),dt);
+        sitL=sitting?1:0; sitF=sitting&&!gF?1:0;
+      } else if(idleT<2.5){
+        gF=toward(foll,beside,dt,3)?1:0;
+        if(!gF) face(foll.g,-Math.sin(avatar.rotation.y),-Math.cos(avatar.rotation.y),dt);
+      } else {
+        // Juegan: se persiguen en círculo, luego Arya hace la reverencia y Oni salta
+        if(idleT-dt<2.5){playC.copy(avatar.position);playAng=Math.atan2(avatar.position.z-playC.z,1);}
+        const cyc=(idleT-2.5)%9, r=1.9;
+        if(cyc<5.5){
+          playAng+=dt*2.3;
+          const pL=playC.clone().add(new THREE.Vector3(Math.cos(playAng)*r,0,Math.sin(playAng)*r));
+          const pF=playC.clone().add(new THREE.Vector3(Math.cos(playAng-1.2)*r,0,Math.sin(playAng-1.2)*r));
+          toward(lead,pL,dt,7); toward(foll,pF,dt,7);
+          gL=gF=2; hopL=Math.abs(Math.sin(now/170))*0.12;
+        } else {
+          const dLF=foll.g.position.clone().sub(avatar.position);
+          face(avatar,dLF.x,dLF.z,dt); face(foll.g,-dLF.x,-dLF.z,dt);
+          bowF=1; hopL=cyc>6.2&&cyc<8?Math.abs(Math.sin(now/150))*0.35:0;
+        }
+      }
+    }
+    // Desde los ojos de la persona, los perritos toman un tamaño realista
+    const dsc=imm?0.5:1; lead.g.scale.setScalar(dsc); foll.g.scale.setScalar(dsc);
+    lead.sitA=ease(lead.sitA,sitL,dt); foll.sitA=ease(foll.sitA,sitF,dt);
+    lead.bowA=ease(lead.bowA,bowL,dt,6); foll.bowA=ease(foll.bowA,bowF,dt,6);
+    phase+=dt*(gL===2?20:gL?16:0); phase2+=dt*(gF===2?16:gF?13:0);
+    pose(lead,phase,gL,now,dt,hopL); pose(foll,phase2,gF,now,dt,hopF);
+    updatePeople(dt,now);
+    ring.scale.setScalar(1+(reduce?0:Math.sin(now/300)*0.12));
+    if(imm){
+      // Cámara a la altura de los ojos
+      camera.position.set(person.pos.x,person.pos.y+1.6,person.pos.z);
+      const cp=Math.cos(person.pitch);
+      camera.lookAt(camera.position.x-Math.sin(person.yaw)*cp,camera.position.y+Math.sin(person.pitch),camera.position.z-Math.cos(person.yaw)*cp);
+      AREAS.forEach(a=>place(a.el,a.lpos,a.f===person.floor&&a.lpos.distanceTo(camera.position)<26));
+      TEAMS.forEach(t=>place(t.el,t.pos,false)); FLL.forEach(t=>place(t.el,t.pos,false));
+    } else {
+      if(fly){fly.k=Math.min(1,fly.k+dt*1.3);const e=1-Math.pow(1-fly.k,3);camera.position.lerpVectors(fly.fp,fly.tp,e);controls.target.lerpVectors(fly.ft,fly.tt,e);if(fly.k>=1)fly=null;}
+      if(follow){const tg=avatar.position.clone();controls.target.lerp(tg,Math.min(1,dt*4));camera.position.lerp(tg.clone().add(followOff),Math.min(1,dt*3));}
+      controls.update();
+      AREAS.forEach(a=>place(a.el,a.lpos,visible(a.f)&&(focus!=='all'||!a.minor||a.id===sel)));
+      TEAMS.forEach(t=>place(t.el,t.pos,visible(t.f)&&focus!=='all'));
+      FLL.forEach(t=>place(t.el,t.pos,focus==='all'));
+    }
+    place(youEl,yv.set(avatar.position.x,avatar.position.y+1.8,avatar.position.z));
+    place(oniEl,yv.set(foll.g.position.x,foll.g.position.y+2.3,foll.g.position.z));
+    renderer.render(scene,camera);
+  }
+  renderDest(); applyFade();
+  requestAnimationFrame(loop);
+
+  // Al abrir la puerta, la cámara entra volando a la zona naranja
+  window.addEventListener('sitti-door-open',()=>{
+    camera.position.set(VIEW[1].p.x+40,VIEW[1].p.y+70,VIEW[1].p.z+90); controls.target.copy(VIEW[1].t);
+    setTimeout(()=>{fly={fp:camera.position.clone(),tp:VIEW[1].p.clone(),ft:controls.target.clone(),tt:VIEW[1].t.clone(),k:reduce?1:0};},reduce?0:900);
+  });
+})();
+</script>
+</body>
+</html>
