@@ -371,7 +371,9 @@ html.embedded .music{right:auto;left:16px}
     {f:2,id:'JS',letter:'J',name:'Sala de juntas',color:C.juntas,r:[280,208,332,300],node:'JS',desc:'Sala de juntas de la zona de trabajo.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:2,id:'ESC2',letter:'↕',name:'Escaleras',color:C.core,r:[326,150,398,214],node:'core',minor:true,desc:'Escaleras para subir a la zona naranja o bajar a la zona azul.',tip:''},
     // Zona azul (coordenadas del boceto)
-    {f:3,id:'P3',letter:'CS',name:'Conexión de soluciones',color:'#33357e',floor:C.wood,r:[215,212,760,515],node:'P',floorOnly:true,desc:'Zona abierta de puestos del equipo de conexión de soluciones.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:3,id:'P3',letter:'CS',name:'Conexión de soluciones',color:'#33357e',floor:C.wood,r:[215,212,397,515],node:'CSn',floorOnly:true,desc:'Puestos del equipo de conexión de soluciones, en el centro de la zona azul.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:3,id:'FD3',letter:'FD',name:'Fotodetección',color:C.coral,floor:C.wood,r:[397,212,578,515],node:'P',floorOnly:true,desc:'Puestos del equipo de fotodetección, en el centro de la zona azul.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:3,id:'AS3',letter:'AS',name:'Aseguramiento',color:C.teal,floor:C.wood,r:[578,212,760,515],node:'ASn',floorOnly:true,desc:'Puestos del equipo de aseguramiento, en el centro de la zona azul.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
     {f:3,id:'CA',letter:'C',name:'Cartera',color:'#5457a8',r:[345,45,760,165],node:'CA',desc:'Área de cartera.',tip:''},
     {f:3,id:'FA',letter:'F',name:'Financiera y administrativa',color:C.office,r:[775,45,925,150],node:'FA',desc:'Área financiera y administrativa.',tip:''},
     {f:3,id:'BO3',letter:'B',name:'Bodega',color:C.neutral,r:[775,150,925,235],node:'BO3',desc:'Bodega.',tip:''},
@@ -397,7 +399,7 @@ html.embedded .music{right:auto;left:16px}
     2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,180],JS:[306,255],
        P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[146,150],COC2:[146,120],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
     3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],RD:[1035,422],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
-       t2:[500,190],CA:[550,120],P:[490,360],t3:[205,190],l1:[205,100],SJ3:[120,100],ocd:[205,212],OCL:[120,212],l2:[205,350],CO3:[115,350],l25:[205,460],W3:[90,460],
+       t2:[500,190],CA:[550,120],P:[488,360],CSn:[306,360],ASn:[669,360],t3:[205,190],l1:[205,100],SJ3:[120,100],ocd:[205,212],OCL:[120,212],l2:[205,350],CO3:[115,350],l25:[205,460],W3:[90,460],
        l3:[205,550],dgn:[272,560],DG:[272,615],b1:[370,550],cadN:[370,640],cad1:[370,705,-1.4],CAD:[370,820,-1.4],
        b2:[670,550],pc:[670,800],b3:[770,550],crn:[770,580],CR:[770,720],tqn:[960,560],SEC:[990,700],TQ:[880,670],f1:[940,100],FA:[850,100]}
   };
@@ -407,7 +409,7 @@ html.embedded .music{right:auto;left:16px}
        ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS']],
     2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','OL'],['v3','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
        ['v1','k7'],['k7','BS'],['k7','k4'],['k4','COC2'],['k4','k6'],['k6','SJ']],
-    3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
+    3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','CSn'],['tg2','ASn'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
        ['t3','l2'],['l2','CO3'],['l2','l25'],['l25','W3'],['l25','l3'],['l3','dgn'],['dgn','DG'],['l3','b1'],['b1','cadN'],['cadN','cad1'],['cad1','CAD'],['b1','b2'],['b2','pc'],['b2','b3'],
        ['b3','crn'],['crn','CR'],['b3','tqn'],['tqn','SEC'],['SEC','TQ'],
        ['b3','h2'],['h2','h3'],['h3','h1'],['h3','RD'],['core','f1'],['f1','FA']]
@@ -927,7 +929,7 @@ html.embedded .music{right:auto;left:16px}
   }
 
   // Destinos
-  const ORDER={1:['SEG','MA','COC','S','P14','TQS','G','L','J1','J2','BM','BH','ESP','GER'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','CA','FA','OCL','CAD','DG','CR','TQ','RD','SJ3','CO3','W3','BO3']};
+  const ORDER={1:['SEG','MA','COC','S','P14','TQS','G','L','J1','J2','BM','BH','ESP','GER'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','CR','TQ','RD','SJ3','CO3','W3','BO3']};
   const destEl=document.getElementById('dest'), infoEl=document.getElementById('info'), statusEl=document.getElementById('status');
   let current='1:acc', sel=null, tourQ=[];
   function renderDest(){
