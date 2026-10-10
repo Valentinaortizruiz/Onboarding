@@ -678,14 +678,15 @@ html.embedded .music{right:auto;left:16px}
     {const MAN={long:false,shirt:'#33357e',pants:'#2b2f45'}, WOMAN={long:true,shirt:'#ec623b',pants:'#4a4f5c'};
       const GR=[[452,625,WOMAN],[452,575,MAN],[485,625,WOMAN],[485,575,MAN],[518,625,MAN],[518,575,WOMAN]], rotOf=y=>y>600?0:Math.PI;
       desks(fl,GR.map(([x,y])=>({px:x,py:y,rot:rotOf(y)})),{workers:0});
-      GR.forEach(([x,y,lk],i)=>SEATS.push({fl,parent:fl.g,x:X(x),z:Z(y)+(y>600?0.62:-0.62),yaw:rotOf(y),kind:'work',look:Object.assign({skin:['#c68e6a','#f1c9a5','#e0b48f','#a8714a','#8d5a3b','#e0b48f'][i],hair:['#2b2230','#5a3a22','#1a1410','#3d2a1e','#b07a3a','#2b2230'][i]},lk)}));}
+      GR.forEach(([x,y,lk],i)=>SEATS.push({fl,parent:fl.g,x:X(x),z:Z(y)+(y>600?0.62:-0.62),yaw:rotOf(y),kind:'work',look:Object.assign({skin:['#c68e6a','#f1c9a5','#e0b48f','#a8714a','#8d5a3b','#e0b48f'][i],hair:['#2b2230','#5a3a22','#1a1410','#3d2a1e','#141414','#2b2230'][i]},lk)}));}
     // Oficina de la gerencia: sofá grande blanco y gris contra el muro occidental y baño privado en la esquina nororiental
     {const sx=X(418),sz=Z(745),sm=m('#f4f4f6'),cu=m('#9a9ca6');
       box(0.95,0.42,2.8,sm,sx,0.21,sz); box(0.3,0.55,2.8,sm,sx-0.33,0.68,sz);
       [-1,1].forEach(s=>box(0.95,0.62,0.22,sm,sx,0.31,sz+s*1.4));
       [-0.82,0.82].forEach(dz=>box(0.62,0.12,1.3,cu,sx+0.12,0.48,sz+dz));
       [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx-0.12,0.72,sz+s*0.95);p.rotation.z=-0.25;});
-      const GB=[442,728,458,752]; walls(fl,GB,'w',0,{skip:'ne'}); bath(fl,GB,'n',1);}
+      const GB=[442,728,458,752]; walls(fl,GB,'w',0,{skip:'ne'}); bath(fl,GB,'n',1);
+      const GB2=[529,551,545,576]; walls(fl,GB2,'w',0,{skip:'ne'}); bath(fl,GB2,'n',1);}
     // Cajeros automáticos contra el muro occidental, mirando al pasillo de las taquillas
     [292,306].forEach(py=>{const g=new THREE.Group(); g.position.set(X(221),0,Z(py)); g.rotation.y=Math.PI/2; fl.g.add(g);
       const B=(w,h,d,c,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m(c));o.position.set(x,y,z);o.castShadow=true;g.add(o);};
@@ -717,7 +718,7 @@ html.embedded .music{right:auto;left:16px}
       for(let i=0;i<9;i++) box(4.4,0.2+i*0.2,0.85,m('#cfd1de'),ex,(0.2+i*0.2)/2,Z(785-i*8.5));
       [-1,1].forEach(s=>{const r=box(0.06,0.06,8,m('#3fa535'),ex+s*2.15,1.9,Z(751)); r.rotation.x=0.23;});}
     for(let i=1;i<3;i++) box(0.12,WH,10,m('#ffffff'),X(428+i*39),WH/2,Z(600));
-    box(11.6,WH,0.12,m('#ffffff'),X(487),WH/2,Z(600));
+
     meet(fl,A.J1.r,3,4,true); meet(fl,A.J2.r,4,3,true);
     // Cocineta: mesón, nevera, mesas
     box(1,0.95,9,m('#ffffff'),X(228),0.48,Z(70)); box(0.9,1.9,0.8,m('#d9dbe8'),X(228),0.95,Z(128));
@@ -832,7 +833,7 @@ html.embedded .music{right:auto;left:16px}
     vending(f3,172,412,Math.PI/2); vending(f3,172,388,Math.PI/2,'#ec623b');
     bath(f1,A.BH.r,'e',2); bath(f2,A.BS.r,'n',2); bath(f3,A.W3.r,'w',2);
     // Más materas por los pasillos y áreas comunes
-    [[392,300],[392,470],[392,560],[300,232],[200,232],[460,645],[405,690],[250,590],[540,455],[545,560]].forEach(([x,y])=>plant(f1,x,y,1));
+    [[392,300],[392,470],[392,560],[300,232],[200,232],[460,645],[405,690],[250,590],[540,455]].forEach(([x,y])=>plant(f1,x,y,1));
     [[270,148],[270,440],[60,148],[60,440],[340,230],[150,445],[230,445]].forEach(([x,y])=>plant(f2,x,y,1));
     [[205,200],[770,200],[205,500],[760,500],[930,300],[930,520],[620,560],[690,860-30]].forEach(([x,y])=>plant(f3,x,y,1));
     // Materas grises con plantas verdes repartidas por los pasillos de las tres zonas
