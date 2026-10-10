@@ -323,8 +323,8 @@ html.embedded .music{right:auto;left:16px}
         <header style="background:#d9692e"><b>Zona naranja</b></header>
         <ul>
           <li><div><strong>Experiencia de servicio</strong><span>Puestos, taquillas de atención a usuarios, sala de audiencias virtuales y oficina de líderes.</span></div></li>
-          <li><div><strong>Taquillas del banco</strong><span>Frente a las taquillas de experiencia de servicio, con punto de turnos.</span></div></li>
-          <li><div><strong>Salidas de emergencia y ascensor</strong><span>Una salida de emergencia con escaleras junto a la cocineta y otra junto al acceso, al lado del ascensor.</span></div></li>
+          <li><div><strong>Taquillas del banco</strong><span>Frente a las taquillas de experiencia de servicio, con cajeros automáticos y oficina del banco.</span></div></li>
+          <li><div><strong>Escaleras de ingreso, ascensor y salida de emergencia</strong><span>Las escaleras de ingreso y el ascensor junto al acceso; la salida de emergencia junto a la cocineta.</span></div></li>
           <li><div><strong>Mesa de ayuda</strong><span>Seis puestos frente a la cocineta.</span></div></li>
           <li><div><strong>Gerentes</strong><span>Oficinas de gerentes y gerencia.</span></div></li>
         </ul>
@@ -403,13 +403,13 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'G',letter:'G',name:'Gerentes',color:C.navy,r:[428,550,545,650],node:'G',desc:'Gerencia general: dirige integralmente a sitti. Define la estrategia del negocio que aprueba la Junta Directiva y asegura la sostenibilidad financiera, el cumplimiento del contrato interadministrativo con la Secretaría de Movilidad de Medellín y la calidad del servicio al ciudadano.',tip:'Si necesitas a alguien, toca la puerta o agenda un espacio.'},
     {f:1,id:'L',letter:'L',name:'Lockers',color:C.yellow,r:[262,698,392,778],node:'L',desc:'Lockers para guardar tus pertenencias durante la jornada, junto al acceso.',tip:'Pide la asignación de tu locker en tu primer día.'},
     {f:1,id:'J1',letter:'J',name:'Sala de juntas',color:C.juntas,r:[430,460,490,540],node:'J1',desc:'Sala de juntas para reuniones de equipo.',tip:'Reserva la sala con anticipación en el calendario.'},
-    {f:1,id:'J2',letter:'J',name:'Sala de juntas principal',color:C.juntas,r:[460,660,532,778],node:'J2',desc:'Sala de juntas principal, cerca de gerencia.',tip:'Reserva la sala con anticipación en el calendario.'},
+    {f:1,id:'J2',letter:'J',name:'Sala de juntas',color:C.juntas,r:[460,660,532,778],node:'J2',desc:'Sala de juntas para reuniones, cerca de gerencia.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:1,id:'BM',letter:'WC',name:'Baño mujeres',color:C.bano,r:[492,284,545,345],node:'BM',desc:'Baño de mujeres, dentro del bloque de experiencia de servicio.',tip:''},
     {f:1,id:'BH',letter:'WC',name:'Baño hombres',color:C.bano,r:[492,466,545,532],node:'BH',desc:'Baño de hombres, junto a la sala de juntas.',tip:''},
     {f:1,id:'P14',letter:'S',name:'Experiencia de servicio · Puestos',color:C.teal,floor:C.wood,r:[357,245,404,605],node:'P14',desc:'Puestos del equipo de experiencia de servicio, que atiende al ciudadano en sus trámites de movilidad desde el back office y el conmutador, con un servicio ágil, de calidad y apegado a la normatividad.',tip:''},
     {f:1,id:'TQS',letter:'T',name:'Taquillas · Experiencia de servicio',color:C.teal,r:[295,250,352,600],node:'TQS',isNew:true,desc:'Taquillas donde los asesores de experiencia de servicio atienden de manera presencial a los usuarios.',tip:''},
-    {f:1,id:'BOD',letter:'',name:'Bodega',color:C.neutral,r:[420,188,495,262],node:'BOD',minor:true,desc:'Bodega.',tip:''},
-    {f:1,id:'PT',letter:'T',name:'Punto de turnos de las taquillas',color:C.teal,r:[250,250,295,280],node:'PT',desc:'Punto donde los usuarios toman su turno para ser atendidos en las taquillas.',tip:''},
+    {f:1,id:'BOD',letter:'',name:'Bodega',color:C.neutral,r:[420,188,495,262],node:'BOD',minor:true,nolabel:true,desc:'Bodega.',tip:''},
+    {f:1,id:'CAJ',letter:'C',name:'Cajeros automáticos',color:C.navy,r:[250,250,295,283],node:'CAJ',desc:'Cajeros automáticos donde puedes retirar dinero, junto a la oficina del banco.',tip:''},{f:1,id:'OBC',letter:'OB',name:'Oficina del banco',color:C.amber,r:[250,283,295,370],node:'OBC',desc:'Oficina del banco, al lado de los cajeros automáticos y de las taquillas del banco.',tip:''},
     {f:1,id:'TQC',letter:'B',name:'Taquillas del banco',color:C.amber,r:[250,375,295,600],node:'TQC',desc:'Taquillas del banco, donde los ciudadanos realizan sus pagos de manera presencial. Quedan frente a las taquillas de experiencia de servicio: los usuarios se ubican en el pasillo central, entre las dos filas.',tip:''},
     {f:1,id:'ESP',letter:'',name:'Sala de espera',color:C.neutral,r:[362,605,410,655],node:'ESP',minor:true,desc:'Sala de espera para visitantes.',tip:''},
     {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Punto de ingreso a la sede. El vigilante te recibe, registra tu llegada y te orienta hacia tu área.',tip:'Preséntate aquí al llegar.'},
@@ -417,7 +417,7 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'ACC',letter:'',name:'Acceso',color:C.neutral,r:[255,682,300,700],node:'acc',minor:true,desc:'Acceso principal al piso.',tip:''},
     {f:1,id:'SE',letter:'EM',name:'Salida de emergencia',color:'#3fa535',r:[170,105,211,158],node:'SE',desc:'Salida de emergencia con escaleras, cerrada con una puerta metálica. Úsala solo en caso de evacuación.',tip:'Mantén siempre despejado el paso hacia esta puerta.'},{f:1,id:'BO1',letter:'',name:'Bodega',color:C.neutral,r:[170,15,211,103],node:'BO1',minor:true,desc:'Bodega junto a las escaleras de emergencia.',tip:''},
     {f:1,id:'ASC',letter:'A',name:'Ascensor',color:'#9da1bf',r:[150,712,196,788],node:'ASC',desc:'Ascensor del edificio, junto al acceso principal.',tip:''},
-    {f:1,id:'EM',letter:'EM',name:'Escaleras de emergencia',color:'#3fa535',r:[200,708,258,795],node:'EM',desc:'Escaleras de emergencia, junto al acceso principal. Úsalas en caso de evacuación y sigue la señalización verde.',tip:'En una emergencia no uses el ascensor.'},
+    {f:1,id:'EM',letter:'E',name:'Escaleras de ingreso',color:'#3fa535',r:[200,708,258,795],node:'EM',desc:'Escaleras de ingreso a la sede, junto al ascensor y al acceso principal.',tip:''},
     {f:1,id:'ESC1',letter:'↓',name:'Escaleras a la zona verde',color:C.core,r:[80,15,165,140],node:'core',minor:true,desc:'Escaleras para bajar a la zona verde.',tip:''},
     // Zona verde
     {f:2,id:'P106',letter:'CC',name:'Cobro coactivo / Gestión legal',color:C.green,floor:C.wood,r:[64,145,276,438],node:'P',floorOnly:true,lbl:[170,292],desc:'Gestión jurídica de cobro: ejecuta el cobro coactivo de las obligaciones de tránsito (estudio de títulos, mandamientos de pago, medidas cautelares, excepciones y recursos) y previene la prescripción. Gestión legal: brinda soporte jurídico a toda la operación con tutelas, PQRSD, demandas, actos administrativos y conceptos jurídicos.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
@@ -454,7 +454,7 @@ html.embedded .music{right:auto;left:16px}
     1:{acc:[270,692],lob:[330,692],wait:[385,668],s1:[418,668],s2:[418,600],s3:[418,500],s4:[418,420],s5:[418,330],s6:[418,262],
        t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
        cd:[440,252],BOD:[458,226],S:[462,330],BM:[518,315],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
-       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],PT:[282,275],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750]},
+       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],CAJ:[282,266],OBC:[270,327],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750]},
     2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,180],JS:[306,255],
        P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[146,150],COC2:[146,120],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
     3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],RD:[1035,422],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
@@ -465,7 +465,7 @@ html.embedded .music{right:auto;left:16px}
   const EDGES={
     1:[['acc','lob'],['lob','wait'],['wait','s1'],['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','t1'],['t1','t2'],['t2','t3'],['t3','COC'],
        ['t2','MA'],['MA','w18'],['w18','sp'],['sp','core'],['s6','cd'],['cd','BOD'],['s5','S'],['S','BM'],['s3','J1'],['J1','BH'],['s2','G'],['lob','L'],['lob','SEG'],
-       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','PT'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM']],
+       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','CAJ'],['TQC','OBC'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM']],
     2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','OL'],['v3','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
        ['v1','k7'],['k7','BS'],['k7','k4'],['k4','COC2'],['k4','k6'],['k6','SJ']],
     3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','CSn'],['tg2','ASn'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
@@ -685,10 +685,14 @@ html.embedded .music{right:auto;left:16px}
       [-0.82,0.82].forEach(dz=>box(0.62,0.12,1.3,cu,sx+0.12,0.48,sz+dz));
       [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx-0.12,0.72,sz+s*0.95);p.rotation.z=-0.25;});
       const GB=[442,728,458,752]; walls(fl,GB,'w',0,{skip:'ne'}); bath(fl,GB,'n',1);}
-    // Punto de turnos de las taquillas: tótem con pantalla e impresora de turnos
-    {const kx=X(270),kz=Z(266);
-      box(0.6,1.15,0.45,m(C.navy),kx,0.58,kz); const sc=box(0.5,0.38,0.05,m('#bfe3f2'),kx,1.32,kz+0.12); sc.rotation.x=-0.35;
-      box(0.62,0.06,0.47,m(C.teal),kx,1.17,kz); box(0.18,0.04,0.02,m('#ffffff'),kx,0.95,kz+0.235);}
+    // Cajeros automáticos contra el muro occidental, mirando al pasillo de las taquillas
+    [258,273].forEach(py=>{const g=new THREE.Group(); g.position.set(X(256),0,Z(py)); g.rotation.y=Math.PI/2; fl.g.add(g);
+      const B=(w,h,d,c,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m(c));o.position.set(x,y,z);o.castShadow=true;g.add(o);};
+      B(1.0,1.75,0.75,'#2b2f45',0,0.88,0); B(0.7,0.42,0.04,'#8fc4e8',0,1.3,0.39); B(0.4,0.2,0.04,'#c7cad2',0,0.95,0.39); B(0.3,0.04,0.05,'#1b1d2e',0,1.06,0.4); B(1.04,0.24,0.79,C.amber,0,1.86,0);});
+    // Oficina del banco al lado de los cajeros: escritorio con asesor y silla para el cliente
+    {walls(fl,A.OBC.r,'e'); desks(fl,[{px:264,py:327,rot:-Math.PI/2,c:C.amber}],{workers:1,look:{polo:true,shirt:'#2f5fb3'}});
+      box(0.5,0.45,0.5,m('#5d78a8'),X(280),0.25,Z(320)); box(0.5,0.45,0.5,m('#5d78a8'),X(280),0.25,Z(334));
+      for(let i=0;i<2;i++) box(1.6,1.5,0.4,m('#e4e6ee'),X(262+i*18),0.75,Z(290));}
     // Salida de emergencia junto a la cocineta: escaleras encerradas con puerta metálica hacia el pasillo; bodega al lado
     {walls(fl,A.SE.r,'',0,{skip:'s'}); walls(fl,A.BO1.r,'w',0,{skip:'s'});
       const sx=X(190.5), zs=Z(158);
@@ -707,11 +711,10 @@ html.embedded .music{right:auto;left:16px}
       box(3.2,2.6,3.6,m('#c7c9dc'),ax-0.4,1.3,az); box(0.2,2.3,2.0,m('#8f93b5'),ax+1.25,1.15,az);
       [-0.45,0.45].forEach(dz=>box(0.06,2.0,0.85,m('#e4e6ee'),ax+1.37,1.0,az+dz));
       box(0.04,0.3,0.15,m('#33357e'),ax+1.36,1.3,az+1.25); box(0.04,0.06,0.06,m(C.amber),ax+1.39,1.35,az+1.25);}
-    // Escaleras de emergencia: tramo de escalones con baranda y señal verde de salida
+    // Escaleras de ingreso junto al ascensor: tramo de escalones con baranda
     {const ex=X(229);
       for(let i=0;i<9;i++) box(4.4,0.2+i*0.2,0.85,m('#cfd1de'),ex,(0.2+i*0.2)/2,Z(785-i*8.5));
-      [-1,1].forEach(s=>{const r=box(0.06,0.06,8,m('#3fa535'),ex+s*2.15,1.9,Z(751)); r.rotation.x=0.23;});
-      box(1.2,0.4,0.08,m('#2e9e44'),ex,2.4,Z(712)); box(0.8,0.16,0.09,m('#ffffff'),ex,2.4,Z(712));}
+      [-1,1].forEach(s=>{const r=box(0.06,0.06,8,m('#3fa535'),ex+s*2.15,1.9,Z(751)); r.rotation.x=0.23;});}
     for(let i=1;i<3;i++) box(0.12,WH,10,m('#ffffff'),X(428+i*39),WH/2,Z(600));
     box(11.6,WH,0.12,m('#ffffff'),X(487),WH/2,Z(600));
     meet(fl,A.J1.r,3,4,true); meet(fl,A.J2.r,4,3,true);
@@ -1133,7 +1136,7 @@ html.embedded .music{right:auto;left:16px}
   }
 
   // Destinos
-  const ORDER={1:['SEG','MA','COC','S','P14','TQS','PT','TQC','G','L','J1','J2','BM','BH','ESP','GER','SE','BO1','ASC','EM'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','NT','CR','TQ','RD','SJ3','CO3','W3','BO3']};
+  const ORDER={1:['SEG','MA','COC','S','P14','TQS','CAJ','OBC','TQC','G','L','J1','J2','BM','BH','ESP','GER','SE','BO1','ASC','EM'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','NT','CR','TQ','RD','SJ3','CO3','W3','BO3']};
   const destEl=document.getElementById('dest'), infoEl=document.getElementById('info'), statusEl=document.getElementById('status');
   let current='1:acc', sel=null, tourQ=[];
   function renderDest(){
@@ -1386,13 +1389,13 @@ html.embedded .music{right:auto;left:16px}
       camera.position.set(person.pos.x,person.pos.y+1.6,person.pos.z);
       const cp=Math.cos(person.pitch);
       camera.lookAt(camera.position.x-Math.sin(person.yaw)*cp,camera.position.y+Math.sin(person.pitch),camera.position.z-Math.cos(person.yaw)*cp);
-      AREAS.forEach(a=>place(a.el,a.lpos,a.f===person.floor&&a.lpos.distanceTo(camera.position)<26));
+      AREAS.forEach(a=>place(a.el,a.lpos,!a.nolabel&&a.f===person.floor&&a.lpos.distanceTo(camera.position)<26));
       TEAMS.forEach(t=>place(t.el,t.pos,false)); FLL.forEach(t=>place(t.el,t.pos,false));
     } else {
       if(fly){fly.k=Math.min(1,fly.k+dt*1.3);const e=1-Math.pow(1-fly.k,3);camera.position.lerpVectors(fly.fp,fly.tp,e);controls.target.lerpVectors(fly.ft,fly.tt,e);if(fly.k>=1)fly=null;}
       if(follow){const tg=avatar.position.clone();controls.target.lerp(tg,Math.min(1,dt*4));camera.position.lerp(tg.clone().add(followOff),Math.min(1,dt*3));}
       controls.update();
-      AREAS.forEach(a=>place(a.el,a.lpos,visible(a.f)&&(focus!=='all'||!a.minor||a.id===sel)));
+      AREAS.forEach(a=>place(a.el,a.lpos,!a.nolabel&&visible(a.f)&&(focus!=='all'||!a.minor||a.id===sel)));
       TEAMS.forEach(t=>place(t.el,t.pos,visible(t.f)&&focus!=='all'));
       FLL.forEach(t=>place(t.el,t.pos,focus==='all'));
     }
