@@ -216,9 +216,9 @@ html.embedded .music{right:auto;left:16px}
     <div class="vhead"><div><small>Tu llegada a sitti</small><b id="obTitle">¿Cómo será tu proceso de onboarding?</b></div><button type="button" class="vclose" id="obClose">Cerrar</button></div>
     <ol class="steps">
       <li style="--sc:#f7a82c"><i>1</i><div><b>Antes de tu primer día</b><p>Deberás ver los videos que tenemos cargados por área. Esto te permite conocer la empresa e ingresar más adaptado. Realízalo antes de tu primer día laboral.</p></div></li>
-      <li style="--sc:#ec623b"><i>2</i><div><b>Tu primer día en sitti</b><p>Momento de reconocimiento de sitti: inducciones corporativas, reconocimiento de las áreas y presentación de cada una de ellas de manera vivencial.</p></div></li>
-      <li style="--sc:#3fa9ac"><i>3</i><div><b>Tu equipo</b><p>Presentación al equipo de trabajo e inicio de la adaptación.</p></div></li>
-      <li style="--sc:#33357e"><i>4</i><div><b>Acompañamiento durante 2 meses</b><p>Tendrás 4 seguimientos formativos durante los 2 meses y 2 seguimientos de periodo de prueba, en el primer y en el segundo mes. Así te sentirás más acompañado y podremos identificar qué necesitas en esa etapa.</p></div></li>
+      <li style="--sc:#ec623b"><i>2</i><div><b>Tu primer día en sitti</b><p>Momento de reconocimiento de sitti: inducciones corporativas, reconocimiento de las áreas y presentación de cada una de ellas de manera vivencial. Ese día también firmarás tu contrato laboral y los documentos contractuales, y te entregaremos tu perfil de cargo.</p></div></li>
+      <li style="--sc:#3fa9ac"><i>3</i><div><b>Tu líder y tu equipo</b><p>Empezarás a conocer a tu líder y a tu equipo de trabajo, e iniciarás tu proceso de entrenamiento y de reconocimiento del entorno.</p></div></li>
+      <li style="--sc:#33357e"><i>4</i><div><b>Acompañamiento durante 2 meses</b><p>Tendrás 4 seguimientos formativos durante los 2 meses, a cargo del equipo de formación, y 2 seguimientos de periodo de prueba, en el primer y en el segundo mes, a cargo del equipo de onboarding. Así te sentirás más acompañado y podremos identificar qué necesitas en esa etapa.</p></div></li>
     </ol>
   </div>
 </div>
@@ -933,6 +933,16 @@ html.embedded .music{right:auto;left:16px}
       const visor=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.02,0.14),m('#1b1d2e'));visor.position.set(0,1.69,-0.14);g.add(visor);
       const vest=new THREE.Mesh(new THREE.CylinderGeometry(0.205,0.18,0.42,12,1,true),m('#f7a82c'));vest.position.y=1.15;g.add(vest);
     }
+    if(o.tools){ // mantenimiento: gorra, cinturón de herramientas y caja en la mano
+      const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.155,0.155,0.07,16),m('#ec623b'));cap.position.y=1.71;g.add(cap);
+      const visor=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.02,0.14),m('#ec623b'));visor.position.set(0,1.69,-0.14);g.add(visor);
+      [-1,1].forEach(sx=>{const st=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.5,0.01),m('#f7a82c'));st.position.set(sx*0.09,1.12,-0.2);g.add(st);});
+      const belt=new THREE.Mesh(new THREE.CylinderGeometry(0.185,0.185,0.08,12),m('#5a3a22'));belt.position.y=0.86;g.add(belt);
+      const pouch=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.14,0.08),m('#5a3a22'));pouch.position.set(-0.18,0.8,-0.06);g.add(pouch);
+      const box=new THREE.Group();box.position.set(0,-0.66,0);arms[1].add(box);
+      box.add(new THREE.Mesh(new THREE.BoxGeometry(0.14,0.16,0.36),m('#d9302c')));
+      const hd=new THREE.Mesh(new THREE.BoxGeometry(0.03,0.05,0.18),m('#2a2a2e'));hd.position.y=0.1;box.add(hd);
+    }
     if(o.noShadow) g.traverse(x=>{x.castShadow=false;});
     return {g,legs,arms,broom};
   }
@@ -977,6 +987,10 @@ html.embedded .music{right:auto;left:16px}
   [1,2,3].forEach(f=>{const ks=floorNodes(f), k=ks[(f*7)%ks.length], P=NP[k];
     const p=makePerson(F(f),{tray:true,shirt:'#7fb6d6',pants:'#2f6f8f',skin:SKINS[(f+3)%SKINS.length],hair:HAIRS[(f+3)%HAIRS.length],long:f!==2});
     p.g.position.set(P.x,P.y-F(f).y,P.z); people.push(Object.assign(p,{f,at:k,prev:null,to:null,spd:1.1,ph:0,wait:0,tray:true}));});
+  // Dos hombres de mantenimiento recorriendo la sede con su caja de herramientas
+  [[1,'#33357e',0],[3,'#33357e',2]].forEach(([f,suit,j])=>{const ks=floorNodes(f), k=ks[(f*5+3)%ks.length], P=NP[k];
+    const p=makePerson(F(f),{tools:true,shirt:suit,pants:suit,skin:SKINS[(j+1)%SKINS.length],hair:HAIRS[j],long:false});
+    p.g.position.set(P.x,P.y-F(f).y,P.z); people.push(Object.assign(p,{f,at:k,prev:null,to:null,spd:1.05,ph:j,wait:1}));});
   function updateActors(dt,now){
     if(reduce) return;
     sitters.forEach(s=>{ if(s.kind==='work'){const w=Math.sin(now/140+s.ph)*0.06;s.arms[0].rotation.x=1.15+w;s.arms[1].rotation.x=1.15-w;}
