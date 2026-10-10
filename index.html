@@ -322,8 +322,9 @@ html.embedded .music{right:auto;left:16px}
       <article class="zone" style="--zc:#d9692e">
         <header style="background:#d9692e"><b>Zona naranja</b></header>
         <ul>
-          <li><div><strong>Experiencia de servicio</strong><span>Puestos, taquillas de atención a usuarios, sala de audiencias virtuales y oficina de líderes.</span></div></li>
-          <li><div><strong>Taquillas del banco</strong><span>Frente a las taquillas de experiencia de servicio, con cajeros automáticos y oficina del banco.</span></div></li>
+          <li><div><strong>Experiencia de servicio</strong><span>Puestos, taquillas de atención a usuarios, sala de audiencias virtuales y oficina de líderes. Los baños quedan junto a la sala de juntas, con entrada desde el corredor.</span></div></li>
+          <li><div><strong>Taquillas de cobro · Experiencia de servicio</strong><span>Frente a las taquillas de atención.</span></div></li>
+          <li><div><strong>Cajeros automáticos y oficina del banco</strong><span>Al inicio de las taquillas.</span></div></li>
           <li><div><strong>Escaleras de ingreso, ascensor y salida de emergencia</strong><span>Las escaleras de ingreso y el ascensor junto al acceso; la salida de emergencia junto a la cocineta.</span></div></li>
           <li><div><strong>Mesa de ayuda</strong><span>Seis puestos frente a la cocineta.</span></div></li>
           <li><div><strong>Gerentes</strong><span>Oficinas de gerentes y gerencia.</span></div></li>
@@ -404,13 +405,12 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'L',letter:'L',name:'Lockers',color:C.yellow,r:[262,698,392,778],node:'L',desc:'Lockers para guardar tus pertenencias durante la jornada, junto al acceso.',tip:'Pide la asignación de tu locker en tu primer día.'},
     {f:1,id:'J1',letter:'J',name:'Sala de juntas',color:C.juntas,r:[430,460,490,540],node:'J1',desc:'Sala de juntas para reuniones de equipo.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:1,id:'J2',letter:'J',name:'Sala de juntas',color:C.juntas,r:[460,660,532,778],node:'J2',desc:'Sala de juntas para reuniones, cerca de gerencia.',tip:'Reserva la sala con anticipación en el calendario.'},
-    {f:1,id:'BM',letter:'WC',name:'Baño mujeres',color:C.bano,r:[492,284,545,345],node:'BM',desc:'Baño de mujeres, dentro del bloque de experiencia de servicio.',tip:''},
-    {f:1,id:'BH',letter:'WC',name:'Baño hombres',color:C.bano,r:[492,466,545,532],node:'BH',desc:'Baño de hombres, junto a la sala de juntas.',tip:''},
+    {f:1,id:'BH',letter:'WC',name:'Baños',color:C.bano,r:[492,466,545,532],node:'BH',desc:'Baños junto a la sala de juntas, con entrada desde el corredor.',tip:''},
     {f:1,id:'P14',letter:'S',name:'Experiencia de servicio · Puestos',color:C.teal,floor:C.wood,r:[357,245,404,605],node:'P14',desc:'Puestos del equipo de experiencia de servicio, que atiende al ciudadano en sus trámites de movilidad desde el back office y el conmutador, con un servicio ágil, de calidad y apegado a la normatividad.',tip:''},
     {f:1,id:'TQS',letter:'T',name:'Taquillas · Experiencia de servicio',color:C.teal,r:[295,250,352,600],node:'TQS',isNew:true,desc:'Taquillas donde los asesores de experiencia de servicio atienden de manera presencial a los usuarios.',tip:''},
     {f:1,id:'BOD',letter:'',name:'Bodega',color:C.neutral,r:[420,188,495,262],node:'BOD',minor:true,nolabel:true,desc:'Bodega.',tip:''},
-    {f:1,id:'CAJ',letter:'C',name:'Cajeros automáticos',color:C.navy,r:[250,250,295,283],node:'CAJ',desc:'Cajeros automáticos donde puedes retirar dinero, junto a la oficina del banco.',tip:''},{f:1,id:'OBC',letter:'OB',name:'Oficina del banco',color:C.amber,r:[250,283,295,370],node:'OBC',desc:'Oficina del banco, al lado de los cajeros automáticos y de las taquillas del banco.',tip:''},
-    {f:1,id:'TQC',letter:'B',name:'Taquillas del banco',color:C.amber,r:[250,375,295,600],node:'TQC',desc:'Taquillas del banco, donde los ciudadanos realizan sus pagos de manera presencial. Quedan frente a las taquillas de experiencia de servicio: los usuarios se ubican en el pasillo central, entre las dos filas.',tip:''},
+    {f:1,id:'CAJ',letter:'C',name:'Cajeros automáticos',color:C.navy,r:[215,284,236,316],lift:0.01,node:'CAJ',desc:'Cajeros automáticos donde puedes retirar dinero, al lado de la oficina del banco.',tip:''},{f:1,id:'OBC',letter:'OB',name:'Oficina del banco',color:C.amber,r:[228,252,292,282],lift:0.01,node:'OBC',desc:'Oficina externa del banco: un cubículo independiente al lado de los cajeros automáticos, que no conecta con ninguna otra oficina.',tip:''},
+    {f:1,id:'TQC',letter:'T',name:'Taquillas de cobro · Experiencia de servicio',color:C.amber,r:[215,283,295,600],node:'TQC',desc:'Taquillas de cobro de experiencia de servicio, donde los asesores atienden de manera presencial a los ciudadanos en sus trámites de cobro. Quedan frente a las taquillas de atención: los usuarios se ubican en el pasillo central, entre las dos filas.',tip:''},
     {f:1,id:'ESP',letter:'',name:'Sala de espera',color:C.neutral,r:[362,605,410,655],node:'ESP',minor:true,desc:'Sala de espera para visitantes.',tip:''},
     {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Punto de ingreso a la sede. El vigilante te recibe, registra tu llegada y te orienta hacia tu área.',tip:'Preséntate aquí al llegar.'},
     {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[410,728,458,778],node:'GER',minor:true,desc:'Oficina de la gerencia general, que dirige integralmente a sitti.',tip:''},
@@ -453,8 +453,8 @@ html.embedded .music{right:auto;left:16px}
   const NODES={
     1:{acc:[270,692],lob:[330,692],wait:[385,668],s1:[418,668],s2:[418,600],s3:[418,500],s4:[418,420],s5:[418,330],s6:[418,262],
        t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
-       cd:[440,252],BOD:[458,226],S:[462,330],BM:[518,315],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
-       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],CAJ:[282,266],OBC:[270,327],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750]},
+       cd:[440,252],BOD:[458,226],S:[462,330],bh0:[425,459],bh1:[518,459],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
+       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750]},
     2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,180],JS:[306,255],
        P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[146,150],COC2:[146,120],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
     3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],RD:[1035,422],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
@@ -464,8 +464,8 @@ html.embedded .music{right:auto;left:16px}
   };
   const EDGES={
     1:[['acc','lob'],['lob','wait'],['wait','s1'],['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','t1'],['t1','t2'],['t2','t3'],['t3','COC'],
-       ['t2','MA'],['MA','w18'],['w18','sp'],['sp','core'],['s6','cd'],['cd','BOD'],['s5','S'],['S','BM'],['s3','J1'],['J1','BH'],['s2','G'],['lob','L'],['lob','SEG'],
-       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','CAJ'],['TQC','OBC'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM']],
+       ['t2','MA'],['MA','w18'],['w18','sp'],['sp','core'],['s6','cd'],['cd','BOD'],['s5','S'],['s3','J1'],['s3','bh0'],['bh0','bh1'],['bh1','BH'],['s2','G'],['lob','L'],['lob','SEG'],
+       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','tq1'],['tq1','obn'],['obn','CAJ'],['obn','OBC'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM']],
     2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','OL'],['v3','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
        ['v1','k7'],['k7','BS'],['k7','k4'],['k4','COC2'],['k4','k6'],['k6','SJ']],
     3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','CSn'],['tg2','ASn'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
@@ -647,7 +647,7 @@ html.embedded .music{right:auto;left:16px}
 
   // ---------- Piso 1 ----------
   {const fl=F(1),{box,rect,m,X,Z}=mk(fl);
-    [[165,155,392,240],[213,13,362,160],[353,235,547,662],[418,186,497,264],[255,605,547,780],[25,155,170,240],[78,13,165,160],[245,240,356,610],[165,13,213,160],[145,700,262,800]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
+    [[165,155,392,240],[213,13,362,160],[353,235,547,662],[418,186,497,264],[255,605,547,780],[25,155,170,240],[78,13,165,160],[210,240,356,610],[165,13,213,160],[145,700,262,800]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
     [[405,240,430,662],[290,170,392,238],[300,655,460,700],[165,140,215,165]].forEach(r=>rect(r,0.04,m(C.cor),0.01));
     rect([216,168,288,238],0.04,m(C.wood),0.012);
     // Escaleras (bajan al sótano)
@@ -655,22 +655,23 @@ html.embedded .music{right:auto;left:16px}
     for(let i=0;i<10;i++) box(3.4,0.2,1.0,stM,X(100),0.1,Z(30+i*10),true);
     box(0.12,1,10,m('#33357e'),X(118),0.5,Z(75),false);
     for(let i=0;i<8;i++) box(1.1,0.25+i*0.18,3.6,m('#c4c7da'),X(36+i*5.5),(0.25+i*0.18)/2,Z(205),true);
-    walls(fl,A.COC.r,'s');walls(fl,[250,250,352,600],'s');walls(fl,A.BOD.r,'w');
+    walls(fl,A.COC.r,'s');walls(fl,[215,250,352,600],'s');walls(fl,A.BOD.r,'w');
     // Dos filas de taquillas enfrentadas: experiencia de servicio (oriente) y cobro (occidente); los usuarios quedan en el pasillo central
     {const zA=Z(262),zB=Z(590),len=zB-zA, UNI={polo:true,shirt:'#2f5fb3'};
       box(0.5,1.1,len,m('#ffffff'),X(322),0.55,(zA+zB)/2); box(0.7,0.06,len,m(C.teal),X(322),1.12,(zA+zB)/2);
-      const zC=Z(372),lenC=zB-zC; box(0.5,1.1,lenC,m('#ffffff'),X(278),0.55,(zC+zB)/2); box(0.7,0.06,lenC,m(C.amber),X(278),1.12,(zC+zB)/2);
-      const TQ=[],TC=[];for(let i=0;i<6;i++){const y=290+i*55;TQ.push({px:338,py:y,rot:Math.PI/2,c:C.teal});if(i>=2) TC.push({px:262,py:y,rot:-Math.PI/2,c:C.amber});
+      const zC=Z(372),lenC=zB-zC; box(0.5,1.1,lenC,m('#ffffff'),X(243),0.55,(zC+zB)/2); box(0.7,0.06,lenC,m(C.amber),X(243),1.12,(zC+zB)/2);
+      const TQ=[],TC=[];for(let i=0;i<6;i++){const y=290+i*55;TQ.push({px:338,py:y,rot:Math.PI/2,c:C.teal});if(i>=2) TC.push({px:227,py:y,rot:-Math.PI/2,c:C.amber});
         box(0.9,1.5,0.06,m('#d8eeee'),X(322),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(308),0.25,Z(y));
-        if(i>=2){box(0.9,1.5,0.06,m('#f6e6c8'),X(278),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(292),0.25,Z(y));}}
+        if(i>=2){box(0.9,1.5,0.06,m('#f6e6c8'),X(243),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(257),0.25,Z(y));}}
       desks(fl,TQ,{workers:1,look:UNI}); desks(fl,TC,{workers:1,look:UNI});}walls(fl,A.S.r,'w');walls(fl,A.G.r,'w');walls(fl,A.L.r,'n');
-    walls(fl,A.J1.r,'w');walls(fl,A.J2.r,'w');walls(fl,A.BM.r,'w');walls(fl,A.BH.r,'w');walls(fl,A.GER.r,'n');walls(fl,A.SEG.r,'s');
+    walls(fl,A.J1.r,'w');walls(fl,A.J2.r,'w');walls(fl,A.BH.r,'n');walls(fl,A.GER.r,'n');walls(fl,A.SEG.r,'s');
     [[213,13,362,13],[547,235,547,662],[353,235,353,605]].forEach(([a,b,c,d])=>{const hz=b===d;if(hz)box((c-a)/10,2.4,0.12,glass(fl),X((a+c)/2),1.2,Z(b),false);else box(0.12,2.4,(d-b)/10,glass(fl),X(a),1.2,Z((b+d)/2),false);});
     const L=[];
     for(let i=2;i<=4;i++){L.push({px:182+i*23,py:190,rot:0,c:C.amber},{px:182+i*23,py:222,rot:Math.PI,c:C.amber});}
     for(let i=0;i<7;i++)L.push({px:372,py:270+i*48,rot:Math.PI/2},{px:372,py:292+i*48,rot:Math.PI/2});
     for(let i=0;i<3;i++)L.push({px:445,py:288+i*24,rot:Math.PI/2},{px:475,py:288+i*24,rot:-Math.PI/2});
     for(let i=0;i<4;i++)L.push({px:450+i*26,py:400,rot:0});
+    [502,527].forEach(x=>L.push({px:x,py:296,rot:0},{px:x,py:330,rot:Math.PI}));
     desks(fl,L);
     // Oficinas de gerentes: la fila norte mira al sur y la fila sur mira al norte, de frente a la otra. Entrando por el pasillo occidental: primeros (452), del medio (485) y finales (518);
     // mano derecha = fila sur (625), mano izquierda = fila norte (575)
@@ -686,13 +687,13 @@ html.embedded .music{right:auto;left:16px}
       [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx-0.12,0.72,sz+s*0.95);p.rotation.z=-0.25;});
       const GB=[442,728,458,752]; walls(fl,GB,'w',0,{skip:'ne'}); bath(fl,GB,'n',1);}
     // Cajeros automáticos contra el muro occidental, mirando al pasillo de las taquillas
-    [258,273].forEach(py=>{const g=new THREE.Group(); g.position.set(X(256),0,Z(py)); g.rotation.y=Math.PI/2; fl.g.add(g);
+    [292,306].forEach(py=>{const g=new THREE.Group(); g.position.set(X(221),0,Z(py)); g.rotation.y=Math.PI/2; fl.g.add(g);
       const B=(w,h,d,c,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m(c));o.position.set(x,y,z);o.castShadow=true;g.add(o);};
       B(1.0,1.75,0.75,'#2b2f45',0,0.88,0); B(0.7,0.42,0.04,'#8fc4e8',0,1.3,0.39); B(0.4,0.2,0.04,'#c7cad2',0,0.95,0.39); B(0.3,0.04,0.05,'#1b1d2e',0,1.06,0.4); B(1.04,0.24,0.79,C.amber,0,1.86,0);});
-    // Oficina del banco al lado de los cajeros: escritorio con asesor y silla para el cliente
-    {walls(fl,A.OBC.r,'e'); desks(fl,[{px:264,py:327,rot:-Math.PI/2,c:C.amber}],{workers:1,look:{polo:true,shirt:'#2f5fb3'}});
-      box(0.5,0.45,0.5,m('#5d78a8'),X(280),0.25,Z(320)); box(0.5,0.45,0.5,m('#5d78a8'),X(280),0.25,Z(334));
-      for(let i=0;i<2;i++) box(1.6,1.5,0.4,m('#e4e6ee'),X(262+i*18),0.75,Z(290));}
+    // Oficina externa del banco: cubículo horizontal independiente, abierto hacia el frente (sur), con asesor y sillas para clientes
+    {walls(fl,A.OBC.r,'s'); desks(fl,[{px:260,py:262,rot:Math.PI,c:C.amber}],{workers:1,look:{polo:true,shirt:'#2f5fb3'}});
+      box(0.5,0.45,0.5,m('#5d78a8'),X(254),0.25,Z(274)); box(0.5,0.45,0.5,m('#5d78a8'),X(266),0.25,Z(274));
+      box(0.4,1.5,1.6,m('#e4e6ee'),X(288),0.75,Z(262)); box(0.4,1.5,1.6,m('#e4e6ee'),X(232),0.75,Z(262));}
     // Salida de emergencia junto a la cocineta: escaleras encerradas con puerta metálica hacia el pasillo; bodega al lado
     {walls(fl,A.SE.r,'',0,{skip:'s'}); walls(fl,A.BO1.r,'w',0,{skip:'s'});
       const sx=X(190.5), zs=Z(158);
@@ -730,7 +731,7 @@ html.embedded .music{right:auto;left:16px}
     box(4,1.05,0.8,m(C.navy),X(318),0.53,Z(640)); box(4.2,0.06,1,m('#ffffff'),X(318),1.08,Z(640));
     box(3,0.45,0.9,m(C.teal),X(386),0.25,Z(615)); box(0.9,0.45,2,m(C.teal),X(368),0.25,Z(635));
     [240,262,284,306,328].forEach(x=>plant(fl,x,150,1));
-    [[385,262],[385,330],[385,410],[385,520],[385,600],[440,440],[500,440]].forEach(([x,y])=>plant(fl,x,y,0.9));
+    [[385,262],[385,330],[385,410],[385,520],[385,600],[440,440],[470,440]].forEach(([x,y])=>plant(fl,x,y,0.9));
   }
   // ---------- Sótano ----------
   {const fl=F(2),{box,rect,m,X,Z}=mk(fl);
@@ -829,7 +830,7 @@ html.embedded .music{right:auto;left:16px}
     vending(f2,98,124,-Math.PI/2);
     pingpong(f2,170,122);
     vending(f3,172,412,Math.PI/2); vending(f3,172,388,Math.PI/2,'#ec623b');
-    bath(f1,A.BM.r,'e',2); bath(f1,A.BH.r,'e',2); bath(f2,A.BS.r,'n',2); bath(f3,A.W3.r,'w',2);
+    bath(f1,A.BH.r,'e',2); bath(f2,A.BS.r,'n',2); bath(f3,A.W3.r,'w',2);
     // Más materas por los pasillos y áreas comunes
     [[392,300],[392,470],[392,560],[300,232],[200,232],[460,645],[405,690],[250,590],[540,455],[545,560]].forEach(([x,y])=>plant(f1,x,y,1));
     [[270,148],[270,440],[60,148],[60,440],[340,230],[150,445],[230,445]].forEach(([x,y])=>plant(f2,x,y,1));
@@ -840,7 +841,7 @@ html.embedded .music{right:auto;left:16px}
     [[278,200],[278,400],[120,310],[220,310]].forEach(([x,y])=>plant(f2,x,y,1.1,GREY));
     [[212,300],[212,430],[450,522],[820,522],[600,580],[995,300],[995,480]].forEach(([x,y])=>plant(f3,x,y,1.1,GREY));
     // Puestos internos en oficinas
-    desks(f1,[{px:434,py:764,rot:0},{px:470,py:300,rot:0},{px:520,py:300,rot:0}]);
+    desks(f1,[{px:434,py:764,rot:0},{px:470,py:300,rot:0}]);
     desks(f2,[{px:306,py:198,rot:0}]);
   }
 
@@ -851,7 +852,7 @@ html.embedded .music{right:auto;left:16px}
     // Tono pastel: el color del área mezclado con blanco
     a.pastel='#'+(a.floor?new THREE.Color(a.floor):new THREE.Color(a.color).lerp(new THREE.Color('#ffffff'),0.58)).getHexString();
     const mm=fm(fl,a.pastel,{unique:true,o:{transparent:!!(a.minor||a.floorOnly),opacity:a.floorOnly?0.6:(a.minor?0.85:1)}});
-    const o=mk(fl).rect(a.r,0.06,mm,(a.sink?-a.sink:0)+(a.floorOnly?0.005:0.02)); o.userData.area=a; areaMeshes.push(o); a.mesh=o; a.baseColor=new THREE.Color(a.pastel);
+    const o=mk(fl).rect(a.r,0.06,mm,(a.sink?-a.sink:0)+(a.floorOnly?0.005:0.02)+(a.lift||0)); o.userData.area=a; areaMeshes.push(o); a.mesh=o; a.baseColor=new THREE.Color(a.pastel);
   });
 
   // Avatares: Arya (golden retriever con arnés rosado y carné) y Oni (poodle rojizo de pelo crespo). Miran hacia -z
@@ -1069,7 +1070,9 @@ html.embedded .music{right:auto;left:16px}
   }
   {let n=0;[960,1005,1050].forEach(x=>[620,660,700,740,780].forEach(y=>{n++;seated(3,x,y,Math.PI/2,true,n%3===0?-1:n);}));}
   [0,1,3,4].forEach(i=>seated(1,308,290+i*55,Math.PI*1.5,false,i+20));
-  [2,3,5].forEach(i=>seated(1,292,290+i*55,Math.PI/2,false,i+30));
+  [2,3,5].forEach(i=>seated(1,257,290+i*55,Math.PI/2,false,i+30));
+  // Usuarios esperando su turno en el pasillo central, entre las dos filas de taquillas
+  for(let k=0;k<10;k++){const y=300+k*30; seated(1,273,y,Math.PI/2,true,k%4===3?-1:k+40); seated(1,287,y,Math.PI*1.5,true,k%3===2?-1:k+55);}
 
   const tmpD=new THREE.Vector3(), avo=new THREE.Vector3();
   // Empuje para esquivar a Oni y Arya
@@ -1136,7 +1139,7 @@ html.embedded .music{right:auto;left:16px}
   }
 
   // Destinos
-  const ORDER={1:['SEG','MA','COC','S','P14','TQS','CAJ','OBC','TQC','G','L','J1','J2','BM','BH','ESP','GER','SE','BO1','ASC','EM'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','NT','CR','TQ','RD','SJ3','CO3','W3','BO3']};
+  const ORDER={1:['SEG','MA','COC','S','P14','TQS','CAJ','OBC','TQC','G','L','J1','J2','BH','ESP','GER','SE','BO1','ASC','EM'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','NT','CR','TQ','RD','SJ3','CO3','W3','BO3']};
   const destEl=document.getElementById('dest'), infoEl=document.getElementById('info'), statusEl=document.getElementById('status');
   let current='1:acc', sel=null, tourQ=[];
   function renderDest(){
