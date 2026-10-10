@@ -323,6 +323,8 @@ html.embedded .music{right:auto;left:16px}
         <header style="background:#d9692e"><b>Zona naranja</b></header>
         <ul>
           <li><div><strong>Experiencia de servicio</strong><span>Puestos, taquillas de atención a usuarios, sala de audiencias virtuales y oficina de líderes.</span></div></li>
+          <li><div><strong>Taquillas del banco</strong><span>Frente a las taquillas de experiencia de servicio, con punto de turnos.</span></div></li>
+          <li><div><strong>Salidas de emergencia y ascensor</strong><span>Una salida de emergencia con escaleras junto a la cocineta y otra junto al acceso, al lado del ascensor.</span></div></li>
           <li><div><strong>Mesa de ayuda</strong><span>Seis puestos frente a la cocineta.</span></div></li>
           <li><div><strong>Gerentes</strong><span>Oficinas de gerentes y gerencia.</span></div></li>
         </ul>
@@ -347,6 +349,7 @@ html.embedded .music{right:auto;left:16px}
           <li><div><strong>CAD</strong><span>Área de archivo.</span></div></li>
           <li><div><strong>Radicación</strong></div></li>
           <li><div><strong>Digitalización</strong></div></li>
+          <li><div><strong>Gestión de notificaciones</strong></div></li>
           <li><div><strong>Correspondencia</strong><span>Con taquilla de atención a usuarios.</span></div></li>
           <li><div><strong>Conexión de soluciones</strong></div></li>
           <li><div><strong>Fotodetección</strong></div></li>
@@ -404,13 +407,18 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'BM',letter:'WC',name:'Baño mujeres',color:C.bano,r:[492,284,545,345],node:'BM',desc:'Baño de mujeres, dentro del bloque de experiencia de servicio.',tip:''},
     {f:1,id:'BH',letter:'WC',name:'Baño hombres',color:C.bano,r:[492,466,545,532],node:'BH',desc:'Baño de hombres, junto a la sala de juntas.',tip:''},
     {f:1,id:'P14',letter:'S',name:'Experiencia de servicio · Puestos',color:C.teal,floor:C.wood,r:[357,245,404,605],node:'P14',desc:'Puestos del equipo de experiencia de servicio, que atiende al ciudadano en sus trámites de movilidad desde el back office y el conmutador, con un servicio ágil, de calidad y apegado a la normatividad.',tip:''},
-    {f:1,id:'TQS',letter:'T',name:'Taquillas · Experiencia de servicio',color:C.teal,r:[250,250,352,600],node:'TQS',isNew:true,desc:'Taquillas donde los asesores de experiencia de servicio atienden de manera presencial a los usuarios.',tip:''},
+    {f:1,id:'TQS',letter:'T',name:'Taquillas · Experiencia de servicio',color:C.teal,r:[295,250,352,600],node:'TQS',isNew:true,desc:'Taquillas donde los asesores de experiencia de servicio atienden de manera presencial a los usuarios.',tip:''},
     {f:1,id:'BOD',letter:'',name:'Bodega',color:C.neutral,r:[420,188,495,262],node:'BOD',minor:true,desc:'Bodega.',tip:''},
+    {f:1,id:'PT',letter:'T',name:'Punto de turnos de las taquillas',color:C.teal,r:[250,250,295,280],node:'PT',desc:'Punto donde los usuarios toman su turno para ser atendidos en las taquillas.',tip:''},
+    {f:1,id:'TQC',letter:'B',name:'Taquillas del banco',color:C.amber,r:[250,375,295,600],node:'TQC',desc:'Taquillas del banco, donde los ciudadanos realizan sus pagos de manera presencial. Quedan frente a las taquillas de experiencia de servicio: los usuarios se ubican en el pasillo central, entre las dos filas.',tip:''},
     {f:1,id:'ESP',letter:'',name:'Sala de espera',color:C.neutral,r:[362,605,410,655],node:'ESP',minor:true,desc:'Sala de espera para visitantes.',tip:''},
     {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Punto de ingreso a la sede. El vigilante te recibe, registra tu llegada y te orienta hacia tu área.',tip:'Preséntate aquí al llegar.'},
     {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[410,728,458,778],node:'GER',minor:true,desc:'Oficina de la gerencia general, que dirige integralmente a sitti.',tip:''},
     {f:1,id:'ACC',letter:'',name:'Acceso',color:C.neutral,r:[255,682,300,700],node:'acc',minor:true,desc:'Acceso principal al piso.',tip:''},
-    {f:1,id:'ESC1',letter:'↓',name:'Escaleras a la zona verde',color:C.core,r:[80,15,165,140],node:'core',minor:true,desc:'Escaleras para bajar a la zona verde. La sede no tiene ascensor.',tip:''},
+    {f:1,id:'SE',letter:'EM',name:'Salida de emergencia',color:'#3fa535',r:[170,105,211,158],node:'SE',desc:'Salida de emergencia con escaleras, cerrada con una puerta metálica. Úsala solo en caso de evacuación.',tip:'Mantén siempre despejado el paso hacia esta puerta.'},{f:1,id:'BO1',letter:'',name:'Bodega',color:C.neutral,r:[170,15,211,103],node:'BO1',minor:true,desc:'Bodega junto a las escaleras de emergencia.',tip:''},
+    {f:1,id:'ASC',letter:'A',name:'Ascensor',color:'#9da1bf',r:[150,712,196,788],node:'ASC',desc:'Ascensor del edificio, junto al acceso principal.',tip:''},
+    {f:1,id:'EM',letter:'EM',name:'Escaleras de emergencia',color:'#3fa535',r:[200,708,258,795],node:'EM',desc:'Escaleras de emergencia, junto al acceso principal. Úsalas en caso de evacuación y sigue la señalización verde.',tip:'En una emergencia no uses el ascensor.'},
+    {f:1,id:'ESC1',letter:'↓',name:'Escaleras a la zona verde',color:C.core,r:[80,15,165,140],node:'core',minor:true,desc:'Escaleras para bajar a la zona verde.',tip:''},
     // Zona verde
     {f:2,id:'P106',letter:'CC',name:'Cobro coactivo / Gestión legal',color:C.green,floor:C.wood,r:[64,145,276,438],node:'P',floorOnly:true,lbl:[170,292],desc:'Gestión jurídica de cobro: ejecuta el cobro coactivo de las obligaciones de tránsito (estudio de títulos, mandamientos de pago, medidas cautelares, excepciones y recursos) y previene la prescripción. Gestión legal: brinda soporte jurídico a toda la operación con tutelas, PQRSD, demandas, actos administrativos y conceptos jurídicos.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
     {f:2,id:'EB',letter:'E',name:'Experiencia y bienestar',color:C.amber,r:[8,220,58,334],node:'EB',isNew:true,desc:'Gestiona la experiencia del talento en sitti: atracción y selección, onboarding, formación, desarrollo organizacional con el Modelo Evolucionar, bienestar, comunicaciones y seguridad y salud en el trabajo. Así la organización cuenta con talentos preparados, comprometidos y alineados con su propósito.',tip:'Acércate si tienes dudas sobre bienestar, actividades o tu proceso de onboarding.'},
@@ -429,9 +437,10 @@ html.embedded .music{right:auto;left:16px}
     {f:3,id:'BO3',letter:'B',name:'Bodega',color:C.neutral,r:[775,150,925,235],node:'BO3',desc:'Bodega.',tip:''},
     {f:3,id:'SJ3',letter:'J',name:'Sala de juntas',color:C.juntas,r:[45,45,195,160],node:'SJ3',desc:'Sala de juntas de la zona azul.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:3,id:'OCL',letter:'CL',name:'Coordinadores y líderes',color:C.office,r:[45,160,195,265],node:'OCL',isNew:true,desc:'Oficina de los coordinadores y líderes de los equipos de la zona azul.',tip:''},
-    {f:3,id:'CO3',letter:'C',name:'Cocina',color:C.coral,r:[45,265,185,430],node:'CO3',desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene mesas, nevera, microondas, cafetera y máquinas dispensadoras de alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
-    {f:3,id:'W3',letter:'WC',name:'Baño',color:C.bano,r:[45,430,135,490],node:'W3',desc:'Baño, junto a la cocina.',tip:''},
-    {f:3,id:'DG',letter:'D',name:'Digitalización',color:C.teal,r:[200,585,345,650],node:'DG',desc:'Digitaliza e indexa los documentos y expedientes del proceso contravencional y los carga al expediente digital. Asegura la calidad de las imágenes y la veracidad de la información en los sistemas.',tip:''},
+    {f:3,id:'CO3',letter:'C',name:'Cocina',color:C.coral,r:[45,265,195,650],node:'CO3',desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene mesas, nevera, microondas, cafetera y máquinas dispensadoras de alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:3,id:'W3',letter:'WC',name:'Baño',color:C.bano,r:[45,580,120,650],node:'W3',desc:'Baño, dentro de la cocina.',tip:''},
+    {f:3,id:'DG',letter:'D',name:'Digitalización',color:C.teal,r:[270,585,345,650],node:'DG',desc:'Digitaliza e indexa los documentos y expedientes del proceso contravencional y los carga al expediente digital. Asegura la calidad de las imágenes y la veracidad de la información en los sistemas.',tip:''},
+    {f:3,id:'NT',letter:'N',name:'Gestión de notificaciones',color:C.amber,r:[195,585,270,650],node:'NT',desc:'Notifica a los ciudadanos los comparendos, actuaciones y acuerdos de pago del proceso contravencional por los medios definidos (correspondencia y aviso), garantizando el debido proceso.',tip:''},
     {f:3,id:'CAD',letter:'CAD',name:'CAD · Archivo',color:'#7c80c8',r:[90,650,640,960],sink:1.4,lbl:[370,800],node:'CAD',desc:'Centro de Administración Documental. Custodia, organiza y administra la documentación física y digital de la operación. Registra ingresos y salidas y suministra los documentos que solicitan las áreas, la Secretaría de Movilidad y las entidades autorizadas.',tip:'Baja con cuidado: el CAD está a un nivel más bajo que el resto de la zona azul.'},
     {f:3,id:'CR',letter:'Co',name:'Correspondencia',color:C.amber,r:[700,585,840,860],node:'CR',desc:'Recibe, clasifica, radica y direcciona las PQRSD y solicitudes ciudadanas que llegan por Mercurio WEB, correo y taquillas. Envía y notifica las respuestas oficiales y registra las limitaciones en QX, con trazabilidad y oportunidad.',tip:''},
     {f:3,id:'TQ',letter:'T',name:'Taquilla de correspondencia',color:C.coral,r:[840,585,925,760],node:'TQ',isNew:true,desc:'Taquilla donde los asesores de correspondencia atienden a los ciudadanos y reciben sus PQRSD y solicitudes.',tip:''},
@@ -445,22 +454,22 @@ html.embedded .music{right:auto;left:16px}
     1:{acc:[270,692],lob:[330,692],wait:[385,668],s1:[418,668],s2:[418,600],s3:[418,500],s4:[418,420],s5:[418,330],s6:[418,262],
        t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
        cd:[440,252],BOD:[458,226],S:[462,330],BM:[518,315],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
-       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[262,612],TQS:[285,430]},
+       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],PT:[282,275],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750]},
     2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,180],JS:[306,255],
        P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[146,150],COC2:[146,120],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
     3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],RD:[1035,422],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
-       t2:[500,190],CA:[550,120],P:[488,360],CSn:[306,360],ASn:[669,360],t3:[205,190],l1:[205,100],SJ3:[120,100],ocd:[205,212],OCL:[120,212],l2:[205,350],CO3:[115,350],l25:[205,460],W3:[90,460],
-       l3:[205,550],dgn:[272,560],DG:[272,615],b1:[370,550],cadN:[370,640],cad1:[370,705,-1.4],CAD:[370,820,-1.4],
+       t2:[500,190],CA:[550,120],P:[488,360],CSn:[306,360],ASn:[669,360],t3:[205,190],l1:[205,100],SJ3:[120,100],ocd:[205,212],OCL:[120,212],l2:[205,350],CO3:[150,425],l25:[205,460],k3:[150,460],w3n:[82,560],W3:[82,615],
+       l3:[205,550],ntn:[232,560],NT:[232,615],dgn:[307,560],DG:[307,615],b1:[370,550],cadN:[370,640],cad1:[370,705,-1.4],CAD:[370,820,-1.4],
        b2:[670,550],pc:[670,800],b3:[770,550],crn:[770,580],CR:[770,720],tqn:[960,560],SEC:[990,700],TQ:[880,670],f1:[940,100],FA:[850,100]}
   };
   const EDGES={
     1:[['acc','lob'],['lob','wait'],['wait','s1'],['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','t1'],['t1','t2'],['t2','t3'],['t3','COC'],
        ['t2','MA'],['MA','w18'],['w18','sp'],['sp','core'],['s6','cd'],['cd','BOD'],['s5','S'],['S','BM'],['s3','J1'],['J1','BH'],['s2','G'],['lob','L'],['lob','SEG'],
-       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS']],
+       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','PT'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM']],
     2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','OL'],['v3','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
        ['v1','k7'],['k7','BS'],['k7','k4'],['k4','COC2'],['k4','k6'],['k6','SJ']],
     3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','CSn'],['tg2','ASn'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
-       ['t3','l2'],['l2','CO3'],['l2','l25'],['l25','W3'],['l25','l3'],['l3','dgn'],['dgn','DG'],['l3','b1'],['b1','cadN'],['cadN','cad1'],['cad1','CAD'],['b1','b2'],['b2','pc'],['b2','b3'],
+       ['t3','l2'],['l2','l25'],['l25','k3'],['k3','CO3'],['k3','w3n'],['w3n','W3'],['l25','l3'],['l3','ntn'],['ntn','NT'],['ntn','dgn'],['dgn','DG'],['l3','b1'],['b1','cadN'],['cadN','cad1'],['cad1','CAD'],['b1','b2'],['b2','pc'],['b2','b3'],
        ['b3','crn'],['crn','CR'],['b3','tqn'],['tqn','SEC'],['SEC','TQ'],
        ['b3','h2'],['h2','h3'],['h3','h1'],['h3','RD'],['core','f1'],['f1','FA']]
   };
@@ -554,16 +563,16 @@ html.embedded .music{right:auto;left:16px}
     const mat4=d=>{const g=new THREE.Object3D();g.position.set(fl.X(d.px),0,fl.Z(d.py));g.rotation.y=d.rot;g.updateMatrixWorld();return g.matrixWorld;};
     list.forEach((d,i)=>{const mw=mat4(d);const put=(im,x,y,z)=>{dm.position.copy(t.set(x,y,z).applyMatrix4(mw));dm.rotation.set(0,d.rot,0);dm.updateMatrix();im.setMatrixAt(i,dm.matrix);};
       put(dk,0,0.75,0);put(lg,0.42,0.36,0);put(dv,0,0.99,-0.32);put(sc,0,0.95,-0.15);(byC[d.c||'#4a4f5c']=byC[d.c||'#4a4f5c']||[]).push(d);
-      if(((i*37+Math.round(d.px*3+d.py))%100)<ratio*100){const c=new THREE.Vector3(0,0,0.62).applyMatrix4(mw);SEATS.push({fl,parent:fl.g,x:c.x,z:c.z,yaw:d.rot,kind:'work'});}});
+      if(((i*37+Math.round(d.px*3+d.py))%100)<ratio*100){const c=new THREE.Vector3(0,0,0.62).applyMatrix4(mw);SEATS.push({fl,parent:fl.g,x:c.x,z:c.z,yaw:d.rot,kind:'work',look:d.look||opts.look});}});
     Object.entries(byC).forEach(([c,arr])=>{const ch=new THREE.InstancedMesh(chairG,m(c),arr.length);ch.castShadow=true;
       arr.forEach((d,i)=>{dm.position.copy(t.set(0,0.28,0.62).applyMatrix4(mat4(d)));dm.rotation.set(0,d.rot,0);dm.updateMatrix();ch.setMatrixAt(i,dm.matrix);});fl.g.add(ch);});
   }
   // Matera: maceta, tierra y hojas alargadas en abanico (tipo monstera / lengua de suegra)
   const POTS=['#c46a3c','#f1efe9','#33357e','#d9c7a8'];
   let plantN=0;
-  function plant(fl,px,py,s=1){const {m}=mk(fl);const x=fl.X(px),z=fl.Z(py),k=plantN++;
-    const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.32*s,0.24*s,0.55*s,18),m(POTS[k%POTS.length]));pot.position.set(x,0.275*s,z);pot.castShadow=true;fl.g.add(pot);
-    const rim=new THREE.Mesh(new THREE.TorusGeometry(0.31*s,0.03*s,6,18),m(POTS[k%POTS.length]));rim.rotation.x=Math.PI/2;rim.position.set(x,0.55*s,z);fl.g.add(rim);
+  function plant(fl,px,py,s=1,potC){const {m}=mk(fl);const x=fl.X(px),z=fl.Z(py),k=plantN++, pc=potC||POTS[k%POTS.length];
+    const pot=new THREE.Mesh(new THREE.CylinderGeometry(0.32*s,0.24*s,0.55*s,18),m(pc));pot.position.set(x,0.275*s,z);pot.castShadow=true;fl.g.add(pot);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(0.31*s,0.03*s,6,18),m(pc));rim.rotation.x=Math.PI/2;rim.position.set(x,0.55*s,z);fl.g.add(rim);
     const soil=new THREE.Mesh(new THREE.CylinderGeometry(0.28*s,0.28*s,0.02,14),m('#4a3526'));soil.position.set(x,0.53*s,z);fl.g.add(soil);
     const leafM=[m('#3f7a3a'),m('#56954a'),m('#2f6a34')], tall=k%3===1, n=tall?8:11;
     for(let i=0;i<n;i++){const a=i/n*Math.PI*2+k, lean=tall?0.18:0.55+Math.random()*0.3;
@@ -623,8 +632,11 @@ html.embedded .music{right:auto;left:16px}
     if(along){box(0.5,0.85,W,wh,o,0.43,cm);box(0.06,0.7,W,mir,o+inw*0.24,1.45,cm);}else{box(W,0.85,0.5,wh,cm,0.43,o);box(W,0.7,0.06,mir,cm,1.45,o+inw*0.24);}
   }
   // Sala de juntas: mesa, sillas a ambos lados y, si se indica, personas reunidas (occ = cuántas)
-  function meet(fl,r,n,occ=0){const {box,m}=mk(fl);const w=(fl.X(r[2])-fl.X(r[0]))*0.42,d=(fl.Z(r[3])-fl.Z(r[1]))*0.55,cx=fl.X((r[0]+r[2])/2),cz=fl.Z((r[1]+r[3])/2);
+  function meet(fl,r,n,occ=0,tvS=false){const {box,m}=mk(fl);const w=(fl.X(r[2])-fl.X(r[0]))*0.42,d=(fl.Z(r[3])-fl.Z(r[1]))*0.55,cx=fl.X((r[0]+r[2])/2),cz=fl.Z((r[1]+r[3])/2);
     box(w,0.08,d,m('#c9a57a'),cx,0.75,cz);box(w*0.3,0.7,d*0.3,m('#9da1bf'),cx,0.37,cz);
+    // Televisor en la cabecera de la mesa (muro norte, o muro sur si tvS)
+    const tdir=tvS?-1:1, tz=fl.Z(tvS?r[3]:r[1])+tdir*0.16, tw=Math.min(2.2,w*1.1);
+    box(tw,tw*0.58,0.07,m('#1b1d2e'),cx,1.65,tz); box(tw*0.92,tw*0.5,0.02,m('#3d5f9e'),cx,1.65,tz+tdir*0.045); box(tw*0.5,0.04,0.12,m('#1b1d2e'),cx,1.65-tw*0.29-0.04,tz+tdir*0.03);
     let k=0;
     for(let i=0;i<n;i++){const t=(i+0.5)/n, z=cz-d/2+t*d;box(0.45,0.45,0.45,m('#33357e'),cx-w/2-0.4,0.27,z);box(0.45,0.45,0.45,m('#33357e'),cx+w/2+0.4,0.27,z);
       if(k<occ){SEATS.push({fl,parent:fl.g,x:cx-w/2-0.4,z,yaw:-Math.PI/2,kind:'meet'});k++;}
@@ -635,7 +647,7 @@ html.embedded .music{right:auto;left:16px}
 
   // ---------- Piso 1 ----------
   {const fl=F(1),{box,rect,m,X,Z}=mk(fl);
-    [[165,155,392,240],[213,13,362,160],[353,235,547,662],[418,186,497,264],[255,605,547,780],[25,155,170,240],[78,13,165,160],[245,240,356,610]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
+    [[165,155,392,240],[213,13,362,160],[353,235,547,662],[418,186,497,264],[255,605,547,780],[25,155,170,240],[78,13,165,160],[245,240,356,610],[165,13,213,160],[145,700,262,800]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
     [[405,240,430,662],[290,170,392,238],[300,655,460,700],[165,140,215,165]].forEach(r=>rect(r,0.04,m(C.cor),0.01));
     rect([216,168,288,238],0.04,m(C.wood),0.012);
     // Escaleras (bajan al sótano)
@@ -643,14 +655,15 @@ html.embedded .music{right:auto;left:16px}
     for(let i=0;i<10;i++) box(3.4,0.2,1.0,stM,X(100),0.1,Z(30+i*10),true);
     box(0.12,1,10,m('#33357e'),X(118),0.5,Z(75),false);
     for(let i=0;i<8;i++) box(1.1,0.25+i*0.18,3.6,m('#c4c7da'),X(36+i*5.5),(0.25+i*0.18)/2,Z(205),true);
-    walls(fl,A.COC.r,'s');walls(fl,A.TQS.r,'s');walls(fl,A.BOD.r,'w');
-    // Taquillas de atención: mostrador corrido con divisiones, personal al oriente y usuarios al occidente
-    {const zA=Z(262),zB=Z(590),len=zB-zA;
+    walls(fl,A.COC.r,'s');walls(fl,[250,250,352,600],'s');walls(fl,A.BOD.r,'w');
+    // Dos filas de taquillas enfrentadas: experiencia de servicio (oriente) y cobro (occidente); los usuarios quedan en el pasillo central
+    {const zA=Z(262),zB=Z(590),len=zB-zA, UNI={polo:true,shirt:'#2f5fb3'};
       box(0.5,1.1,len,m('#ffffff'),X(322),0.55,(zA+zB)/2); box(0.7,0.06,len,m(C.teal),X(322),1.12,(zA+zB)/2);
-      const TQ=[];for(let i=0;i<6;i++){const y=290+i*55;TQ.push({px:338,py:y,rot:Math.PI/2,c:C.teal});
-        box(0.9,1.5,0.06,m('#d8eeee'),X(322),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(300),0.25,Z(y));}
-      desks(fl,TQ,{workers:1});
-      for(let k=0;k<4;k++) for(let j=0;j<3;j++) box(0.5,0.45,0.5,m('#5d78a8'),X(268),0.25,Z(300+k*80+j*12));}walls(fl,A.S.r,'w');walls(fl,A.G.r,'w');walls(fl,A.L.r,'n');
+      const zC=Z(372),lenC=zB-zC; box(0.5,1.1,lenC,m('#ffffff'),X(278),0.55,(zC+zB)/2); box(0.7,0.06,lenC,m(C.amber),X(278),1.12,(zC+zB)/2);
+      const TQ=[],TC=[];for(let i=0;i<6;i++){const y=290+i*55;TQ.push({px:338,py:y,rot:Math.PI/2,c:C.teal});if(i>=2) TC.push({px:262,py:y,rot:-Math.PI/2,c:C.amber});
+        box(0.9,1.5,0.06,m('#d8eeee'),X(322),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(308),0.25,Z(y));
+        if(i>=2){box(0.9,1.5,0.06,m('#f6e6c8'),X(278),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(292),0.25,Z(y));}}
+      desks(fl,TQ,{workers:1,look:UNI}); desks(fl,TC,{workers:1,look:UNI});}walls(fl,A.S.r,'w');walls(fl,A.G.r,'w');walls(fl,A.L.r,'n');
     walls(fl,A.J1.r,'w');walls(fl,A.J2.r,'w');walls(fl,A.BM.r,'w');walls(fl,A.BH.r,'w');walls(fl,A.GER.r,'n');walls(fl,A.SEG.r,'s');
     [[213,13,362,13],[547,235,547,662],[353,235,353,605]].forEach(([a,b,c,d])=>{const hz=b===d;if(hz)box((c-a)/10,2.4,0.12,glass(fl),X((a+c)/2),1.2,Z(b),false);else box(0.12,2.4,(d-b)/10,glass(fl),X(a),1.2,Z((b+d)/2),false);});
     const L=[];
@@ -658,11 +671,50 @@ html.embedded .music{right:auto;left:16px}
     for(let i=0;i<7;i++)L.push({px:372,py:270+i*48,rot:Math.PI/2},{px:372,py:292+i*48,rot:Math.PI/2});
     for(let i=0;i<3;i++)L.push({px:445,py:288+i*24,rot:Math.PI/2},{px:475,py:288+i*24,rot:-Math.PI/2});
     for(let i=0;i<4;i++)L.push({px:450+i*26,py:400,rot:0});
-    [[452,575],[485,575],[518,575],[452,625],[485,625],[518,625]].forEach(([x,y])=>L.push({px:x,py:y,rot:0}));
     desks(fl,L);
+    // Oficinas de gerentes: la fila norte mira al sur y la fila sur mira al norte, de frente a la otra. Entrando por el pasillo occidental: primeros (452), del medio (485) y finales (518);
+    // mano derecha = fila sur (625), mano izquierda = fila norte (575)
+    {const MAN={long:false,shirt:'#33357e',pants:'#2b2f45'}, WOMAN={long:true,shirt:'#ec623b',pants:'#4a4f5c'};
+      const GR=[[452,625,WOMAN],[452,575,MAN],[485,625,WOMAN],[485,575,MAN],[518,625,MAN],[518,575,WOMAN]], rotOf=y=>y>600?0:Math.PI;
+      desks(fl,GR.map(([x,y])=>({px:x,py:y,rot:rotOf(y)})),{workers:0});
+      GR.forEach(([x,y,lk],i)=>SEATS.push({fl,parent:fl.g,x:X(x),z:Z(y)+(y>600?0.62:-0.62),yaw:rotOf(y),kind:'work',look:Object.assign({skin:['#c68e6a','#f1c9a5','#e0b48f','#a8714a','#8d5a3b','#e0b48f'][i],hair:['#2b2230','#5a3a22','#1a1410','#3d2a1e','#b07a3a','#2b2230'][i]},lk)}));}
+    // Oficina de la gerencia: sofá grande blanco y gris contra el muro occidental y baño privado en la esquina nororiental
+    {const sx=X(418),sz=Z(745),sm=m('#f4f4f6'),cu=m('#9a9ca6');
+      box(0.95,0.42,2.8,sm,sx,0.21,sz); box(0.3,0.55,2.8,sm,sx-0.33,0.68,sz);
+      [-1,1].forEach(s=>box(0.95,0.62,0.22,sm,sx,0.31,sz+s*1.4));
+      [-0.82,0.82].forEach(dz=>box(0.62,0.12,1.3,cu,sx+0.12,0.48,sz+dz));
+      [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx-0.12,0.72,sz+s*0.95);p.rotation.z=-0.25;});
+      const GB=[442,728,458,752]; walls(fl,GB,'w',0,{skip:'ne'}); bath(fl,GB,'n',1);}
+    // Punto de turnos de las taquillas: tótem con pantalla e impresora de turnos
+    {const kx=X(270),kz=Z(266);
+      box(0.6,1.15,0.45,m(C.navy),kx,0.58,kz); const sc=box(0.5,0.38,0.05,m('#bfe3f2'),kx,1.32,kz+0.12); sc.rotation.x=-0.35;
+      box(0.62,0.06,0.47,m(C.teal),kx,1.17,kz); box(0.18,0.04,0.02,m('#ffffff'),kx,0.95,kz+0.235);}
+    // Salida de emergencia junto a la cocineta: escaleras encerradas con puerta metálica hacia el pasillo; bodega al lado
+    {walls(fl,A.SE.r,'',0,{skip:'s'}); walls(fl,A.BO1.r,'w',0,{skip:'s'});
+      const sx=X(190.5), zs=Z(158);
+      [-1,1].forEach(s=>box(1.0,WH,WT,m(fl.wall),sx+s*1.55,WH/2,zs));
+      box(2.1,2.1,0.08,m('#8a8f99'),sx,1.05,zs); box(0.9,0.06,0.06,m('#d6d9e0'),sx,1.0,zs+0.06);
+      box(2.3,0.1,0.12,m('#5d6170'),sx,2.15,zs); box(0.9,0.3,0.06,m('#2e9e44'),sx,2.45,zs+0.04); box(0.6,0.12,0.07,m('#ffffff'),sx,2.45,zs+0.05);
+      for(let i=0;i<9;i++) box(3.4,0.2+i*0.2,0.5,m('#cfd1de'),sx,(0.2+i*0.2)/2,Z(150-i*4.5));
+      box(0.06,0.06,4.2,m('#3fa535'),sx-1.75,1.6,Z(132)).rotation.x=0.42;
+      for(let i=0;i<3;i++) box(3.0,1.8,0.45,m('#d5d8ea'),X(193),0.9,Z(25+i*24));}
+    // Puerta de vidrio del acceso a sitti, al lado del puesto del vigilante
+    {const gx=X(257), gz=Z(691);
+      box(0.16,2.3,0.12,m('#33357e'),gx,1.15,gz-0.95); box(0.16,2.3,0.12,m('#33357e'),gx,1.15,gz+0.95); box(0.16,0.14,2.02,m('#33357e'),gx,2.3,gz);
+      [-0.47,0.47].forEach(dz=>{box(0.05,2.2,0.86,glass(fl),gx,1.1,gz+dz,false); box(0.07,0.5,0.04,m('#c7cad2'),gx,1.05,gz+dz*0.12);});}
+    // Ascensor junto al acceso: cabina, marco y puertas metálicas mirando al oriente
+    {const ax=X(173),az=Z(750);
+      box(3.2,2.6,3.6,m('#c7c9dc'),ax-0.4,1.3,az); box(0.2,2.3,2.0,m('#8f93b5'),ax+1.25,1.15,az);
+      [-0.45,0.45].forEach(dz=>box(0.06,2.0,0.85,m('#e4e6ee'),ax+1.37,1.0,az+dz));
+      box(0.04,0.3,0.15,m('#33357e'),ax+1.36,1.3,az+1.25); box(0.04,0.06,0.06,m(C.amber),ax+1.39,1.35,az+1.25);}
+    // Escaleras de emergencia: tramo de escalones con baranda y señal verde de salida
+    {const ex=X(229);
+      for(let i=0;i<9;i++) box(4.4,0.2+i*0.2,0.85,m('#cfd1de'),ex,(0.2+i*0.2)/2,Z(785-i*8.5));
+      [-1,1].forEach(s=>{const r=box(0.06,0.06,8,m('#3fa535'),ex+s*2.15,1.9,Z(751)); r.rotation.x=0.23;});
+      box(1.2,0.4,0.08,m('#2e9e44'),ex,2.4,Z(712)); box(0.8,0.16,0.09,m('#ffffff'),ex,2.4,Z(712));}
     for(let i=1;i<3;i++) box(0.12,WH,10,m('#ffffff'),X(428+i*39),WH/2,Z(600));
     box(11.6,WH,0.12,m('#ffffff'),X(487),WH/2,Z(600));
-    meet(fl,A.J1.r,3,4); meet(fl,A.J2.r,4,3);
+    meet(fl,A.J1.r,3,4,true); meet(fl,A.J2.r,4,3,true);
     // Cocineta: mesón, nevera, mesas
     box(1,0.95,9,m('#ffffff'),X(228),0.48,Z(70)); box(0.9,1.9,0.8,m('#d9dbe8'),X(228),0.95,Z(128));
     roundTables(fl,[[270,85],[320,85],[270,128],[320,128]],C.coral);
@@ -712,15 +764,15 @@ html.embedded .music{right:auto;left:16px}
     [[45,45,1075,585],[45,585,1075,650],[45,650,90,960],[640,650,1075,960]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
     // CAD hundido y ampliado: losa más abajo, como otro sótano
     rect(A.CAD.r,0.4,m('#d9dbe9'),-SK-0.4);
-    [[195,165,775,212],[195,45,215,520],[45,515,1000,585],[925,185,1000,585],[760,212,775,260],[45,585,200,650],[345,585,700,650],[640,650,700,960],[775,235,925,262]].forEach(r=>rect(r,0.04,m(C.cor),0.02));
-    walls(fl,A.SJ3.r,'e');walls(fl,A.OCL.r,'e');walls(fl,A.CA.r,'s');walls(fl,A.FA.r,'e');walls(fl,A.BO3.r,'s');walls(fl,A.CO3.r,'e');walls(fl,A.W3.r,'e');
+    [[195,165,775,212],[195,45,215,520],[195,515,1000,585],[925,185,1000,585],[760,212,775,260],[345,585,700,650],[640,650,700,960],[775,235,925,262]].forEach(r=>rect(r,0.04,m(C.cor),0.02));
+    walls(fl,A.SJ3.r,'e');walls(fl,A.OCL.r,'e');walls(fl,A.CA.r,'s');walls(fl,A.FA.r,'e');walls(fl,A.BO3.r,'s');walls(fl,A.CO3.r,'e',0,{skip:'s'});walls(fl,A.W3.r,'n',0,{skip:'ws'});
     const W=m(fl.wall), x0=X(45),x1=X(1075),z0=Z(45),z1=Z(960);
     // Digitalización sobre el costado superior del CAD: su muro sur es una ventana que da al archivo
-    walls(fl,A.DG.r,'n',0,{win:'s'});
-    box(X(345)-X(200),SK,WT,W,(X(200)+X(345))/2,-SK/2,Z(650));
+    walls(fl,A.NT.r,'n',0,{win:'s',skip:'we'}); walls(fl,A.DG.r,'n',0,{win:'s'});
+    box(X(345)-X(195),SK,WT,W,(X(195)+X(345))/2,-SK/2,Z(650));
     walls(fl,A.CAD.r,'',SK,{skip:'n'});
     const cadN=(xa,xb)=>box(X(xb)-X(xa),WH+SK,WT,W,(X(xa)+X(xb))/2,(WH-SK)/2,Z(650));
-    cadN(90,200); cadN(387,640);
+    cadN(45,195); cadN(387,640);
     walls(fl,A.CR.r,'n');walls(fl,A.TQ.r,'n',0,{skip:'e'});walls(fl,A.RD.r,'w');
     box(x1-x0,WH,0.18,W,(x0+x1)/2,WH/2,z0); box(x1-x0,WH,0.18,W,(x0+x1)/2,WH/2,z1); box(0.18,WH,z1-z0,W,x0,WH/2,(z0+z1)/2); box(0.18,WH,z1-z0,W,x1,WH/2,(z0+z1)/2);
     // Escalones de bajada al CAD desde el pasillo
@@ -739,7 +791,9 @@ html.embedded .music{right:auto;left:16px}
     const TQL=[]; [630,690].forEach(y=>TQL.push({px:880,py:y,rot:-Math.PI/2,c:C.coral})); desks(fl,TQL,{workers:1});
     L.push({px:1040,py:395,rot:-Math.PI/2,c:C.yellow},{px:1040,py:450,rot:-Math.PI/2,c:C.yellow});
     // Digitalización: puestos mirando hacia la ventana del CAD
-    [230,272,314].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.teal}));
+    [288,326].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.teal}));
+    // Gestión de notificaciones, junto a Digitalización
+    [214,251].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.amber}));
     // Oficina de coordinadores y líderes
     [85,150].forEach(x=>L.push({px:x,py:190,rot:0},{px:x,py:240,rot:Math.PI}));
     desks(fl,L);
@@ -749,7 +803,7 @@ html.embedded .music{right:auto;left:16px}
     box(0.5,1.1,X(1)*0+(Z(755)-Z(590)),m('#ffffff'),X(922),0.55,(Z(590)+Z(755))/2); box(0.7,0.06,Z(755)-Z(590),m(C.coral),X(922),1.12,(Z(590)+Z(755))/2);
     [650,710].forEach(y=>box(0.06,1.4,0.9,m('#f6d9cc'),X(922),0.7,Z(y+30)));
     meet(fl,A.SJ3.r,3,3);
-    roundTables(fl,[[130,320],[130,395]],C.coral);
+    roundTables(fl,[[130,320],[130,395],[100,480],[160,530]],C.coral);
     box(0.9,1.1,0.7,m('#5d6170'),X(330),0.55,Z(600));
     for(let i=0;i<3;i++) box(5.4,1.8,0.45,m('#d5d8ea'),X(850),0.9,Z(165+i*24));
     [[230,230],[740,230],[230,500],[740,500],[600,190]].forEach(([x,y])=>plant(fl,x,y,0.9));
@@ -777,8 +831,13 @@ html.embedded .music{right:auto;left:16px}
     [[392,300],[392,470],[392,560],[300,232],[200,232],[460,645],[405,690],[250,590],[540,455],[545,560]].forEach(([x,y])=>plant(f1,x,y,1));
     [[270,148],[270,440],[60,148],[60,440],[340,230],[150,445],[230,445]].forEach(([x,y])=>plant(f2,x,y,1));
     [[205,200],[770,200],[205,500],[760,500],[930,300],[930,520],[620,560],[690,860-30]].forEach(([x,y])=>plant(f3,x,y,1));
+    // Materas grises con plantas verdes repartidas por los pasillos de las tres zonas
+    const GREY='#8e9199';
+    [[428,350],[483,532],[428,560],[160,232],[300,236],[262,640],[524,668]].forEach(([x,y])=>plant(f1,x,y,1.1,GREY));
+    [[278,200],[278,400],[120,310],[220,310]].forEach(([x,y])=>plant(f2,x,y,1.1,GREY));
+    [[212,300],[212,430],[450,522],[820,522],[600,580],[995,300],[995,480]].forEach(([x,y])=>plant(f3,x,y,1.1,GREY));
     // Puestos internos en oficinas
-    desks(f1,[{px:434,py:748,rot:0},{px:470,py:300,rot:0},{px:520,py:300,rot:0}]);
+    desks(f1,[{px:434,py:764,rot:0},{px:470,py:300,rot:0},{px:520,py:300,rot:0}]);
     desks(f2,[{px:306,py:198,rot:0}]);
   }
 
@@ -910,7 +969,13 @@ html.embedded .music{right:auto;left:16px}
     const legs=[-0.09,0.09].map(x=>{const p=new THREE.Group();p.position.set(x,0.76,0);const l=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.06,0.7,8),pants);l.position.y=-0.36;p.add(l);
       const s=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.06,0.2),shoe);s.position.set(0,-0.72,-0.04);p.add(s);g.add(p);return p;});
     const arms=[-0.25,0.25].map(x=>{const p=new THREE.Group();p.position.set(x,1.38,0);const a=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.05,0.6,8),o.sleeve?skin:shirt);a.position.y=-0.3;p.add(a);g.add(p);return p;});
-    const badge=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.11,0.01),m('#ffffff'));badge.position.set(0.08,1.12,-0.19);g.add(badge);
+    if(o.polo){ // camisa tipo polo con cuello y carnet colgando del cuello
+      const shade='#'+new THREE.Color(o.shirt).multiplyScalar(0.8).getHexString();
+      [-1,1].forEach(s=>{const c=new THREE.Mesh(new THREE.BoxGeometry(0.11,0.05,0.07),m(shade));c.position.set(s*0.06,1.43,-0.15);c.rotation.z=-s*0.35;g.add(c);
+        const st=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.3,0.01),m('#ffb607'));st.position.set(s*0.045,1.27,-0.205);st.rotation.z=s*0.28;g.add(st);});
+      const card=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.13,0.012),m('#ffffff'));card.position.set(0,1.07,-0.21);g.add(card);
+      const band=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.035,0.014),m('#33357e'));band.position.set(0,1.12,-0.212);g.add(band);
+    } else {const badge=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.11,0.01),m('#ffffff'));badge.position.set(0.08,1.12,-0.19);g.add(badge);}
     let broom=null;
     if(o.broom){
       const ap=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.5,0.02),m('#2f6f8f'));ap.position.set(0,1.0,-0.19);g.add(ap);
@@ -928,14 +993,12 @@ html.embedded .music{right:auto;left:16px}
         if(c==='#ffffff'){const cof=new THREE.Mesh(new THREE.CylinderGeometry(0.036,0.036,0.01,10),m('#4a2c1a'));cof.position.set(x,0.11,z);tr.add(cof);}});
       arms.forEach(a=>a.rotation.x=1.25);
     }
-    if(o.guard){ // vigilante: gorra y chaleco
+    if(o.guard){ // vigilante: uniforme completo y gorra
       const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.155,0.155,0.07,16),m('#1b1d2e'));cap.position.y=1.71;g.add(cap);
       const visor=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.02,0.14),m('#1b1d2e'));visor.position.set(0,1.69,-0.14);g.add(visor);
-      const vest=new THREE.Mesh(new THREE.CylinderGeometry(0.205,0.18,0.42,12,1,true),m('#f7a82c'));vest.position.y=1.15;g.add(vest);
+      const patch=new THREE.Mesh(new THREE.BoxGeometry(0.07,0.07,0.01),m('#c9cbd6'));patch.position.set(-0.1,1.25,-0.195);g.add(patch);
     }
-    if(o.tools){ // mantenimiento: gorra, cinturón de herramientas y caja en la mano
-      const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.155,0.155,0.07,16),m('#ec623b'));cap.position.y=1.71;g.add(cap);
-      const visor=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.02,0.14),m('#ec623b'));visor.position.set(0,1.69,-0.14);g.add(visor);
+    if(o.tools){ // mantenimiento: cinturón de herramientas y caja en la mano
       [-1,1].forEach(sx=>{const st=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.5,0.01),m('#f7a82c'));st.position.set(sx*0.09,1.12,-0.2);g.add(st);});
       const belt=new THREE.Mesh(new THREE.CylinderGeometry(0.185,0.185,0.08,12),m('#5a3a22'));belt.position.y=0.86;g.add(belt);
       const pouch=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.14,0.08),m('#5a3a22'));pouch.position.set(-0.18,0.8,-0.06);g.add(pouch);
@@ -969,7 +1032,7 @@ html.embedded .music{right:auto;left:16px}
   }
   // Colaboradores trabajando en los puestos y reunidos en las salas de juntas
   const sitters=SEATS.map((s,i)=>{
-    const p=makePerson(s.fl,{parent:s.parent,noShadow:true,shirt:SHIRTS[(i*5+1)%SHIRTS.length],pants:i%2?'#2b2f45':'#4a4f5c',skin:SKINS[(i*3)%SKINS.length],hair:HAIRS[(i*7)%HAIRS.length],long:i%3===0,sleeve:i%4===1});
+    const p=makePerson(s.fl,Object.assign({parent:s.parent,noShadow:true,shirt:SHIRTS[(i*5+1)%SHIRTS.length],pants:i%2?'#2b2f45':'#4a4f5c',skin:SKINS[(i*3)%SKINS.length],hair:HAIRS[(i*7)%HAIRS.length],long:i%3===0,sleeve:i%4===1},s.look||{}));
     p.g.position.set(s.x,-0.3,s.z); p.g.rotation.y=s.yaw; p.legs.forEach(l=>l.rotation.x=1.45);
     p.arms.forEach(a=>a.rotation.x=s.kind==='work'?1.15:0.6); return Object.assign(p,{kind:s.kind,ph:i*1.7});});
   // Equipo de experiencia y bienestar haciendo una actividad (pausa activa) en la sala de juntas de al lado
@@ -981,7 +1044,7 @@ html.embedded .music{right:auto;left:16px}
     [[-1.3,1.6],[0,1.8],[1.3,1.6]].forEach(([dz,dx],i)=>{const p=makePerson(fl,{shirt:SHIRTS[(i*2+3)%SHIRTS.length],pants:'#4a4f5c',skin:SKINS[(i+2)%SKINS.length],hair:HAIRS[(i+1)%HAIRS.length],long:i===1});
       p.g.position.set(fl.X(r[0])+0.75+dx,0,cz+dz); p.g.rotation.y=Math.PI/2; actors.push(Object.assign(p,{role:'stretch',ph:i*0.6}));});}
   // Vigilante en la entrada
-  {const fl=F(1), g=makePerson(fl,{guard:true,shirt:'#1f2233',pants:'#1f2233',skin:SKINS[2],hair:HAIRS[2]});
+  {const fl=F(1), g=makePerson(fl,{guard:true,shirt:'#ffffff',pants:'#f4f4f6',skin:SKINS[3],hair:HAIRS[1]});
     g.g.position.set(fl.X(300),0,fl.Z(672)); g.g.rotation.y=Math.atan2(fl.X(270)-fl.X(300),fl.Z(692)-fl.Z(672))+Math.PI; actors.push(Object.assign(g,{role:'guard',ph:0}));}
   // Personal de aseo llevando aguas y tintos por cada zona
   [1,2,3].forEach(f=>{const ks=floorNodes(f), k=ks[(f*7)%ks.length], P=NP[k];
@@ -1002,8 +1065,8 @@ html.embedded .music{right:auto;left:16px}
     });
   }
   {let n=0;[960,1005,1050].forEach(x=>[620,660,700,740,780].forEach(y=>{n++;seated(3,x,y,Math.PI/2,true,n%3===0?-1:n);}));}
-  [0,1,3,4].forEach(i=>seated(1,300,290+i*55,Math.PI*1.5,false,i+20));
-  [[0,0],[1,1],[2,2],[3,0],[2,0]].forEach(([k,j],i)=>seated(1,268,300+k*80+j*12,Math.PI*1.5,false,i+30));
+  [0,1,3,4].forEach(i=>seated(1,308,290+i*55,Math.PI*1.5,false,i+20));
+  [2,3,5].forEach(i=>seated(1,292,290+i*55,Math.PI/2,false,i+30));
 
   const tmpD=new THREE.Vector3(), avo=new THREE.Vector3();
   // Empuje para esquivar a Oni y Arya
@@ -1070,7 +1133,7 @@ html.embedded .music{right:auto;left:16px}
   }
 
   // Destinos
-  const ORDER={1:['SEG','MA','COC','S','P14','TQS','G','L','J1','J2','BM','BH','ESP','GER'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','CR','TQ','RD','SJ3','CO3','W3','BO3']};
+  const ORDER={1:['SEG','MA','COC','S','P14','TQS','PT','TQC','G','L','J1','J2','BM','BH','ESP','GER','SE','BO1','ASC','EM'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','NT','CR','TQ','RD','SJ3','CO3','W3','BO3']};
   const destEl=document.getElementById('dest'), infoEl=document.getElementById('info'), statusEl=document.getElementById('status');
   let current='1:acc', sel=null, tourQ=[];
   function renderDest(){
