@@ -150,6 +150,7 @@ html.embedded .music{right:auto;left:16px}
 
 /* Video de cada área */
 .vmodal{position:fixed;inset:0;z-index:130;display:grid;place-items:center;padding:20px 16px;background:rgba(20,22,52,.78);backdrop-filter:blur(4px)}
+.vmodal[hidden]{display:none}
 .vbox{width:min(920px,100%);max-height:100%;display:grid;gap:10px;background:#ffffff;border-radius:16px;padding:14px;box-shadow:0 30px 70px -20px rgba(0,0,0,.6)}
 .vhead{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .vhead b{font:900 1.15rem/1.2 var(--body);color:#33357e}
@@ -170,6 +171,21 @@ html.embedded .music{right:auto;left:16px}
 .zone li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--zc);transform:translateY(-1px)}
 .zone li span{display:block;color:var(--muted);font-size:13px}
 .zone button{margin:0 16px 16px;font:700 12.5px/1 var(--body);padding:9px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+/* Onboarding y enlace a sitti.com.co */
+.ob-top{margin-top:12px;font:900 13px/1 var(--body);padding:11px 16px;border-radius:999px;border:0;background:#f7a82c;color:#fff;cursor:pointer;box-shadow:0 8px 18px -10px rgba(247,168,44,.9)}
+.obbox{width:min(640px,100%);overflow:auto;padding:18px}
+.steps{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:12px}
+.steps li{display:grid;grid-template-columns:38px minmax(0,1fr);gap:12px;align-items:start;padding:12px;border-radius:12px;background:#ebedfc}
+.steps i{font:900 16px/38px var(--body);font-style:normal;width:38px;height:38px;border-radius:50%;text-align:center;color:#fff;background:var(--sc)}
+.steps b{font:900 15px/1.25 var(--body);color:#33357e}
+.steps p{margin:4px 0 0;font:400 14px/1.45 var(--body);color:#2b2d55}
+.more{margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:20px;border-radius:14px;background:#33357e;color:#fff}
+.more b{display:block;font:900 1.25rem/1.2 var(--body)}
+.more span{display:block;margin-top:4px;opacity:.85;font-size:14px}
+.more-btns{display:flex;flex-wrap:wrap;gap:10px}
+.more .cta,.more .ghost{font:900 13px/1 var(--body);padding:12px 16px;border-radius:999px;text-decoration:none;cursor:pointer}
+.more .cta{background:#f7a82c;color:#fff;border:0}
+.more .ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.6)}
 @media (prefers-reduced-motion: reduce){.intro,.leaf,.doorway .light b{transition:none}}
 </style>
 
@@ -193,6 +209,17 @@ html.embedded .music{right:auto;left:16px}
   <div class="vbox">
     <div class="vhead"><div><small id="vkicker">Conoce el área</small><b id="vtitle">Mesa de ayuda</b></div><button type="button" class="vclose" id="vclose">Cerrar video</button></div>
     <video id="vplayer" controls playsinline preload="metadata"></video>
+  </div>
+</div>
+<div class="vmodal" id="obModal" role="dialog" aria-modal="true" aria-labelledby="obTitle" hidden>
+  <div class="vbox obbox">
+    <div class="vhead"><div><small>Tu llegada a sitti</small><b id="obTitle">¿Cómo será tu proceso de onboarding?</b></div><button type="button" class="vclose" id="obClose">Cerrar</button></div>
+    <ol class="steps">
+      <li style="--sc:#f7a82c"><i>1</i><div><b>Antes de tu primer día</b><p>Deberás ver los videos que tenemos cargados por área. Esto te permite conocer la empresa e ingresar más adaptado. Realízalo antes de tu primer día laboral.</p></div></li>
+      <li style="--sc:#ec623b"><i>2</i><div><b>Tu primer día en sitti</b><p>Momento de reconocimiento de sitti: inducciones corporativas, reconocimiento de las áreas y presentación de cada una de ellas de manera vivencial.</p></div></li>
+      <li style="--sc:#3fa9ac"><i>3</i><div><b>Tu equipo</b><p>Presentación al equipo de trabajo e inicio de la adaptación.</p></div></li>
+      <li style="--sc:#33357e"><i>4</i><div><b>Acompañamiento durante 2 meses</b><p>Tendrás 4 seguimientos formativos durante los 2 meses y 2 seguimientos de periodo de prueba, en el primer y en el segundo mes. Así te sentirás más acompañado y podremos identificar qué necesitas en esa etapa.</p></div></li>
+    </ol>
   </div>
 </div>
 <button type="button" class="music" id="musicBtn" aria-pressed="true" aria-label="Apagar la música">
@@ -237,6 +264,17 @@ html.embedded .music{right:auto;left:16px}
   try{document.getElementById('enter').focus({preventScroll:true});}catch(e){}
 })();
 </script>
+<script>
+// Ventana con el proceso de onboarding
+(function(){
+  const m=document.getElementById('obModal'), c=document.getElementById('obClose'); let back=null;
+  const close=()=>{ m.hidden=true; if(back) back.focus(); };
+  document.addEventListener('click',e=>{ const b=e.target instanceof Element&&e.target.closest('.ob-open'); if(b){ back=b; m.hidden=false; c.focus(); } });
+  c.addEventListener('click',close);
+  m.addEventListener('click',e=>{ if(e.target===m) close(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!m.hidden) close(); });
+})();
+</script>
 
 <div class="wrap">
   <header>
@@ -245,6 +283,7 @@ html.embedded .music{right:auto;left:16px}
       <h1>Conoce tu nuevo <span>lugar de trabajo</span></h1>
     </div>
     <p class="sub">La sede tiene tres zonas: naranja, verde y azul. Mírala desde arriba o toca <b>Caminar adentro</b> para recorrerla como si estuvieras ahí, con Oni y Arya a tu lado.</p>
+    <button type="button" class="ob-open ob-top">¿Cómo será tu proceso de onboarding?</button>
   </header>
 
   <div class="main">
@@ -320,6 +359,17 @@ html.embedded .music{right:auto;left:16px}
     </div>
   </section>
 
+  <section class="more">
+    <div>
+      <b>Conoce más de sitti</b>
+      <span>Nuestro propósito, nuestros valores y todo lo que hacemos por la movilidad.</span>
+    </div>
+    <div class="more-btns">
+      <button type="button" class="ob-open ghost">Tu proceso de onboarding</button>
+      <a class="cta" href="https://www.sitti.com.co" target="_blank" rel="noopener">Visita www.sitti.com.co</a>
+    </div>
+  </section>
+
   <p class="foot">Plano esquemático basado en los planos arquitectónicos de la sede. Las proporciones, la alineación entre niveles y la ruta del avatar son aproximadas.</p>
 </div>
 
@@ -344,49 +394,49 @@ html.embedded .music{right:auto;left:16px}
 
   const AREAS=[
     // Piso 1 (plano inicial)
-    {f:1,id:'COC',letter:'C',name:'Cocineta',color:C.coral,r:[215,15,360,158],node:'COC',desc:'Cocineta con mesas para comer, preparar tus alimentos y tomar algo durante la jornada.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
-    {f:1,id:'MA',letter:'MA',name:'Mesa de ayuda',color:C.amber,floor:C.wood,video:'mesa-de-ayuda.mp4',r:[216,168,288,238],node:'MA',isNew:true,desc:'Seis puestos de mesa de ayuda, frente a la cocineta.',tip:''},
-    {f:1,id:'S',letter:'S',name:'Experiencia de servicio',color:C.teal,r:[430,266,545,452],node:'S',desc:'Puestos de trabajo, sala de audiencias virtuales y oficina de líderes del equipo de experiencia de servicio.',tip:'Aquí se atiende a la ciudadanía: mantén un tono de voz bajo al pasar.'},
-    {f:1,id:'G',letter:'G',name:'Gerentes',color:C.navy,r:[428,550,545,650],node:'G',desc:'Oficinas cerradas de los gerentes.',tip:'Si necesitas a alguien, toca la puerta o agenda un espacio.'},
+    {f:1,id:'COC',letter:'C',name:'Cocineta',color:C.coral,r:[215,15,360,158],node:'COC',desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene mesas, nevera, microondas, cafetera y máquinas dispensadoras de alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:1,id:'MA',letter:'MA',name:'Mesa de ayuda',color:C.amber,floor:C.wood,video:'mesa-de-ayuda.mp4',r:[216,168,288,238],node:'MA',isNew:true,desc:'Atiende los incidentes, solicitudes y requerimientos tecnológicos de los usuarios internos y gestiona los activos de TI. Cumple los acuerdos de nivel de servicio para que la operación no se detenga.',tip:'Aquí recibes tus equipos y accesos.'},
+    {f:1,id:'S',letter:'S',name:'Experiencia de servicio',color:C.teal,r:[430,266,545,452],node:'S',desc:'Atiende al ciudadano en los trámites de movilidad a través de las sedes, las unidades móviles, el back office, el conmutador y los concesionarios. Se asegura de que el servicio sea ágil, de calidad y apegado a la normatividad vigente.',tip:'Aquí se atiende a la ciudadanía: mantén un tono de voz bajo al pasar.'},
+    {f:1,id:'G',letter:'G',name:'Gerentes',color:C.navy,r:[428,550,545,650],node:'G',desc:'Gerencia general: dirige integralmente a sitti. Define la estrategia del negocio que aprueba la Junta Directiva y asegura la sostenibilidad financiera, el cumplimiento del contrato interadministrativo con la Secretaría de Movilidad de Medellín y la calidad del servicio al ciudadano.',tip:'Si necesitas a alguien, toca la puerta o agenda un espacio.'},
     {f:1,id:'L',letter:'L',name:'Lockers',color:C.yellow,r:[262,698,392,778],node:'L',desc:'Lockers para guardar tus pertenencias durante la jornada, junto al acceso.',tip:'Pide la asignación de tu locker en tu primer día.'},
     {f:1,id:'J1',letter:'J',name:'Sala de juntas',color:C.juntas,r:[430,460,490,540],node:'J1',desc:'Sala de juntas para reuniones de equipo.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:1,id:'J2',letter:'J',name:'Sala de juntas principal',color:C.juntas,r:[460,660,532,778],node:'J2',desc:'Sala de juntas principal, cerca de gerencia.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:1,id:'BM',letter:'WC',name:'Baño mujeres',color:C.bano,r:[492,284,545,345],node:'BM',desc:'Baño de mujeres, dentro del bloque de experiencia de servicio.',tip:''},
     {f:1,id:'BH',letter:'WC',name:'Baño hombres',color:C.bano,r:[492,466,545,532],node:'BH',desc:'Baño de hombres, junto a la sala de juntas.',tip:''},
-    {f:1,id:'P14',letter:'S',name:'Experiencia de servicio · Puestos',color:C.teal,floor:C.wood,r:[357,245,404,605],node:'P14',desc:'Fila de 14 puestos del equipo de experiencia de servicio, a lo largo del pasillo central.',tip:''},
-    {f:1,id:'TQS',letter:'T',name:'Taquillas · Experiencia de servicio',color:C.teal,r:[250,250,352,600],node:'TQS',isNew:true,desc:'Taquillas donde el equipo de experiencia de servicio atiende a los usuarios.',tip:'Los usuarios esperan en las bancas y pasan a la taquilla que se libere.'},
+    {f:1,id:'P14',letter:'S',name:'Experiencia de servicio · Puestos',color:C.teal,floor:C.wood,r:[357,245,404,605],node:'P14',desc:'Puestos del equipo de experiencia de servicio, que atiende al ciudadano en sus trámites de movilidad desde el back office y el conmutador, con un servicio ágil, de calidad y apegado a la normatividad.',tip:''},
+    {f:1,id:'TQS',letter:'T',name:'Taquillas · Experiencia de servicio',color:C.teal,r:[250,250,352,600],node:'TQS',isNew:true,desc:'Taquillas donde los asesores de experiencia de servicio atienden de manera presencial a los usuarios.',tip:''},
     {f:1,id:'BOD',letter:'',name:'Bodega',color:C.neutral,r:[420,188,495,262],node:'BOD',minor:true,desc:'Bodega.',tip:''},
     {f:1,id:'ESP',letter:'',name:'Sala de espera',color:C.neutral,r:[362,605,410,655],node:'ESP',minor:true,desc:'Sala de espera para visitantes.',tip:''},
-    {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Ingreso a Sitti, tu primera parada al llegar.',tip:'Preséntate aquí al llegar y te indicarán a dónde ir.'},
-    {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[410,728,458,778],node:'GER',minor:true,desc:'Oficina de gerencia.',tip:''},
+    {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Punto de ingreso a la sede. El vigilante te recibe, registra tu llegada y te orienta hacia tu área.',tip:'Preséntate aquí al llegar.'},
+    {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[410,728,458,778],node:'GER',minor:true,desc:'Oficina de la gerencia general, que dirige integralmente a sitti.',tip:''},
     {f:1,id:'ACC',letter:'',name:'Acceso',color:C.neutral,r:[255,682,300,700],node:'acc',minor:true,desc:'Acceso principal al piso.',tip:''},
     {f:1,id:'ESC1',letter:'↓',name:'Escaleras a la zona verde',color:C.core,r:[80,15,165,140],node:'core',minor:true,desc:'Escaleras para bajar a la zona verde. La sede no tiene ascensor.',tip:''},
     // Zona verde
-    {f:2,id:'P106',letter:'CC',name:'Cobro coactivo / Gestión legal',color:C.green,floor:C.wood,r:[64,145,276,438],node:'P',floorOnly:true,lbl:[170,292],desc:'Zona abierta de cobro coactivo (abogados de títulos y abogados de gestión de cobro), abogados senior y equipo de gestión legal.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
-    {f:2,id:'EB',letter:'E',name:'Experiencia y bienestar',color:C.amber,r:[8,220,58,334],node:'EB',isNew:true,desc:'Sala del equipo de experiencia y bienestar, con 7 puestos de trabajo.',tip:'Acércate si tienes dudas sobre bienestar, actividades o tu proceso de bienvenida.'},
-    {f:2,id:'SJ',letter:'J',name:'Sala de juntas',color:C.juntas,r:[8,150,62,210],node:'SJ',isNew:true,desc:'Sala de juntas junto a experiencia y bienestar.',tip:'Reserva la sala con anticipación en el calendario.'},
-    {f:2,id:'COC2',letter:'C',name:'Cocineta',color:C.coral,r:[92,98,200,142],node:'COC2',isNew:true,desc:'Cocineta para preparar y calentar alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:2,id:'P106',letter:'CC',name:'Cobro coactivo / Gestión legal',color:C.green,floor:C.wood,r:[64,145,276,438],node:'P',floorOnly:true,lbl:[170,292],desc:'Gestión jurídica de cobro: ejecuta el cobro coactivo de las obligaciones de tránsito (estudio de títulos, mandamientos de pago, medidas cautelares, excepciones y recursos) y previene la prescripción. Gestión legal: brinda soporte jurídico a toda la operación con tutelas, PQRSD, demandas, actos administrativos y conceptos jurídicos.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:2,id:'EB',letter:'E',name:'Experiencia y bienestar',color:C.amber,r:[8,220,58,334],node:'EB',isNew:true,desc:'Gestiona la experiencia del talento en sitti: atracción y selección, onboarding, formación, desarrollo organizacional con el Modelo Evolucionar, bienestar, comunicaciones y seguridad y salud en el trabajo. Así la organización cuenta con talentos preparados, comprometidos y alineados con su propósito.',tip:'Acércate si tienes dudas sobre bienestar, actividades o tu proceso de onboarding.'},
+    {f:2,id:'SJ',letter:'J',name:'Sala de juntas',color:C.juntas,r:[8,150,62,210],node:'SJ',isNew:true,desc:'Sala donde el equipo de experiencia y bienestar realiza actividades, talleres y pausas activas con los colaboradores.',tip:'Reserva la sala con anticipación en el calendario.'},
+    {f:2,id:'COC2',letter:'C',name:'Cocineta',color:C.coral,r:[92,98,200,142],node:'COC2',isNew:true,desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene máquina dispensadora de alimentos y una mesa de ping pong.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
     {f:2,id:'BS',letter:'WC',name:'Baño',color:C.bano,r:[204,98,262,142],node:'BS',isNew:true,desc:'Baño, al lado de la cocineta.',tip:''},
-    {f:2,id:'OL',letter:'CJ',name:'Coordinación jurídica y gestión de cobro',color:C.office,r:[280,150,332,208],node:'OL',lbl:[306,200],desc:'Oficina de coordinación jurídica y gestión de cobro.',tip:''},
+    {f:2,id:'OL',letter:'CJ',name:'Coordinación jurídica y gestión de cobro',color:C.office,r:[280,150,332,208],node:'OL',lbl:[306,200],desc:'Oficina de los coordinadores jurídicos, que orientan y hacen seguimiento a los procesos legales y de cobro.',tip:''},
     {f:2,id:'JS',letter:'J',name:'Sala de juntas',color:C.juntas,r:[280,208,332,300],node:'JS',desc:'Sala de juntas de la zona de trabajo.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:2,id:'ESC2',letter:'↕',name:'Escaleras',color:C.core,r:[326,150,398,214],node:'core',minor:true,desc:'Escaleras para subir a la zona naranja o bajar a la zona azul.',tip:''},
     // Zona azul (coordenadas del boceto)
-    {f:3,id:'P3',letter:'CS',name:'Conexión de soluciones',color:'#33357e',floor:C.wood,r:[215,212,397,515],node:'CSn',floorOnly:true,desc:'Puestos del equipo de conexión de soluciones, en el centro de la zona azul.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
-    {f:3,id:'FD3',letter:'FD',name:'Fotodetección',color:C.coral,floor:C.wood,r:[397,212,578,515],node:'P',floorOnly:true,desc:'Puestos del equipo de fotodetección, en el centro de la zona azul.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
-    {f:3,id:'AS3',letter:'AS',name:'Aseguramiento',color:C.teal,floor:C.wood,r:[578,212,760,515],node:'ASn',floorOnly:true,desc:'Puestos del equipo de aseguramiento, en el centro de la zona azul.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
-    {f:3,id:'CA',letter:'C',name:'Cartera',color:'#5457a8',r:[345,45,760,165],node:'CA',desc:'Área de cartera.',tip:''},
-    {f:3,id:'FA',letter:'F',name:'Financiera y administrativa',color:C.office,r:[775,45,925,150],node:'FA',desc:'Área financiera y administrativa.',tip:''},
+    {f:3,id:'P3',letter:'CS',name:'Conexión de soluciones',color:'#33357e',floor:C.wood,r:[215,212,397,515],node:'CSn',floorOnly:true,desc:'Es el área de tecnología de sitti. Garantiza la disponibilidad, estabilidad y evolución de los aplicativos y la infraestructura de la operación (QX, SSDD, redes, servidores, bases de datos, QA y analítica de datos), en articulación con Quipux como aliado tecnológico.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:3,id:'FD3',letter:'FD',name:'Fotodetección',color:C.coral,floor:C.wood,r:[397,212,578,515],node:'P',floorOnly:true,desc:'Opera el sistema de cámaras de fotodetección: conectividad, calibración, mantenimiento, validación de las evidencias y gestión de los descartes. Así los comparendos se generan con soporte técnico y legal.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:3,id:'AS3',letter:'AS',name:'Aseguramiento',color:C.teal,floor:C.wood,r:[578,212,760,515],node:'ASn',floorOnly:true,desc:'Aseguramiento contractual: hace seguimiento y control a la ejecución contractual, administra la matriz de riesgos y fortalece el control interno y los modelos de cumplimiento (anticorrupción, SAGRLAFT). Aseguramiento contravencional: ejecuta y controla prescripciones, revocatorias, fallos, apelaciones, IPAT y firma digital de resoluciones en QX-Contravenciones, dentro de los términos legales.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
+    {f:3,id:'CA',letter:'C',name:'Cartera',color:'#5457a8',r:[345,45,760,165],node:'CA',desc:'Recupera la cartera mediante el cobro persuasivo a los ciudadanos con campañas, llamadas y acuerdos de pago. También gestiona la notificación personal, los cambios de contraventor y el cargue y descargue en Simit, y audita la calidad de la gestión de cobro.',tip:''},
+    {f:3,id:'FA',letter:'F',name:'Financiera y administrativa',color:C.office,r:[775,45,925,150],node:'FA',desc:'Gestiona los recursos de sitti: presupuesto, flujo de caja, ingresos y recaudo, contabilidad, nómina, obligaciones tributarias, cajas, compras, proveedores, mantenimiento de sedes y servicios generales. Busca la sostenibilidad financiera y el uso eficiente de los recursos.',tip:''},
     {f:3,id:'BO3',letter:'B',name:'Bodega',color:C.neutral,r:[775,150,925,235],node:'BO3',desc:'Bodega.',tip:''},
     {f:3,id:'SJ3',letter:'J',name:'Sala de juntas',color:C.juntas,r:[45,45,195,160],node:'SJ3',desc:'Sala de juntas de la zona azul.',tip:'Reserva la sala con anticipación en el calendario.'},
-    {f:3,id:'OCL',letter:'CL',name:'Coordinadores y líderes',color:C.office,r:[45,160,195,265],node:'OCL',isNew:true,desc:'Oficina de coordinadores y líderes de la zona azul, entre la sala de juntas y la cocina.',tip:''},
-    {f:3,id:'CO3',letter:'C',name:'Cocina',color:C.coral,r:[45,265,185,430],node:'CO3',desc:'Cocina para preparar y calentar alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:3,id:'OCL',letter:'CL',name:'Coordinadores y líderes',color:C.office,r:[45,160,195,265],node:'OCL',isNew:true,desc:'Oficina de los coordinadores y líderes de los equipos de la zona azul.',tip:''},
+    {f:3,id:'CO3',letter:'C',name:'Cocina',color:C.coral,r:[45,265,185,430],node:'CO3',desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene mesas, nevera, microondas, cafetera y máquinas dispensadoras de alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
     {f:3,id:'W3',letter:'WC',name:'Baño',color:C.bano,r:[45,430,135,490],node:'W3',desc:'Baño, junto a la cocina.',tip:''},
-    {f:3,id:'DG',letter:'D',name:'Digitalización',color:C.teal,r:[200,585,345,650],node:'DG',desc:'Área de digitalización, sobre el costado superior del CAD. Una ventana la comunica con el archivo.',tip:''},
-    {f:3,id:'CAD',letter:'CAD',name:'CAD · Archivo',color:'#7c80c8',r:[90,650,640,960],sink:1.4,lbl:[370,800],node:'CAD',desc:'Área de archivo, en un nivel más abajo, como otro sótano. Se baja por unos escalones desde el pasillo y tiene una ventana hacia Digitalización.',tip:'Baja con cuidado: el CAD está a un nivel más bajo que el resto de la zona azul.'},
-    {f:3,id:'CR',letter:'Co',name:'Correspondencia',color:C.amber,r:[700,585,840,860],node:'CR',desc:'Área de correspondencia, con los puestos dispuestos en vertical. Entre correspondencia y el CAD hay un pasillo.',tip:''},
-    {f:3,id:'TQ',letter:'T',name:'Taquilla de correspondencia',color:C.coral,r:[840,585,925,760],node:'TQ',isNew:true,desc:'Taquilla donde correspondencia atiende a los usuarios.',tip:''},
+    {f:3,id:'DG',letter:'D',name:'Digitalización',color:C.teal,r:[200,585,345,650],node:'DG',desc:'Digitaliza e indexa los documentos y expedientes del proceso contravencional y los carga al expediente digital. Asegura la calidad de las imágenes y la veracidad de la información en los sistemas.',tip:''},
+    {f:3,id:'CAD',letter:'CAD',name:'CAD · Archivo',color:'#7c80c8',r:[90,650,640,960],sink:1.4,lbl:[370,800],node:'CAD',desc:'Centro de Administración Documental. Custodia, organiza y administra la documentación física y digital de la operación. Registra ingresos y salidas y suministra los documentos que solicitan las áreas, la Secretaría de Movilidad y las entidades autorizadas.',tip:'Baja con cuidado: el CAD está a un nivel más bajo que el resto de la zona azul.'},
+    {f:3,id:'CR',letter:'Co',name:'Correspondencia',color:C.amber,r:[700,585,840,860],node:'CR',desc:'Recibe, clasifica, radica y direcciona las PQRSD y solicitudes ciudadanas que llegan por Mercurio WEB, correo y taquillas. Envía y notifica las respuestas oficiales y registra las limitaciones en QX, con trazabilidad y oportunidad.',tip:''},
+    {f:3,id:'TQ',letter:'T',name:'Taquilla de correspondencia',color:C.coral,r:[840,585,925,760],node:'TQ',isNew:true,desc:'Taquilla donde los asesores de correspondencia atienden a los ciudadanos y reciben sus PQRSD y solicitudes.',tip:''},
     {f:3,id:'SEC',letter:'',name:'Usuarios en espera',color:C.neutral,r:[930,595,1072,800],node:'SEC',minor:true,desc:'Sillas para los usuarios que esperan su turno en la taquilla de correspondencia.',tip:''},
-    {f:3,id:'RD',letter:'R',name:'Radicación',color:C.yellow,r:[1000,350,1075,495],node:'RD',desc:'Ventanilla de radicación.',tip:''},
+    {f:3,id:'RD',letter:'R',name:'Radicación',color:C.yellow,r:[1000,350,1075,495],node:'RD',desc:'Recibe, radica, folia y registra los comparendos manuales, los expedientes de accidentes (IPAT) y demás documentos que llegan a la operación. Verifica que estén completos y los entrega a Digitalización y al CAD con trazabilidad.',tip:''},
     {f:3,id:'ESC3',letter:'↑',name:'Escaleras a la zona verde',color:C.core,r:[925,45,1065,185],node:'core',minor:true,desc:'Escaleras para subir a la zona verde.',tip:''}
   ];
   const A=Object.fromEntries(AREAS.map(a=>[a.id,a]));
@@ -494,14 +544,17 @@ html.embedded .music{right:auto;left:16px}
   }
   // Puesto: cubierta en madera, cajonera gris y división con el color de la zona
   const deskG=new THREE.BoxGeometry(1.3,0.06,0.65), legG=new THREE.BoxGeometry(0.4,0.7,0.58), divG=new THREE.BoxGeometry(1.2,0.42,0.04), chairG=new THREE.BoxGeometry(0.48,0.48,0.48), scrG=new THREE.BoxGeometry(0.48,0.3,0.04);
-  function desks(fl,list){
-    const {m}=mk(fl);
+  // Puestos ocupados: se guardan aquí y luego se sienta una persona en cada uno
+  const SEATS=[];
+  function desks(fl,list,opts={}){
+    const {m}=mk(fl), ratio=opts.workers===undefined?0.38:opts.workers;
     const dk=new THREE.InstancedMesh(deskG,m('#c9a97f'),list.length), lg=new THREE.InstancedMesh(legG,m('#9b9a95'),list.length), dv=new THREE.InstancedMesh(divG,m(fl.div),list.length), sc=new THREE.InstancedMesh(scrG,m('#2a2c45'),list.length);
     dk.castShadow=true; dv.castShadow=true; fl.g.add(dk,lg,dv,sc);
     const dm=new THREE.Object3D(), t=new THREE.Vector3(), byC={};
     const mat4=d=>{const g=new THREE.Object3D();g.position.set(fl.X(d.px),0,fl.Z(d.py));g.rotation.y=d.rot;g.updateMatrixWorld();return g.matrixWorld;};
     list.forEach((d,i)=>{const mw=mat4(d);const put=(im,x,y,z)=>{dm.position.copy(t.set(x,y,z).applyMatrix4(mw));dm.rotation.set(0,d.rot,0);dm.updateMatrix();im.setMatrixAt(i,dm.matrix);};
-      put(dk,0,0.75,0);put(lg,0.42,0.36,0);put(dv,0,0.99,-0.32);put(sc,0,0.95,-0.15);(byC[d.c||'#4a4f5c']=byC[d.c||'#4a4f5c']||[]).push(d);});
+      put(dk,0,0.75,0);put(lg,0.42,0.36,0);put(dv,0,0.99,-0.32);put(sc,0,0.95,-0.15);(byC[d.c||'#4a4f5c']=byC[d.c||'#4a4f5c']||[]).push(d);
+      if(((i*37+Math.round(d.px*3+d.py))%100)<ratio*100){const c=new THREE.Vector3(0,0,0.62).applyMatrix4(mw);SEATS.push({fl,parent:fl.g,x:c.x,z:c.z,yaw:d.rot,kind:'work'});}});
     Object.entries(byC).forEach(([c,arr])=>{const ch=new THREE.InstancedMesh(chairG,m(c),arr.length);ch.castShadow=true;
       arr.forEach((d,i)=>{dm.position.copy(t.set(0,0.28,0.62).applyMatrix4(mat4(d)));dm.rotation.set(0,d.rot,0);dm.updateMatrix();ch.setMatrixAt(i,dm.matrix);});fl.g.add(ch);});
   }
@@ -533,6 +586,26 @@ html.embedded .music{right:auto;left:16px}
     const [wx,wz]=pos(-L/2-0.35,off);const w=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.42,14),m('#8fc4e8'));w.position.set(wx,1.25,wz);fl.g.add(w);
     box(0.36,1.05,0.36,m('#f3f3f6'),wx,0.52,wz);
   }
+  // Máquina dispensadora de alimentos: cuerpo, vitrina con productos de colores y teclado. yaw = hacia dónde mira el frente
+  function vending(fl,px,py,yaw,body='#33357e'){
+    const {m}=mk(fl), g=new THREE.Group(); g.position.set(fl.X(px),0,fl.Z(py)); g.rotation.y=yaw; fl.g.add(g);
+    const B=(w,h,d,mm,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mm);o.position.set(x,y,z);o.castShadow=true;g.add(o);return o;};
+    B(1.0,1.95,0.85,m(body),0,0.975,0);
+    B(0.66,1.35,0.04,m('#dff1fa'),-0.1,1.15,-0.43);
+    const prod=['#ec623b','#f7a82c','#3fa9ac','#ffb607','#7c80c8','#e8728f'];
+    for(let r=0;r<5;r++) for(let c=0;c<4;c++) B(0.12,0.16,0.08,m(prod[(r+c)%prod.length]),-0.34+c*0.16,0.6+r*0.25,-0.4);
+    B(0.16,0.4,0.03,m('#1b1d2e'),0.34,1.25,-0.44); B(0.5,0.16,0.04,m('#1b1d2e'),-0.1,0.3,-0.44);
+    B(1.02,0.12,0.87,m('#f7a82c'),0,1.9,0);
+  }
+  // Mesa de ping pong con malla, raquetas y pelota
+  function pingpong(fl,px,py){
+    const {box,m}=mk(fl), x=fl.X(px), z=fl.Z(py);
+    box(2.74,0.06,1.52,m('#1f6e4a'),x,0.76,z); box(2.74,0.012,0.03,m('#ffffff'),x,0.795,z); box(0.02,0.012,1.52,m('#ffffff'),x,0.795,z);
+    box(0.03,0.16,1.6,m('#f3f3f6'),x,0.87,z);
+    [[-1.1,-0.6],[1.1,-0.6],[-1.1,0.6],[1.1,0.6]].forEach(([dx,dz])=>box(0.06,0.74,0.06,m('#3b3f4a'),x+dx,0.37,z+dz));
+    [[-0.9,0.35],[0.95,-0.3]].forEach(([dx,dz])=>{const r=new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,16),m('#d23b3b'));r.position.set(x+dx,0.8,z+dz);fl.g.add(r);});
+    const ball=new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8),m('#ffffff'));ball.position.set(x+0.3,0.82,z+0.2);fl.g.add(ball);
+  }
   // Baño: sanitarios con divisiones y lavamanos con espejo
   function bath(fl,r,side,n){
     const {box,m,X,Z}=mk(fl), x1=X(r[0]),x2=X(r[2]),z1=Z(r[1]),z2=Z(r[3]), wh=m('#ffffff'), part=m('#d6dbe4'), mir=m('#cfe6f3');
@@ -549,9 +622,13 @@ html.embedded .music{right:auto;left:16px}
     const o=wallC+inw*((along?x2-x1:z2-z1)-0.35), cm=(a0+a1)/2, W=Math.min(1.8,(a1-a0)*0.7);
     if(along){box(0.5,0.85,W,wh,o,0.43,cm);box(0.06,0.7,W,mir,o+inw*0.24,1.45,cm);}else{box(W,0.85,0.5,wh,cm,0.43,o);box(W,0.7,0.06,mir,cm,1.45,o+inw*0.24);}
   }
-  function meet(fl,r,n){const {box,m}=mk(fl);const w=(fl.X(r[2])-fl.X(r[0]))*0.42,d=(fl.Z(r[3])-fl.Z(r[1]))*0.55,cx=fl.X((r[0]+r[2])/2),cz=fl.Z((r[1]+r[3])/2);
+  // Sala de juntas: mesa, sillas a ambos lados y, si se indica, personas reunidas (occ = cuántas)
+  function meet(fl,r,n,occ=0){const {box,m}=mk(fl);const w=(fl.X(r[2])-fl.X(r[0]))*0.42,d=(fl.Z(r[3])-fl.Z(r[1]))*0.55,cx=fl.X((r[0]+r[2])/2),cz=fl.Z((r[1]+r[3])/2);
     box(w,0.08,d,m('#c9a57a'),cx,0.75,cz);box(w*0.3,0.7,d*0.3,m('#9da1bf'),cx,0.37,cz);
-    for(let i=0;i<n;i++){const t=(i+0.5)/n;box(0.45,0.45,0.45,m('#33357e'),cx-w/2-0.4,0.27,cz-d/2+t*d);box(0.45,0.45,0.45,m('#33357e'),cx+w/2+0.4,0.27,cz-d/2+t*d);}}
+    let k=0;
+    for(let i=0;i<n;i++){const t=(i+0.5)/n, z=cz-d/2+t*d;box(0.45,0.45,0.45,m('#33357e'),cx-w/2-0.4,0.27,z);box(0.45,0.45,0.45,m('#33357e'),cx+w/2+0.4,0.27,z);
+      if(k<occ){SEATS.push({fl,parent:fl.g,x:cx-w/2-0.4,z,yaw:-Math.PI/2,kind:'meet'});k++;}
+      if(k<occ){SEATS.push({fl,parent:fl.g,x:cx+w/2+0.4,z,yaw:Math.PI/2,kind:'meet'});k++;}}}
   function roundTables(fl,pts,chairC){const {box,m}=mk(fl);pts.forEach(([x,y])=>{const t=new THREE.Mesh(new THREE.CylinderGeometry(1,1,0.08,24),m('#ffffff'));t.position.set(fl.X(x),0.75,fl.Z(y));t.castShadow=true;fl.g.add(t);
     box(0.15,0.7,0.15,m('#9da1bf'),fl.X(x),0.37,fl.Z(y));for(let k=0;k<4;k++){const a=k*Math.PI/2;box(0.42,0.42,0.42,m(chairC),fl.X(x)+Math.cos(a)*1.35,0.25,fl.Z(y)+Math.sin(a)*1.35);}});}
   const glass=fl=>fm(fl,'#bfe3f2',{o:{transparent:true,opacity:0.45}});
@@ -572,7 +649,7 @@ html.embedded .music{right:auto;left:16px}
       box(0.5,1.1,len,m('#ffffff'),X(322),0.55,(zA+zB)/2); box(0.7,0.06,len,m(C.teal),X(322),1.12,(zA+zB)/2);
       const TQ=[];for(let i=0;i<6;i++){const y=290+i*55;TQ.push({px:338,py:y,rot:Math.PI/2,c:C.teal});
         box(0.9,1.5,0.06,m('#d8eeee'),X(322),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(300),0.25,Z(y));}
-      desks(fl,TQ);
+      desks(fl,TQ,{workers:1});
       for(let k=0;k<4;k++) for(let j=0;j<3;j++) box(0.5,0.45,0.5,m('#5d78a8'),X(268),0.25,Z(300+k*80+j*12));}walls(fl,A.S.r,'w');walls(fl,A.G.r,'w');walls(fl,A.L.r,'n');
     walls(fl,A.J1.r,'w');walls(fl,A.J2.r,'w');walls(fl,A.BM.r,'w');walls(fl,A.BH.r,'w');walls(fl,A.GER.r,'n');walls(fl,A.SEG.r,'s');
     [[213,13,362,13],[547,235,547,662],[353,235,353,605]].forEach(([a,b,c,d])=>{const hz=b===d;if(hz)box((c-a)/10,2.4,0.12,glass(fl),X((a+c)/2),1.2,Z(b),false);else box(0.12,2.4,(d-b)/10,glass(fl),X(a),1.2,Z((b+d)/2),false);});
@@ -585,7 +662,7 @@ html.embedded .music{right:auto;left:16px}
     desks(fl,L);
     for(let i=1;i<3;i++) box(0.12,WH,10,m('#ffffff'),X(428+i*39),WH/2,Z(600));
     box(11.6,WH,0.12,m('#ffffff'),X(487),WH/2,Z(600));
-    meet(fl,A.J1.r,3); meet(fl,A.J2.r,4);
+    meet(fl,A.J1.r,3,4); meet(fl,A.J2.r,4,3);
     // Cocineta: mesón, nevera, mesas
     box(1,0.95,9,m('#ffffff'),X(228),0.48,Z(70)); box(0.9,1.9,0.8,m('#d9dbe8'),X(228),0.95,Z(128));
     roundTables(fl,[[270,85],[320,85],[270,128],[320,128]],C.coral);
@@ -616,8 +693,8 @@ html.embedded .music{right:auto;left:16px}
     [251,273,295].forEach(y=>L.push({px:44,py:y,rot:-Math.PI/2,c:C.amber}));
     L.push({px:306,py:172,rot:0});
     desks(fl,L);
-    meet(fl,A.SJ.r,2); meet(fl,A.JS.r,4);
-    roundTables(fl,[[120,126],[168,126]],C.coral);
+    meet(fl,A.SJ.r,2,0); meet(fl,A.JS.r,4,5);
+    roundTables(fl,[[122,126]],C.coral);
     // Baño: lavamanos y cabinas
     [[44,150],[140,215],[140,375],[240,260],[240,395]].forEach(([x,y])=>plant(fl,x,y,0.9));
     // Escaleras: dos tramos con descanso hasta el piso 1
@@ -659,7 +736,7 @@ html.embedded .music{right:auto;left:16px}
     // Correspondencia en vertical: dos columnas largas
     for(let i=0;i<6;i++){const y=625+i*40;L.push({px:740,py:y,rot:Math.PI/2},{px:805,py:y,rot:-Math.PI/2});}
     // Taquilla: personal detrás del mostrador, atendiendo hacia la sala de usuarios (oriente)
-    [630,690].forEach(y=>L.push({px:880,py:y,rot:-Math.PI/2,c:C.coral}));
+    const TQL=[]; [630,690].forEach(y=>TQL.push({px:880,py:y,rot:-Math.PI/2,c:C.coral})); desks(fl,TQL,{workers:1});
     L.push({px:1040,py:395,rot:-Math.PI/2,c:C.yellow},{px:1040,py:450,rot:-Math.PI/2,c:C.yellow});
     // Digitalización: puestos mirando hacia la ventana del CAD
     [230,272,314].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.teal}));
@@ -671,7 +748,7 @@ html.embedded .music{right:auto;left:16px}
     // Mostrador de la taquilla sobre el costado oriental, con ventanillas
     box(0.5,1.1,X(1)*0+(Z(755)-Z(590)),m('#ffffff'),X(922),0.55,(Z(590)+Z(755))/2); box(0.7,0.06,Z(755)-Z(590),m(C.coral),X(922),1.12,(Z(590)+Z(755))/2);
     [650,710].forEach(y=>box(0.06,1.4,0.9,m('#f6d9cc'),X(922),0.7,Z(y+30)));
-    meet(fl,A.SJ3.r,3);
+    meet(fl,A.SJ3.r,3,3);
     roundTables(fl,[[130,320],[130,395]],C.coral);
     box(0.9,1.1,0.7,m('#5d6170'),X(330),0.55,Z(600));
     for(let i=0;i<3;i++) box(5.4,1.8,0.45,m('#d5d8ea'),X(850),0.9,Z(165+i*24));
@@ -690,6 +767,11 @@ html.embedded .music{right:auto;left:16px}
     kitchen(f1,true,15,222,355,1);            // cocineta de la zona naranja, contra el muro norte
     kitchen(f2,true,98,95,198,1);             // cocineta de la zona verde
     kitchen(f3,false,45,272,425,1);           // cocina de la zona azul, contra el muro occidental
+    // Máquinas dispensadoras de alimentos en las tres cocinetas y ping pong en la de la zona verde
+    vending(f1,350,138,Math.PI/2); vending(f1,350,115,Math.PI/2,'#ec623b');
+    vending(f2,98,124,-Math.PI/2);
+    pingpong(f2,170,122);
+    vending(f3,172,412,Math.PI/2); vending(f3,172,388,Math.PI/2,'#ec623b');
     bath(f1,A.BM.r,'e',2); bath(f1,A.BH.r,'e',2); bath(f2,A.BS.r,'n',2); bath(f3,A.W3.r,'w',2);
     // Más materas por los pasillos y áreas comunes
     [[392,300],[392,470],[392,560],[300,232],[200,232],[460,645],[405,690],[250,590],[540,455],[545,560]].forEach(([x,y])=>plant(f1,x,y,1));
@@ -818,7 +900,7 @@ html.embedded .music{right:auto;left:16px}
 
   // ---------- Personas: colaboradores caminando y personal de aseo barriendo ----------
   function makePerson(fl,o){
-    const {m}=mk(fl), g=new THREE.Group(); fl.g.add(g);
+    const {m}=mk(fl), g=new THREE.Group(); (o.parent||fl.g).add(g);
     const shirt=m(o.shirt), pants=m(o.pants), skin=m(o.skin), hair=m(o.hair), shoe=m('#2a2a2e');
     const torso=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.17,0.62,12),shirt);torso.position.y=1.12;torso.castShadow=true;g.add(torso);
     const hip=new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.17,0.16,12),pants);hip.position.y=0.78;g.add(hip);
@@ -837,6 +919,21 @@ html.embedded .music{right:auto;left:16px}
       const br=new THREE.Mesh(new THREE.BoxGeometry(0.42,0.09,0.12),m('#f7a82c'));br.position.set(0,-0.92,-0.45);broom.add(br);
       arms.forEach(a=>a.rotation.x=-0.9);
     }
+    if(o.tray){ // bandeja con vasos de agua y tintos
+      const ap=new THREE.Mesh(new THREE.BoxGeometry(0.34,0.5,0.02),m('#2f6f8f'));ap.position.set(0,1.0,-0.19);g.add(ap);
+      const tr=new THREE.Group();tr.position.set(0,1.08,-0.48);g.add(tr);
+      const base=new THREE.Mesh(new THREE.CylinderGeometry(0.24,0.24,0.03,20),m('#c7cad2'));tr.add(base);
+      [[-0.1,-0.06,'#ffffff'],[0.02,0.08,'#ffffff'],[0.12,-0.04,'#8fc4e8'],[-0.04,0.12,'#8fc4e8']].forEach(([x,z,c])=>{
+        const cup=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.032,0.1,10),m(c));cup.position.set(x,0.065,z);tr.add(cup);
+        if(c==='#ffffff'){const cof=new THREE.Mesh(new THREE.CylinderGeometry(0.036,0.036,0.01,10),m('#4a2c1a'));cof.position.set(x,0.11,z);tr.add(cof);}});
+      arms.forEach(a=>a.rotation.x=1.25);
+    }
+    if(o.guard){ // vigilante: gorra y chaleco
+      const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.155,0.155,0.07,16),m('#1b1d2e'));cap.position.y=1.71;g.add(cap);
+      const visor=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.02,0.14),m('#1b1d2e'));visor.position.set(0,1.69,-0.14);g.add(visor);
+      const vest=new THREE.Mesh(new THREE.CylinderGeometry(0.205,0.18,0.42,12,1,true),m('#f7a82c'));vest.position.y=1.15;g.add(vest);
+    }
+    if(o.noShadow) g.traverse(x=>{x.castShadow=false;});
     return {g,legs,arms,broom};
   }
   const SHIRTS=['#33357e','#f7a82c','#3fa9ac','#ffffff','#ec623b','#7c80c8','#4a4f5c','#a8d99e'], SKINS=['#e0b48f','#c68e6a','#8d5a3b','#f1c9a5','#a8714a'], HAIRS=['#2b2230','#5a3a22','#1a1410','#b07a3a','#3d2a1e'];
@@ -860,6 +957,36 @@ html.embedded .music{right:auto;left:16px}
     const p=makePerson(fl,{shirt:SHIRTS[i%SHIRTS.length],pants:i%2?'#2b2f45':'#3c5a8a',skin:SKINS[i%SKINS.length],hair:HAIRS[(i+2)%HAIRS.length],long:i%2===1,sleeve:i%3===1});
     p.g.position.set(x,-0.3,z); p.g.rotation.y=yaw; p.legs.forEach(l=>l.rotation.x=1.45); p.arms.forEach(a=>a.rotation.x=0.55);
   }
+  // Colaboradores trabajando en los puestos y reunidos en las salas de juntas
+  const sitters=SEATS.map((s,i)=>{
+    const p=makePerson(s.fl,{parent:s.parent,noShadow:true,shirt:SHIRTS[(i*5+1)%SHIRTS.length],pants:i%2?'#2b2f45':'#4a4f5c',skin:SKINS[(i*3)%SKINS.length],hair:HAIRS[(i*7)%HAIRS.length],long:i%3===0,sleeve:i%4===1});
+    p.g.position.set(s.x,-0.3,s.z); p.g.rotation.y=s.yaw; p.legs.forEach(l=>l.rotation.x=1.45);
+    p.arms.forEach(a=>a.rotation.x=s.kind==='work'?1.15:0.6); return Object.assign(p,{kind:s.kind,ph:i*1.7});});
+  // Equipo de experiencia y bienestar haciendo una actividad (pausa activa) en la sala de juntas de al lado
+  const actors=[];
+  {const fl=F(2),{box,m}=mk(fl), r=A.SJ.r, cx=fl.X((r[0]+r[2])/2), cz=fl.Z((r[1]+r[3])/2);
+    box(0.06,1.0,2.4,m('#ffffff'),fl.X(r[0])+0.15,1.25,cz); box(0.07,0.06,2.4,m(C.amber),fl.X(r[0])+0.16,1.78,cz);
+    const lead=makePerson(fl,{shirt:C.amber,pants:'#2b2f45',skin:SKINS[1],hair:HAIRS[0],long:true});
+    lead.g.position.set(fl.X(r[0])+0.75,0,cz); lead.g.rotation.y=-Math.PI/2; actors.push(Object.assign(lead,{role:'guide',ph:0}));
+    [[-1.3,1.6],[0,1.8],[1.3,1.6]].forEach(([dz,dx],i)=>{const p=makePerson(fl,{shirt:SHIRTS[(i*2+3)%SHIRTS.length],pants:'#4a4f5c',skin:SKINS[(i+2)%SKINS.length],hair:HAIRS[(i+1)%HAIRS.length],long:i===1});
+      p.g.position.set(fl.X(r[0])+0.75+dx,0,cz+dz); p.g.rotation.y=Math.PI/2; actors.push(Object.assign(p,{role:'stretch',ph:i*0.6}));});}
+  // Vigilante en la entrada
+  {const fl=F(1), g=makePerson(fl,{guard:true,shirt:'#1f2233',pants:'#1f2233',skin:SKINS[2],hair:HAIRS[2]});
+    g.g.position.set(fl.X(300),0,fl.Z(672)); g.g.rotation.y=Math.atan2(fl.X(270)-fl.X(300),fl.Z(692)-fl.Z(672))+Math.PI; actors.push(Object.assign(g,{role:'guard',ph:0}));}
+  // Personal de aseo llevando aguas y tintos por cada zona
+  [1,2,3].forEach(f=>{const ks=floorNodes(f), k=ks[(f*7)%ks.length], P=NP[k];
+    const p=makePerson(F(f),{tray:true,shirt:'#7fb6d6',pants:'#2f6f8f',skin:SKINS[(f+3)%SKINS.length],hair:HAIRS[(f+3)%HAIRS.length],long:f!==2});
+    p.g.position.set(P.x,P.y-F(f).y,P.z); people.push(Object.assign(p,{f,at:k,prev:null,to:null,spd:1.1,ph:0,wait:0,tray:true}));});
+  function updateActors(dt,now){
+    if(reduce) return;
+    sitters.forEach(s=>{ if(s.kind==='work'){const w=Math.sin(now/140+s.ph)*0.06;s.arms[0].rotation.x=1.15+w;s.arms[1].rotation.x=1.15-w;}
+      else {s.arms[1].rotation.x=0.6+Math.max(0,Math.sin(now/700+s.ph))*0.7;} });
+    actors.forEach(a=>{
+      if(a.role==='stretch'){const t=(Math.sin(now/600+a.ph)+1)/2; a.arms[0].rotation.z=-t*2.6; a.arms[1].rotation.z=t*2.6;}
+      else if(a.role==='guide'){a.arms[1].rotation.x=-0.8-Math.sin(now/500)*0.4; a.arms[0].rotation.z=-1.2-Math.sin(now/600)*0.8;}
+      else if(a.role==='guard'){a.g.rotation.y+=Math.sin(now/2500)*0.0015;}
+    });
+  }
   {let n=0;[960,1005,1050].forEach(x=>[620,660,700,740,780].forEach(y=>{n++;seated(3,x,y,Math.PI/2,true,n%3===0?-1:n);}));}
   [0,1,3,4].forEach(i=>seated(1,300,290+i*55,Math.PI*1.5,false,i+20));
   [[0,0],[1,1],[2,2],[3,0],[2,0]].forEach(([k,j],i)=>seated(1,268,300+k*80+j*12,Math.PI*1.5,false,i+30));
@@ -871,7 +998,7 @@ html.embedded .music{right:auto;left:16px}
       if(d<1.8&&d>0.001){const k=(1.8-d)/1.8;out.x+=dx/d*k;out.z+=dz/d*k;}});return out;}
   function updatePeople(dt,now){
     people.forEach(p=>{
-      if(p.wait>0){p.wait-=dt;p.legs.forEach(l=>l.rotation.x=0);p.arms.forEach(a=>a.rotation.x=0);
+      if(p.wait>0){p.wait-=dt;p.legs.forEach(l=>l.rotation.x=0);if(!p.tray)p.arms.forEach(a=>a.rotation.x=0);
         avoidDogs(p.g.position,p.f,avo); p.g.position.addScaledVector(avo,dt*2.5); return;}
       if(!p.to){const all=sameFloorAdj(p.at,p.f), opts=all.filter(x=>x!==p.prev), c=opts.length?opts:all; if(!c.length)return; p.to=c[Math.floor(Math.random()*c.length)];}
       const T=NP[p.to]; tmpD.set(T.x-p.g.position.x,(T.y-F(p.f).y)-p.g.position.y,T.z-p.g.position.z); const L=tmpD.length();
@@ -880,7 +1007,7 @@ html.embedded .music{right:auto;left:16px}
       p.g.position.addScaledVector(tmpD,Math.min(L,p.spd*dt*(avo.lengthSq()>0.05?0.7:1)));
       if(Math.hypot(tmpD.x,tmpD.z)>0.01) p.g.rotation.y=Math.atan2(tmpD.x,tmpD.z)+Math.PI;
       p.ph+=dt*p.spd*5; const sw=reduce?0:Math.sin(p.ph)*0.5;
-      p.legs[0].rotation.x=sw;p.legs[1].rotation.x=-sw;p.arms[0].rotation.x=-sw*0.7;p.arms[1].rotation.x=sw*0.7;
+      p.legs[0].rotation.x=sw;p.legs[1].rotation.x=-sw;if(!p.tray){p.arms[0].rotation.x=-sw*0.7;p.arms[1].rotation.x=sw*0.7;}
     });
     cleaners.forEach(c=>{
       if(!reduce){c.t+=dt*0.05*c.dir; if(c.t>1){c.t=1;c.dir=-1;} if(c.t<0){c.t=0;c.dir=1;}}
@@ -1175,7 +1302,7 @@ html.embedded .music{right:auto;left:16px}
     lead.bowA=ease(lead.bowA,bowL,dt,6); foll.bowA=ease(foll.bowA,bowF,dt,6);
     phase+=dt*(gL===2?20:gL?16:0); phase2+=dt*(gF===2?16:gF?13:0);
     pose(lead,phase,gL,now,dt,hopL); pose(foll,phase2,gF,now,dt,hopF);
-    updatePeople(dt,now);
+    updatePeople(dt,now); updateActors(dt,now);
     ring.scale.setScalar(1+(reduce?0:Math.sin(now/300)*0.12));
     if(imm){
       // Cámara a la altura de los ojos
