@@ -448,7 +448,7 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'SE',letter:'EM',name:'Salida de emergencia',color:'#3fa535',r:[170,105,211,158],node:'SE',desc:'Salida de emergencia con escaleras, cerrada con una puerta metálica. Úsala solo en caso de evacuación.',tip:'Mantén siempre despejado el paso hacia esta puerta.'},{f:1,id:'BO1',letter:'',name:'Bodega',color:C.neutral,r:[170,15,211,103],node:'BO1',minor:true,desc:'Bodega junto a las escaleras de emergencia.',tip:''},
     {f:1,id:'ASC',letter:'A',name:'Ascensor',color:'#9da1bf',r:[150,712,196,788],node:'ASC',desc:'Ascensor del edificio, junto al acceso principal.',tip:''},
     {f:1,id:'EM',letter:'E',name:'Escaleras de ingreso',color:'#3fa535',r:[200,708,258,795],node:'EM',desc:'Escaleras de ingreso a la sede, junto al ascensor y al acceso principal.',tip:''},
-    {f:1,id:'CSV',letter:'CS',name:'Centro de servicios',color:C.teal,r:[380,850,560,960],sink:0.5,node:'CSV',isNew:true,desc:'Centro de servicios: taquillas donde los asesores atienden de manera presencial a los usuarios, que esperan su turno en la sala. Se llega por la rampa que sale desde las escaleras de ingreso.',tip:'Sigue la rampa desde las escaleras de ingreso.'},
+    {f:1,id:'CSV',letter:'CS',name:'Centro de servicios',color:C.teal,r:[400,960,580,1070],sink:2,node:'CSV',isNew:true,desc:'Centro de servicios: taquillas donde los asesores atienden de manera presencial a los usuarios, que esperan su turno en la sala. Queda en un nivel más abajo: se llega por las escaleras o por la rampa que salen desde las escaleras de ingreso.',tip:'Baja por las escaleras o por la rampa desde las escaleras de ingreso.'},
     {f:1,id:'ESC1',letter:'↓',name:'Escaleras a la zona verde',color:C.core,r:[80,15,165,140],node:'core',minor:true,desc:'Escaleras para bajar a la zona verde.',tip:''},
     // Zona verde
     {f:2,id:'P106',letter:'CC',name:'Cobro coactivo / Gestión legal',color:C.green,floor:C.wood,r:[64,145,276,438],node:'P',floorOnly:true,lbl:[170,292],desc:'Gestión jurídica de cobro: ejecuta el cobro coactivo de las obligaciones de tránsito (estudio de títulos, mandamientos de pago, medidas cautelares, excepciones y recursos) y previene la prescripción. Gestión legal: brinda soporte jurídico a toda la operación con tutelas, PQRSD, demandas, actos administrativos y conceptos jurídicos.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
@@ -484,7 +484,7 @@ html.embedded .music{right:auto;left:16px}
     1:{acc:[270,692],lob:[330,692],wait:[385,668],s1:[418,668],s2:[418,600],s3:[418,500],s4:[418,420],s5:[418,330],s6:[418,262],
        t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
        cd:[440,252],BOD:[458,226],S:[462,330],bh0:[425,459],bh1:[518,459],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
-       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750],rmA:[258,792],rp0:[229,803],rp1:[229,903,-0.5],rp2:[372,905,-0.5],csn:[395,905,-0.5],CSV:[470,915,-0.5]},
+       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750],rmA:[248,794],st0:[229,803],st1:[229,905,-2],st2:[229,1015,-2],rr0:[262,806],rr1:[372,1012,-2],csn:[412,1015,-2],CSV:[490,1022,-2]},
     2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,192],oln:[272,192],JS:[306,268],jsn:[272,268],
        P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[129,150],COC2:[140,118],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
     3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],RD:[1035,422],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
@@ -495,7 +495,7 @@ html.embedded .music{right:auto;left:16px}
   const EDGES={
     1:[['acc','lob'],['lob','wait'],['wait','s1'],['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','t1'],['t1','t2'],['t2','t3'],['t3','COC'],
        ['t2','MA'],['MA','w18'],['w18','sp'],['sp','core'],['s6','cd'],['cd','BOD'],['s5','S'],['s3','J1'],['s3','bh0'],['bh0','bh1'],['bh1','BH'],['s2','G'],['lob','L'],['lob','SEG'],
-       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','tq1'],['tq1','obn'],['obn','CAJ'],['obn','OBC'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM'],['ae','rmA'],['rmA','rp0'],['rp0','rp1'],['rp1','rp2'],['rp2','csn'],['csn','CSV']],
+       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','tq1'],['tq1','obn'],['obn','CAJ'],['obn','OBC'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM'],['ae','rmA'],['rmA','st0'],['st0','st1'],['st1','st2'],['st2','csn'],['rmA','rr0'],['rr0','rr1'],['rr1','csn'],['csn','CSV']],
     2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','oln'],['oln','OL'],['v3','jsn'],['jsn','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
        ['v1','k7'],['k7','BS'],['k7','k4'],['k4','COC2'],['k4','k6'],['k6','SJ']],
     3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','CSn'],['tg2','ASn'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
@@ -756,23 +756,30 @@ html.embedded .music{right:auto;left:16px}
     {const ex=X(229);
       for(let i=0;i<9;i++) box(4.4,0.2+i*0.2,0.85,m('#cfd1de'),ex,(0.2+i*0.2)/2,Z(785-i*8.5));
       [-1,1].forEach(s=>{const r=box(0.06,0.06,8,m('#3fa535'),ex+s*2.15,1.9,Z(751)); r.rotation.x=0.23;});}
-    // Rampa desde las escaleras de ingreso hasta el Centro de servicios, que queda medio metro más abajo
-    {const SKc=A.CSV.sink, rm=m('#d5d8e6'), rail=m('#33357e'), z0=Z(800), z1=Z(895), len=z1-z0, hyp=Math.hypot(len,SKc), ang=Math.atan2(SKc,len);
-      const r1=box(2.0,0.12,hyp,rm,X(229),-SKc/2-0.06,(z0+z1)/2); r1.rotation.x=ang;
-      [-1,1].forEach(s=>{const h=box(0.06,0.06,hyp,rail,X(229)+s*1.0,0.95-SKc/2,(z0+z1)/2); h.rotation.x=ang;
-        for(let k=0;k<=4;k++){const zz=z0+len*k/4; box(0.05,0.95,0.05,rail,X(229)+s*1.0,0.475-SKc*k/4,zz);} });
-      box(X(380)-X(219),0.12,2.0,rm,(X(219)+X(380))/2,-SKc-0.06,Z(905));
-      box(X(380)-X(239),0.06,0.06,rail,(X(239)+X(380))/2,0.95-SKc,Z(895)); box(X(380)-X(219),0.06,0.06,rail,(X(219)+X(380))/2,0.95-SKc,Z(915));
-      for(let k=0;k<=6;k++){const xx=X(239+k*(380-239)/6); box(0.05,0.95,0.05,rail,xx,0.475-SKc,Z(895)); box(0.05,0.95,0.05,rail,xx,0.475-SKc,Z(915));}
+    // Bajada al Centro de servicios, que queda en un nivel más bajo: escaleras rectas y, al lado, una rampa en diagonal
+    {const SKc=A.CSV.sink, rm=m('#d5d8e6'), rail=m('#33357e'), stM=m(C.core);
+      // Escaleras: de la base de las escaleras de ingreso hacia el sur
+      const sz0=Z(800), sz1=Z(900), N=12, run=(sz1-sz0)/N;
+      for(let i=0;i<N;i++){const top=-(i+1)*SKc/N, h=SKc+top+0.17; box(2.0,h,run,stM,X(229),top+0.17-h/2,sz0+run*(i+0.5));}
+      const sh=Math.hypot(sz1-sz0,SKc), sa=Math.atan2(SKc,sz1-sz0);
+      [-1,1].forEach(s=>{const h=box(0.06,0.06,sh,rail,X(229)+s*1.05,0.95-SKc/2,(sz0+sz1)/2); h.rotation.x=sa;});
+      // Plataforma al pie de las escaleras que llega a la puerta del Centro de servicios
+      rect([219,900,239,1025],0.12,rm,-SKc-0.12); rect([219,1005,400,1025],0.12,rm,-SKc-0.12);
+      box(X(360)-X(239),0.06,0.06,rail,(X(239)+X(360))/2,0.95-SKc,Z(1005)); box(X(400)-X(219),0.06,0.06,rail,(X(219)+X(400))/2,0.95-SKc,Z(1025));
+      // Rampa: tramo inclinado en diagonal desde el acceso hasta la plataforma
+      const P0=new THREE.Vector3(X(262),0,Z(805)), P1=new THREE.Vector3(X(372),-SKc,Z(1003)), dx=P1.x-P0.x, dz=P1.z-P0.z, hl=Math.hypot(dx,dz), rl=Math.hypot(hl,SKc);
+      const rg=new THREE.Group(); rg.position.set((P0.x+P1.x)/2,-SKc/2,(P0.z+P1.z)/2); rg.rotation.y=Math.atan2(dx,dz); fl.g.add(rg);
+      const ra=Math.atan2(SKc,hl), RB=(w,h,d,mm,x,y)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mm);o.position.set(x,y,0);o.rotation.x=ra;o.castShadow=true;o.receiveShadow=true;rg.add(o);return o;};
+      RB(2.2,0.14,rl,rm,0,-0.07); [-1,1].forEach(s=>{RB(0.06,0.06,rl,rail,s*1.1,0.95); RB(0.12,0.08,rl,m(C.amber),s*1.1,0.05);});
       // Edificio del Centro de servicios: losa, muros y, en su propio nivel, taquillas con asesores
       rect(A.CSV.r,0.4,m(C.slab),-SKc-0.4); walls(fl,A.CSV.r,'w',SKc);
       const g0=fl.g, low=new THREE.Group(); low.position.y=-SKc; fl.g.add(low); fl.g=low;
       const b2=mk(fl).box, UNI2={polo:true,shirt:'#2f5fb3'};
-      b2(X(548)-X(398),1.1,0.5,m('#ffffff'),(X(398)+X(548))/2,0.55,Z(885)); b2(X(548)-X(398),0.06,0.7,m(C.teal),(X(398)+X(548))/2,1.12,Z(885));
-      const CT=[]; for(let k=0;k<6;k++){const x=410+k*25; CT.push({px:x,py:868,rot:Math.PI,c:C.teal}); if(k<5) b2(0.06,1.5,0.9,m('#d8eeee'),X(x+12.5),0.75,Z(885));
-        b2(0.45,0.45,0.45,m('#4a4f5c'),X(x),0.25,Z(898));}
+      b2(X(568)-X(418),1.1,0.5,m('#ffffff'),(X(418)+X(568))/2,0.55,Z(995)); b2(X(568)-X(418),0.06,0.7,m(C.teal),(X(418)+X(568))/2,1.12,Z(995));
+      const CT=[]; for(let k=0;k<6;k++){const x=430+k*25; CT.push({px:x,py:978,rot:Math.PI,c:C.teal}); if(k<5) b2(0.06,1.5,0.9,m('#d8eeee'),X(x+12.5),0.75,Z(995));
+        b2(0.45,0.45,0.45,m('#4a4f5c'),X(x),0.25,Z(1008));}
       desks(fl,CT,{workers:1,look:UNI2});
-      b2(5,0.7,0.08,m(C.teal),X(470),2.0,Z(851)); b2(4,0.25,0.09,m('#ffffff'),X(470),2.0,Z(852));
+      b2(5,0.7,0.08,m(C.teal),X(490),2.0,Z(961)); b2(4,0.25,0.09,m('#ffffff'),X(490),2.0,Z(962));
       fl.g=g0;}
     for(let i=1;i<3;i++) [570,630].forEach(zc=>box(0.12,WH,4,m('#ffffff'),X(428+i*39),WH/2,Z(zc)));
 
@@ -1130,10 +1137,10 @@ html.embedded .music{right:auto;left:16px}
   [2,3,5].forEach(i=>seated(1,257,290+i*55,Math.PI/2,false,i+30));
   // Usuarios esperando su turno en el pasillo central, entre las dos filas de taquillas
   for(let k=0;k<10;k++){const y=300+k*30; seated(1,273,y,Math.PI/2,true,k%4===3?-1:k+40); seated(1,287,y,Math.PI*1.5,true,k%3===2?-1:k+55);}
-  // Centro de servicios (medio metro más abajo): usuarios atendidos en las taquillas y otros esperando su turno
+  // Centro de servicios (en un nivel más bajo): usuarios atendidos en las taquillas y otros esperando su turno
   {const fl=F(1), g0=fl.g, low=new THREE.Group(); low.position.y=-A.CSV.sink; g0.add(low); fl.g=low;
-    [0,1,2,4,5].forEach(k=>seated(1,410+k*25,898,0,false,k+70));
-    for(let r=0;r<2;r++) for(let k=0;k<9;k++) seated(1,402+k*17,926+r*20,0,true,(k+r)%4===3?-1:k+r*9+80);
+    [0,1,2,4,5].forEach(k=>seated(1,430+k*25,1008,0,false,k+70));
+    for(let r=0;r<2;r++) for(let k=0;k<9;k++) seated(1,422+k*17,1036+r*20,0,true,(k+r)%4===3?-1:k+r*9+80);
     fl.g=g0;}
 
   const tmpD=new THREE.Vector3(), avo=new THREE.Vector3();
