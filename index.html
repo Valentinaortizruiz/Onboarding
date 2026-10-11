@@ -171,6 +171,21 @@ html.embedded .music{right:auto;left:16px}
 .zone li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--zc);transform:translateY(-1px)}
 .zone li span{display:block;color:var(--muted);font-size:13px}
 .zone button{margin:0 16px 16px;font:700 12.5px/1 var(--body);padding:9px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+/* Foto de bienvenida de Oni y Arya */
+.dogphoto{position:fixed;inset:0;z-index:135;display:grid;place-items:center;padding:20px 16px;background:rgba(20,22,52,.78);backdrop-filter:blur(4px)}
+.dogphoto[hidden]{display:none}
+.dpcard{width:min(560px,100%);max-height:100%;overflow:auto;background:#ffffff;border-radius:18px;box-shadow:0 30px 70px -20px rgba(0,0,0,.6);animation:dpIn .45s cubic-bezier(.2,1.3,.4,1)}
+@keyframes dpIn{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
+.dpstage{position:relative;aspect-ratio:16/10;background:radial-gradient(circle at 50% 28%,#fff6e0 0%,#ffd98a 52%,#f7a82c 100%);overflow:hidden}
+.dpstage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bark{position:absolute;left:0;top:0;transform:translate(-50%,-100%) scale(.6);background:#ffffff;color:#33357e;font:900 16px/1 var(--body);padding:8px 12px;border-radius:14px;box-shadow:0 8px 18px -8px rgba(0,0,0,.45);opacity:0;transition:opacity .12s,transform .18s;white-space:nowrap;pointer-events:none}
+.bark::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-bottom:0;border-top-color:#ffffff}
+.bark.on{opacity:1;transform:translate(-50%,-112%) scale(1)}
+.dpbody{padding:16px 20px 20px;text-align:center}
+.dpbody small{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#f7a82c;margin-bottom:6px}
+.dpbody h3{margin:0;font:900 1.4rem/1.2 var(--body);color:#33357e}
+.dpbody p{margin:8px 0 0;font:400 15px/1.45 var(--body);color:#2b2d55}
+.dpbody .vbtn{margin-top:14px;padding:12px 18px;font-size:14px}
 /* Onboarding y enlace a sitti.com.co */
 .ob-top{margin-top:12px;font:900 13px/1 var(--body);padding:11px 16px;border-radius:999px;border:0;background:#f7a82c;color:#fff;cursor:pointer;box-shadow:0 8px 18px -10px rgba(247,168,44,.9)}
 .obbox{width:min(640px,100%);overflow:auto;padding:18px}
@@ -209,6 +224,21 @@ html.embedded .music{right:auto;left:16px}
   <div class="vbox">
     <div class="vhead"><div><small id="vkicker">Conoce el área</small><b id="vtitle">Mesa de ayuda</b></div><button type="button" class="vclose" id="vclose">Cerrar video</button></div>
     <video id="vplayer" controls playsinline preload="metadata"></video>
+  </div>
+</div>
+<div class="dogphoto" id="dogPhoto" role="dialog" aria-modal="true" aria-labelledby="dpTitle" hidden>
+  <div class="dpcard">
+    <div class="dpstage" id="dpStage">
+      <canvas id="dpCanvas" aria-label="Oni y Arya ladrando de felicidad para darte la bienvenida"></canvas>
+      <span class="bark" id="barkOni">¡Guau!</span>
+      <span class="bark" id="barkArya">¡Guau guau!</span>
+    </div>
+    <div class="dpbody">
+      <small>Tus guías en sitti</small>
+      <h3 id="dpTitle">¡Te damos la bienvenida a sitti!</h3>
+      <p>Somos <b>Oni</b> y <b>Arya</b>. Te acompañaremos en todo tu recorrido por la sede.</p>
+      <button type="button" class="vbtn" id="dpGo">Comenzar el recorrido</button>
+    </div>
   </div>
 </div>
 <div class="vmodal" id="obModal" role="dialog" aria-modal="true" aria-labelledby="obTitle" hidden>
@@ -351,7 +381,7 @@ html.embedded .music{right:auto;left:16px}
           <li><div><strong>Radicación</strong></div></li>
           <li><div><strong>Digitalización</strong></div></li>
           <li><div><strong>Gestión de notificaciones</strong></div></li>
-          <li><div><strong>Correspondencia</strong><span>Con taquilla de atención a usuarios.</span></div></li>
+          <li><div><strong>Correspondencia</strong><span>Taquillas de atención a usuarios.</span></div></li>
           <li><div><strong>Conexión de soluciones</strong></div></li>
           <li><div><strong>Fotodetección</strong></div></li>
           <li><div><strong>Financiera y administrativa</strong></div></li>
@@ -409,7 +439,7 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'P14',letter:'S',name:'Experiencia de servicio · Puestos',color:C.teal,floor:C.wood,r:[357,245,404,605],node:'P14',desc:'Puestos del equipo de experiencia de servicio, que atiende al ciudadano en sus trámites de movilidad desde el back office y el conmutador, con un servicio ágil, de calidad y apegado a la normatividad.',tip:''},
     {f:1,id:'TQS',letter:'T',name:'Taquillas · Experiencia de servicio',color:C.teal,r:[295,250,352,600],node:'TQS',isNew:true,desc:'Taquillas donde los asesores de experiencia de servicio atienden de manera presencial a los usuarios.',tip:''},
     {f:1,id:'BOD',letter:'',name:'Bodega',color:C.neutral,r:[420,188,495,262],node:'BOD',minor:true,nolabel:true,desc:'Bodega.',tip:''},
-    {f:1,id:'CAJ',letter:'C',name:'Cajeros automáticos',color:C.navy,r:[215,284,236,316],lift:0.01,node:'CAJ',desc:'Cajeros automáticos donde puedes retirar dinero, al lado de la oficina del banco.',tip:''},{f:1,id:'OBC',letter:'OB',name:'Oficina del banco',color:C.amber,r:[228,252,292,282],lift:0.01,node:'OBC',desc:'Oficina externa del banco: un cubículo independiente al lado de los cajeros automáticos, que no conecta con ninguna otra oficina.',tip:''},
+    {f:1,id:'CAJ',letter:'C',name:'Cajeros',color:C.navy,r:[215,284,236,316],lift:0.01,node:'CAJ',desc:'Cajeros automáticos donde puedes retirar dinero, al lado de la oficina del banco.',tip:''},{f:1,id:'OBC',letter:'OB',name:'Oficina del banco',color:C.amber,r:[228,252,292,282],lift:0.01,nolabel:true,node:'OBC',desc:'Oficina externa del banco: un cubículo independiente al lado de los cajeros automáticos, que no conecta con ninguna otra oficina.',tip:''},
     {f:1,id:'TQC',letter:'T',name:'Taquillas de cobro · Experiencia de servicio',color:C.amber,r:[215,283,295,600],node:'TQC',desc:'Taquillas de cobro de experiencia de servicio, donde los asesores atienden de manera presencial a los ciudadanos en sus trámites de cobro. Quedan frente a las taquillas de atención: los usuarios se ubican en el pasillo central, entre las dos filas.',tip:''},
     {f:1,id:'ESP',letter:'',name:'Sala de espera',color:C.neutral,r:[362,605,410,655],node:'ESP',minor:true,desc:'Sala de espera para visitantes.',tip:''},
     {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Punto de ingreso a la sede. El vigilante te recibe, registra tu llegada y te orienta hacia tu área.',tip:'Preséntate aquí al llegar.'},
@@ -423,10 +453,10 @@ html.embedded .music{right:auto;left:16px}
     {f:2,id:'P106',letter:'CC',name:'Cobro coactivo / Gestión legal',color:C.green,floor:C.wood,r:[64,145,276,438],node:'P',floorOnly:true,lbl:[170,292],desc:'Gestión jurídica de cobro: ejecuta el cobro coactivo de las obligaciones de tránsito (estudio de títulos, mandamientos de pago, medidas cautelares, excepciones y recursos) y previene la prescripción. Gestión legal: brinda soporte jurídico a toda la operación con tutelas, PQRSD, demandas, actos administrativos y conceptos jurídicos.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
     {f:2,id:'EB',letter:'E',name:'Experiencia y bienestar',color:C.amber,r:[8,220,58,334],node:'EB',isNew:true,desc:'Gestiona la experiencia del talento en sitti: atracción y selección, onboarding, formación, desarrollo organizacional con el Modelo Evolucionar, bienestar, comunicaciones y seguridad y salud en el trabajo. Así la organización cuenta con talentos preparados, comprometidos y alineados con su propósito.',tip:'Acércate si tienes dudas sobre bienestar, actividades o tu proceso de onboarding.'},
     {f:2,id:'SJ',letter:'J',name:'Sala de juntas',color:C.juntas,r:[8,150,62,210],node:'SJ',isNew:true,desc:'Sala donde el equipo de experiencia y bienestar realiza actividades, talleres y pausas activas con los colaboradores.',tip:'Reserva la sala con anticipación en el calendario.'},
-    {f:2,id:'COC2',letter:'C',name:'Cocineta',color:C.coral,r:[92,98,200,142],node:'COC2',isNew:true,desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene máquina dispensadora de alimentos y una mesa de ping pong.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:2,id:'COC2',letter:'C',name:'Cocineta',color:C.coral,r:[58,98,200,142],node:'COC2',isNew:true,desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene dos mesas para comer, máquina dispensadora de alimentos y una mesa de ping pong.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
     {f:2,id:'BS',letter:'WC',name:'Baño',color:C.bano,r:[204,98,262,142],node:'BS',isNew:true,desc:'Baño, al lado de la cocineta.',tip:''},
-    {f:2,id:'OL',letter:'CJ',name:'Coordinación jurídica y gestión de cobro',color:C.office,r:[280,150,332,208],node:'OL',lbl:[306,200],desc:'Oficina de los coordinadores jurídicos, que orientan y hacen seguimiento a los procesos legales y de cobro.',tip:''},
-    {f:2,id:'JS',letter:'J',name:'Sala de juntas',color:C.juntas,r:[280,208,332,300],node:'JS',desc:'Sala de juntas de la zona de trabajo.',tip:'Reserva la sala con anticipación en el calendario.'},
+    {f:2,id:'OL',letter:'CJ',name:'Coordinación jurídica y gestión de cobro',color:C.office,r:[280,150,332,235],node:'OL',lbl:[306,215],desc:'Oficina de los coordinadores jurídicos, que orientan y hacen seguimiento a los procesos legales y de cobro.',tip:''},
+    {f:2,id:'JS',letter:'R',name:'Sala de reuniones',color:C.juntas,r:[280,235,332,300],node:'JS',desc:'Sala de reuniones de la zona de trabajo.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:2,id:'ESC2',letter:'↕',name:'Escaleras',color:C.core,r:[326,150,398,214],node:'core',minor:true,desc:'Escaleras para subir a la zona naranja o bajar a la zona azul.',tip:''},
     // Zona azul (coordenadas del boceto)
     {f:3,id:'P3',letter:'CS',name:'Conexión de soluciones',color:'#33357e',floor:C.wood,r:[215,212,397,515],node:'CSn',floorOnly:true,desc:'Es el área de tecnología de sitti. Garantiza la disponibilidad, estabilidad y evolución de los aplicativos y la infraestructura de la operación (QX, SSDD, redes, servidores, bases de datos, QA y analítica de datos), en articulación con Quipux como aliado tecnológico.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
@@ -437,14 +467,13 @@ html.embedded .music{right:auto;left:16px}
     {f:3,id:'BO3',letter:'B',name:'Bodega',color:C.neutral,r:[775,150,925,235],node:'BO3',desc:'Bodega.',tip:''},
     {f:3,id:'SJ3',letter:'J',name:'Sala de juntas',color:C.juntas,r:[45,45,195,160],node:'SJ3',desc:'Sala de juntas de la zona azul.',tip:'Reserva la sala con anticipación en el calendario.'},
     {f:3,id:'OCL',letter:'CL',name:'Coordinadores y líderes',color:C.office,r:[45,160,195,265],node:'OCL',isNew:true,desc:'Oficina de los coordinadores y líderes de los equipos de la zona azul.',tip:''},
-    {f:3,id:'CO3',letter:'C',name:'Cocina',color:C.coral,r:[45,265,195,650],node:'CO3',desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene mesas, nevera, microondas, cafetera y máquinas dispensadoras de alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
+    {f:3,id:'CO3',letter:'C',name:'Cocina',color:'#4a7fd0',r:[45,265,195,650],node:'CO3',desc:'Tiempo para comer, descansar y relacionarte con tus compañeros. Tiene mesas, nevera, microondas, cafetera y máquinas dispensadoras de alimentos.',tip:'Deja todo limpio y en su lugar para quien llegue después.'},
     {f:3,id:'W3',letter:'WC',name:'Baño',color:C.bano,r:[45,580,120,650],node:'W3',desc:'Baño, dentro de la cocina.',tip:''},
-    {f:3,id:'DG',letter:'D',name:'Digitalización',color:C.teal,r:[270,585,345,650],node:'DG',desc:'Digitaliza e indexa los documentos y expedientes del proceso contravencional y los carga al expediente digital. Asegura la calidad de las imágenes y la veracidad de la información en los sistemas.',tip:''},
-    {f:3,id:'NT',letter:'N',name:'Gestión de notificaciones',color:C.amber,r:[195,585,270,650],node:'NT',desc:'Notifica a los ciudadanos los comparendos, actuaciones y acuerdos de pago del proceso contravencional por los medios definidos (correspondencia y aviso), garantizando el debido proceso.',tip:''},
+    {f:3,id:'DG',letter:'D',name:'Digitalización',color:C.teal,r:[380,585,505,650],node:'DG',desc:'Digitaliza e indexa los documentos y expedientes del proceso contravencional y los carga al expediente digital. Asegura la calidad de las imágenes y la veracidad de la información en los sistemas.',tip:''},
+    {f:3,id:'NT',letter:'GE',name:'Gestión de notificaciones',color:C.amber,r:[195,585,345,650],node:'NT',desc:'Notifica a los ciudadanos los comparendos, actuaciones y acuerdos de pago del proceso contravencional por los medios definidos (correspondencia y aviso), garantizando el debido proceso.',tip:''},
     {f:3,id:'CAD',letter:'CAD',name:'CAD · Archivo',color:'#7c80c8',r:[90,650,640,960],sink:1.4,lbl:[370,800],node:'CAD',desc:'Centro de Administración Documental. Custodia, organiza y administra la documentación física y digital de la operación. Registra ingresos y salidas y suministra los documentos que solicitan las áreas, la Secretaría de Movilidad y las entidades autorizadas.',tip:'Baja con cuidado: el CAD está a un nivel más bajo que el resto de la zona azul.'},
-    {f:3,id:'CR',letter:'Co',name:'Correspondencia',color:C.amber,r:[700,585,840,860],node:'CR',desc:'Recibe, clasifica, radica y direcciona las PQRSD y solicitudes ciudadanas que llegan por Mercurio WEB, correo y taquillas. Envía y notifica las respuestas oficiales y registra las limitaciones en QX, con trazabilidad y oportunidad.',tip:''},
-    {f:3,id:'TQ',letter:'T',name:'Taquilla de correspondencia',color:C.coral,r:[840,585,925,760],node:'TQ',isNew:true,desc:'Taquilla donde los asesores de correspondencia atienden a los ciudadanos y reciben sus PQRSD y solicitudes.',tip:''},
-    {f:3,id:'SEC',letter:'',name:'Usuarios en espera',color:C.neutral,r:[930,595,1072,800],node:'SEC',minor:true,desc:'Sillas para los usuarios que esperan su turno en la taquilla de correspondencia.',tip:''},
+    {f:3,id:'CR',letter:'Co',name:'Correspondencia',color:C.coral,r:[840,585,925,900],node:'CR',desc:'Taquillas de correspondencia. El equipo recibe, clasifica, radica y direcciona las PQRSD y solicitudes ciudadanas que llegan por Mercurio WEB, correo y taquillas. Envía y notifica las respuestas oficiales y registra las limitaciones en QX, con trazabilidad y oportunidad.',tip:''},
+    {f:3,id:'SEC',letter:'',name:'Usuarios en espera',color:C.neutral,r:[930,595,1072,800],node:'SEC',minor:true,desc:'Sillas para los usuarios que esperan su turno en las taquillas de correspondencia.',tip:''},
     {f:3,id:'RD',letter:'R',name:'Radicación',color:C.yellow,r:[1000,350,1075,495],node:'RD',desc:'Recibe, radica, folia y registra los comparendos manuales, los expedientes de accidentes (IPAT) y demás documentos que llegan a la operación. Verifica que estén completos y los entrega a Digitalización y al CAD con trazabilidad.',tip:''},
     {f:3,id:'ESC3',letter:'↑',name:'Escaleras a la zona verde',color:C.core,r:[925,45,1065,185],node:'core',minor:true,desc:'Escaleras para subir a la zona verde.',tip:''}
   ];
@@ -455,22 +484,22 @@ html.embedded .music{right:auto;left:16px}
        t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
        cd:[440,252],BOD:[458,226],S:[462,330],bh0:[425,459],bh1:[518,459],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
        ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750]},
-    2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,180],JS:[306,255],
-       P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[146,150],COC2:[146,120],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
+    2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,192],oln:[272,192],JS:[306,268],jsn:[272,268],
+       P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[129,150],COC2:[140,118],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
     3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],RD:[1035,422],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
        t2:[500,190],CA:[550,120],P:[488,360],CSn:[306,360],ASn:[669,360],t3:[205,190],l1:[205,100],SJ3:[120,100],ocd:[205,212],OCL:[120,212],l2:[205,350],CO3:[150,425],l25:[205,460],k3:[150,460],w3n:[82,560],W3:[82,615],
-       l3:[205,550],ntn:[232,560],NT:[232,615],dgn:[307,560],DG:[307,615],b1:[370,550],cadN:[370,640],cad1:[370,705,-1.4],CAD:[370,820,-1.4],
-       b2:[670,550],pc:[670,800],b3:[770,550],crn:[770,580],CR:[770,720],tqn:[960,560],SEC:[990,700],TQ:[880,670],f1:[940,100],FA:[850,100]}
+       l3:[205,550],ntn:[270,560],NT:[270,615],dgn:[442,560],DG:[442,615],b1:[370,550],cadN:[370,640],cad1:[370,705,-1.4],CAD:[370,820,-1.4],
+       b2:[670,550],pc:[670,800],b3:[770,550],crn:[884,575],cr2:[862,598],CR:[860,720],tqn:[960,560],SEC:[990,700],TQ:[880,670],f1:[940,100],FA:[850,100]}
   };
   const EDGES={
     1:[['acc','lob'],['lob','wait'],['wait','s1'],['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','t1'],['t1','t2'],['t2','t3'],['t3','COC'],
        ['t2','MA'],['MA','w18'],['w18','sp'],['sp','core'],['s6','cd'],['cd','BOD'],['s5','S'],['s3','J1'],['s3','bh0'],['bh0','bh1'],['bh1','BH'],['s2','G'],['lob','L'],['lob','SEG'],
        ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','tq1'],['tq1','obn'],['obn','CAJ'],['obn','OBC'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM']],
-    2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','OL'],['v3','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
+    2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','oln'],['oln','OL'],['v3','jsn'],['jsn','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
        ['v1','k7'],['k7','BS'],['k7','k4'],['k4','COC2'],['k4','k6'],['k6','SJ']],
     3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','CSn'],['tg2','ASn'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
        ['t3','l2'],['l2','l25'],['l25','k3'],['k3','CO3'],['k3','w3n'],['w3n','W3'],['l25','l3'],['l3','ntn'],['ntn','NT'],['ntn','dgn'],['dgn','DG'],['l3','b1'],['b1','cadN'],['cadN','cad1'],['cad1','CAD'],['b1','b2'],['b2','pc'],['b2','b3'],
-       ['b3','crn'],['crn','CR'],['b3','tqn'],['tqn','SEC'],['SEC','TQ'],
+       ['b3','crn'],['crn','cr2'],['cr2','CR'],['b3','tqn'],['tqn','SEC'],
        ['b3','h2'],['h2','h3'],['h3','h1'],['h3','RD'],['core','f1'],['f1','FA']]
   };
   const NP={}, adj={};
@@ -641,6 +670,15 @@ html.embedded .music{right:auto;left:16px}
     for(let i=0;i<n;i++){const t=(i+0.5)/n, z=cz-d/2+t*d;box(0.45,0.45,0.45,m('#33357e'),cx-w/2-0.4,0.27,z);box(0.45,0.45,0.45,m('#33357e'),cx+w/2+0.4,0.27,z);
       if(k<occ){SEATS.push({fl,parent:fl.g,x:cx-w/2-0.4,z,yaw:-Math.PI/2,kind:'meet'});k++;}
       if(k<occ){SEATS.push({fl,parent:fl.g,x:cx+w/2+0.4,z,yaw:Math.PI/2,kind:'meet'});k++;}}}
+  // Sala con la mesa a lo ancho (eje x): sillas al norte y al sur, televisor en el muro oriental
+  function meetX(fl,r,n,occ=0){const {box,m}=mk(fl);const x1=fl.X(r[0]),x2=fl.X(r[2]),cx=(x1+x2)/2,cz=fl.Z((r[1]+r[3])/2),L=(x2-x1)*0.62,W=1.3;
+    box(L,0.08,W,m('#c9a57a'),cx,0.75,cz);box(L*0.3,0.7,W*0.4,m('#9da1bf'),cx,0.37,cz);
+    const tw=Math.min(2.2,W*1.5), tx=x2-0.16;
+    box(0.07,tw*0.58,tw,m('#1b1d2e'),tx,1.65,cz); box(0.02,tw*0.5,tw*0.92,m('#3d5f9e'),tx-0.045,1.65,cz);
+    let k=0;
+    for(let i=0;i<n;i++){const x=cx-L/2+(i+0.5)/n*L;box(0.45,0.45,0.45,m('#33357e'),x,0.27,cz-W/2-0.4);box(0.45,0.45,0.45,m('#33357e'),x,0.27,cz+W/2+0.4);
+      if(k<occ){SEATS.push({fl,parent:fl.g,x,z:cz-W/2-0.4,yaw:Math.PI,kind:'meet'});k++;}
+      if(k<occ){SEATS.push({fl,parent:fl.g,x,z:cz+W/2+0.4,yaw:0,kind:'meet'});k++;}}}
   function roundTables(fl,pts,chairC){const {box,m}=mk(fl);pts.forEach(([x,y])=>{const t=new THREE.Mesh(new THREE.CylinderGeometry(1,1,0.08,24),m('#ffffff'));t.position.set(fl.X(x),0.75,fl.Z(y));t.castShadow=true;fl.g.add(t);
     box(0.15,0.7,0.15,m('#9da1bf'),fl.X(x),0.37,fl.Z(y));for(let k=0;k<4;k++){const a=k*Math.PI/2;box(0.42,0.42,0.42,m(chairC),fl.X(x)+Math.cos(a)*1.35,0.25,fl.Z(y)+Math.sin(a)*1.35);}});}
   const glass=fl=>fm(fl,'#bfe3f2',{o:{transparent:true,opacity:0.45}});
@@ -663,7 +701,7 @@ html.embedded .music{right:auto;left:16px}
       const TQ=[],TC=[];for(let i=0;i<6;i++){const y=290+i*55;TQ.push({px:338,py:y,rot:Math.PI/2,c:C.teal});if(i>=2) TC.push({px:227,py:y,rot:-Math.PI/2,c:C.amber});
         box(0.9,1.5,0.06,m('#d8eeee'),X(322),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(308),0.25,Z(y));
         if(i>=2){box(0.9,1.5,0.06,m('#f6e6c8'),X(243),0.75,Z(y+27));box(0.45,0.45,0.45,m('#4a4f5c'),X(257),0.25,Z(y));}}
-      desks(fl,TQ,{workers:1,look:UNI}); desks(fl,TC,{workers:1,look:UNI});}walls(fl,A.S.r,'w');walls(fl,A.G.r,'w');walls(fl,A.L.r,'n');
+      desks(fl,TQ,{workers:1,look:UNI}); desks(fl,TC,{workers:1,look:UNI});}walls(fl,A.S.r,'w');walls(fl,A.G.r,'',0,{skip:'w'});walls(fl,A.L.r,'n');
     walls(fl,A.J1.r,'w');walls(fl,A.J2.r,'w');walls(fl,A.BH.r,'n');walls(fl,A.GER.r,'n');walls(fl,A.SEG.r,'s');
     [[213,13,362,13],[547,235,547,662],[353,235,353,605]].forEach(([a,b,c,d])=>{const hz=b===d;if(hz)box((c-a)/10,2.4,0.12,glass(fl),X((a+c)/2),1.2,Z(b),false);else box(0.12,2.4,(d-b)/10,glass(fl),X(a),1.2,Z((b+d)/2),false);});
     const L=[];
@@ -680,12 +718,12 @@ html.embedded .music{right:auto;left:16px}
       desks(fl,GR.map(([x,y])=>({px:x,py:y,rot:rotOf(y)})),{workers:0});
       GR.forEach(([x,y,lk],i)=>SEATS.push({fl,parent:fl.g,x:X(x),z:Z(y)+(y>600?0.62:-0.62),yaw:rotOf(y),kind:'work',look:Object.assign({skin:['#c68e6a','#f1c9a5','#e0b48f','#a8714a','#8d5a3b','#e0b48f'][i],hair:['#2b2230','#5a3a22','#1a1410','#3d2a1e','#141414','#2b2230'][i]},lk)}));}
     // Oficina de la gerencia: sofá grande blanco y gris contra el muro occidental y baño privado en la esquina nororiental
-    {const sx=X(418),sz=Z(745),sm=m('#f4f4f6'),cu=m('#9a9ca6');
-      box(0.95,0.42,2.8,sm,sx,0.21,sz); box(0.3,0.55,2.8,sm,sx-0.33,0.68,sz);
-      [-1,1].forEach(s=>box(0.95,0.62,0.22,sm,sx,0.31,sz+s*1.4));
-      [-0.82,0.82].forEach(dz=>box(0.62,0.12,1.3,cu,sx+0.12,0.48,sz+dz));
-      [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx-0.12,0.72,sz+s*0.95);p.rotation.z=-0.25;});
-      const GB=[442,728,458,752]; walls(fl,GB,'w',0,{skip:'ne'}); bath(fl,GB,'n',1);
+    {const sx=X(418),sz=Z(741),sm=m('#f4f4f6'),cu=m('#9a9ca6');
+      box(0.95,0.42,2.2,sm,sx,0.21,sz); box(0.3,0.55,2.2,sm,sx-0.33,0.68,sz);
+      [-1,1].forEach(s=>box(0.95,0.62,0.22,sm,sx,0.31,sz+s*1.1));
+      [-0.5,0.5].forEach(dz=>box(0.62,0.12,0.95,cu,sx+0.12,0.48,sz+dz));
+      [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx-0.12,0.72,sz+s*0.7);p.rotation.z=-0.25;});
+      const GB=[410,756,432,778]; walls(fl,GB,'e',0,{skip:'ws'}); bath(fl,GB,'s',1);
       const GB2=[529,551,545,576]; walls(fl,GB2,'w',0,{skip:'ne'}); bath(fl,GB2,'n',1);}
     // Cajeros automáticos contra el muro occidental, mirando al pasillo de las taquillas
     [292,306].forEach(py=>{const g=new THREE.Group(); g.position.set(X(221),0,Z(py)); g.rotation.y=Math.PI/2; fl.g.add(g);
@@ -748,10 +786,10 @@ html.embedded .music{right:auto;left:16px}
     });
     [240,262,284,306].forEach(y=>L.push({px:20,py:y,rot:Math.PI/2,c:C.amber}));
     [251,273,295].forEach(y=>L.push({px:44,py:y,rot:-Math.PI/2,c:C.amber}));
-    L.push({px:306,py:172,rot:0});
+    [294,318].forEach(x=>L.push({px:x,py:170,rot:0},{px:x,py:206,rot:Math.PI}));
     desks(fl,L);
-    meet(fl,A.SJ.r,2,0); meet(fl,A.JS.r,4,5);
-    roundTables(fl,[[122,126]],C.coral);
+    meet(fl,A.SJ.r,2,0); meetX(fl,A.JS.r,2,4);
+    roundTables(fl,[[78,126],[108,126]],'#3fa535');
     // Baño: lavamanos y cabinas
     [[44,150],[140,215],[140,375],[240,260],[240,395]].forEach(([x,y])=>plant(fl,x,y,0.9));
     // Escaleras: dos tramos con descanso hasta el piso 1
@@ -769,16 +807,16 @@ html.embedded .music{right:auto;left:16px}
     [[45,45,1075,585],[45,585,1075,650],[45,650,90,960],[640,650,1075,960]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
     // CAD hundido y ampliado: losa más abajo, como otro sótano
     rect(A.CAD.r,0.4,m('#d9dbe9'),-SK-0.4);
-    [[195,165,775,212],[195,45,215,520],[195,515,1000,585],[925,185,1000,585],[760,212,775,260],[345,585,700,650],[640,650,700,960],[775,235,925,262]].forEach(r=>rect(r,0.04,m(C.cor),0.02));
+    [[195,165,775,212],[195,45,215,520],[195,515,1000,585],[925,185,1000,585],[760,212,775,260],[345,585,380,650],[505,585,700,650],[640,650,700,960],[775,235,925,262]].forEach(r=>rect(r,0.04,m(C.cor),0.02));
     walls(fl,A.SJ3.r,'e');walls(fl,A.OCL.r,'e');walls(fl,A.CA.r,'s');walls(fl,A.FA.r,'e');walls(fl,A.BO3.r,'s');walls(fl,A.CO3.r,'e',0,{skip:'s'});walls(fl,A.W3.r,'n',0,{skip:'ws'});
     const W=m(fl.wall), x0=X(45),x1=X(1075),z0=Z(45),z1=Z(960);
     // Digitalización sobre el costado superior del CAD: su muro sur es una ventana que da al archivo
-    walls(fl,A.NT.r,'n',0,{win:'s',skip:'we'}); walls(fl,A.DG.r,'n',0,{win:'s'});
+    walls(fl,A.NT.r,'n',0,{win:'s',skip:'w'}); walls(fl,A.DG.r,'n',0,{skip:'s'});
     box(X(345)-X(195),SK,WT,W,(X(195)+X(345))/2,-SK/2,Z(650));
     walls(fl,A.CAD.r,'',SK,{skip:'n'});
     const cadN=(xa,xb)=>box(X(xb)-X(xa),WH+SK,WT,W,(X(xa)+X(xb))/2,(WH-SK)/2,Z(650));
     cadN(45,195); cadN(387,640);
-    walls(fl,A.CR.r,'n');walls(fl,A.TQ.r,'n',0,{skip:'e'});walls(fl,A.RD.r,'w');
+    walls(fl,A.CR.r,'n',0,{skip:'e'});walls(fl,A.RD.r,'w');
     box(x1-x0,WH,0.18,W,(x0+x1)/2,WH/2,z0); box(x1-x0,WH,0.18,W,(x0+x1)/2,WH/2,z1); box(0.18,WH,z1-z0,W,x0,WH/2,(z0+z1)/2); box(0.18,WH,z1-z0,W,x1,WH/2,(z0+z1)/2);
     // Escalones de bajada al CAD desde el pasillo
     const stM=m(C.core);
@@ -790,25 +828,24 @@ html.embedded .music{right:auto;left:16px}
     [245,320,395,470].forEach(y=>{for(let i=0;i<8;i++){const x=255+i*66;L.push({px:x,py:y,rot:0},{px:x,py:y+30,rot:Math.PI});}});
     for(let i=0;i<7;i++){const x=380+i*55;L.push({px:x,py:82,rot:0},{px:x,py:118,rot:Math.PI});}
     [805,850,895].forEach(x=>L.push({px:x,py:80,rot:0},{px:x,py:116,rot:Math.PI}));
-    // Correspondencia en vertical: dos columnas largas
-    for(let i=0;i<6;i++){const y=625+i*40;L.push({px:740,py:y,rot:Math.PI/2},{px:805,py:y,rot:-Math.PI/2});}
+
     // Taquilla: personal detrás del mostrador, atendiendo hacia la sala de usuarios (oriente)
-    const TQL=[]; [630,690].forEach(y=>TQL.push({px:880,py:y,rot:-Math.PI/2,c:C.coral})); desks(fl,TQL,{workers:1});
+    const TQL=[]; [610,655,700,745,790,835].forEach(y=>TQL.push({px:880,py:y,rot:-Math.PI/2,c:C.coral})); desks(fl,TQL,{workers:1});
     L.push({px:1040,py:395,rot:-Math.PI/2,c:C.yellow},{px:1040,py:450,rot:-Math.PI/2,c:C.yellow});
     // Digitalización: puestos mirando hacia la ventana del CAD
-    [288,326].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.teal}));
+    [400,442,484].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.teal}));
     // Gestión de notificaciones, junto a Digitalización
-    [214,251].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.amber}));
+    [214,251,288,326].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.amber}));
     // Oficina de coordinadores y líderes
     [85,150].forEach(x=>L.push({px:x,py:190,rot:0},{px:x,py:240,rot:Math.PI}));
     desks(fl,L);
     // Puestos del CAD en el nivel hundido, junto a la entrada
     {const L2=[];[140,190,240,490,540,590].forEach(x=>L2.push({px:x,py:690,rot:0}));const g0=fl.g;const tmp=new THREE.Group();tmp.position.y=-SK;fl.g.add(tmp);fl.g=tmp;desks(fl,L2);fl.g=g0;}
     // Mostrador de la taquilla sobre el costado oriental, con ventanillas
-    box(0.5,1.1,X(1)*0+(Z(755)-Z(590)),m('#ffffff'),X(922),0.55,(Z(590)+Z(755))/2); box(0.7,0.06,Z(755)-Z(590),m(C.coral),X(922),1.12,(Z(590)+Z(755))/2);
-    [650,710].forEach(y=>box(0.06,1.4,0.9,m('#f6d9cc'),X(922),0.7,Z(y+30)));
+    box(0.5,1.1,Z(860)-Z(590),m('#ffffff'),X(922),0.55,(Z(590)+Z(860))/2); box(0.7,0.06,Z(860)-Z(590),m(C.coral),X(922),1.12,(Z(590)+Z(860))/2);
+    [632,677,722,767,812].forEach(y=>box(0.06,1.4,0.9,m('#f6d9cc'),X(922),0.7,Z(y)));
     meet(fl,A.SJ3.r,3,3);
-    roundTables(fl,[[130,320],[130,395],[100,480],[160,530]],C.coral);
+    roundTables(fl,[[130,320],[130,395],[100,480],[160,530]],'#3f6fc4');
     box(0.9,1.1,0.7,m('#5d6170'),X(330),0.55,Z(600));
     for(let i=0;i<3;i++) box(5.4,1.8,0.45,m('#d5d8ea'),X(850),0.9,Z(165+i*24));
     [[230,230],[740,230],[230,500],[740,500],[600,190]].forEach(([x,y])=>plant(fl,x,y,0.9));
@@ -828,7 +865,7 @@ html.embedded .music{right:auto;left:16px}
     kitchen(f3,false,45,272,425,1);           // cocina de la zona azul, contra el muro occidental
     // Máquinas dispensadoras de alimentos en las tres cocinetas y ping pong en la de la zona verde
     vending(f1,350,138,Math.PI/2); vending(f1,350,115,Math.PI/2,'#ec623b');
-    vending(f2,98,124,-Math.PI/2);
+    vending(f2,65,104,Math.PI);
     pingpong(f2,170,122);
     vending(f3,172,412,Math.PI/2); vending(f3,172,388,Math.PI/2,'#ec623b');
     bath(f1,A.BH.r,'e',2); bath(f2,A.BS.r,'n',2); bath(f3,A.W3.r,'w',2);
@@ -842,8 +879,8 @@ html.embedded .music{right:auto;left:16px}
     [[278,200],[278,400],[120,310],[220,310]].forEach(([x,y])=>plant(f2,x,y,1.1,GREY));
     [[212,300],[212,430],[450,522],[820,522],[600,580],[995,300],[995,480]].forEach(([x,y])=>plant(f3,x,y,1.1,GREY));
     // Puestos internos en oficinas
-    desks(f1,[{px:434,py:764,rot:0},{px:470,py:300,rot:0}]);
-    desks(f2,[{px:306,py:198,rot:0}]);
+    desks(f1,[{px:445,py:764,rot:0},{px:470,py:300,rot:0}]);
+
   }
 
   // Pisos de color por área
@@ -1140,7 +1177,7 @@ html.embedded .music{right:auto;left:16px}
   }
 
   // Destinos
-  const ORDER={1:['SEG','MA','COC','S','P14','TQS','CAJ','OBC','TQC','G','L','J1','J2','BH','ESP','GER','SE','BO1','ASC','EM'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','NT','CR','TQ','RD','SJ3','CO3','W3','BO3']};
+  const ORDER={1:['SEG','MA','COC','S','P14','TQS','CAJ','OBC','TQC','G','L','J1','J2','BH','ESP','GER','SE','BO1','ASC','EM'],2:['P106','EB','SJ','OL','JS','COC2','BS'],3:['P3','FD3','AS3','CA','FA','OCL','CAD','DG','NT','CR','RD','SJ3','CO3','W3','BO3']};
   const destEl=document.getElementById('dest'), infoEl=document.getElementById('info'), statusEl=document.getElementById('status');
   let current='1:acc', sel=null, tourQ=[];
   function renderDest(){
@@ -1410,6 +1447,50 @@ html.embedded .music{right:auto;left:16px}
   renderDest(); applyFade();
   requestAnimationFrame(loop);
 
+  // Foto de bienvenida: Oni y Arya, felices, ladran y mueven la cola antes de entrar a la sede
+  function showDogPhoto(done){
+    const box=document.getElementById('dogPhoto'), cv=document.getElementById('dpCanvas'), st=document.getElementById('dpStage'), go=document.getElementById('dpGo');
+    const bO=document.getElementById('barkOni'), bA=document.getElementById('barkArya');
+    let r2;
+    try{ r2=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true}); }catch(e){ done(); return; }
+    r2.setPixelRatio(Math.min(2,window.devicePixelRatio||1)); r2.shadowMap.enabled=true;
+    const ps=new THREE.Scene(), pc=new THREE.PerspectiveCamera(32,16/10,0.1,50);
+    pc.position.set(0,1.45,-4.5); pc.lookAt(0,0.8,0);
+    ps.add(new THREE.HemisphereLight('#fff7e6','#c98f52',0.9));
+    const sun=new THREE.DirectionalLight('#ffffff',0.85); sun.position.set(-2,5,-4); sun.castShadow=true; ps.add(sun);
+    const flo=new THREE.Mesh(new THREE.CircleGeometry(2.6,40),new THREE.MeshStandardMaterial({color:'#fff1d2',roughness:1})); flo.rotation.x=-Math.PI/2; flo.receiveShadow=true; ps.add(flo);
+    const a2=makeDog({s:1,name:'Arya',base:'#d8ab72',tongue:true,mat:furMat('#d8ab72','#e6c08e','#cb9c62'),mat2:furMat('#ecd3aa','#f6e4c6','#dcbb8c'),mat3:furMat('#c98f52','#d8a46a','#b47a40')});
+    const o2=makeDog({s:0.66,name:'Oni',base:'#a2441c',curly:true,tongue:true,mat:furMat('#a2441c','#c46636','#6e2a10',true),mat2:furMat('#b5522a','#d47444','#7d3214',true)});
+    [a2,o2].forEach(d=>{scene.remove(d.g); ps.add(d.g);});
+    a2.g.position.set(-0.7,0,0.15); a2.g.rotation.y=-0.12;
+    o2.g.position.set(0.8,0,-0.3); o2.g.rotation.y=0.15;
+    let ac=null; try{ ac=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+    function bark(p){ if(!ac) return; try{ const t=ac.currentTime, o=ac.createOscillator(), g=ac.createGain(), f=ac.createBiquadFilter();
+      o.type='sawtooth'; o.frequency.setValueAtTime(p,t); o.frequency.exponentialRampToValueAtTime(p*0.55,t+0.16);
+      f.type='lowpass'; f.frequency.value=1500; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.2);
+      o.connect(f); f.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+0.24);}catch(e){} }
+    function size(){ const w=st.clientWidth, h=st.clientHeight; r2.setSize(w,h,false); pc.aspect=w/h; pc.updateProjectionMatrix(); }
+    const hv=new THREE.Vector3();
+    function pin(el,d,lift){ d.head.getWorldPosition(hv); hv.y+=lift; hv.project(pc); el.style.left=((hv.x+1)/2*st.clientWidth)+'px'; el.style.top=((1-hv.y)/2*st.clientHeight)+'px'; }
+    // Secuencia de ladridos: Oni, Arya, Oni y Arya juntos; se repite
+    const SEQ=[[0.5,'o'],[1.3,'a'],[1.6,'a'],[2.6,'o'],[2.85,'o'],[3.8,'a']]; let t0=performance.now(), last=-1, raf=0, open=true;
+    function jump(d,k){ return Math.max(0,Math.sin(Math.min(1,k)*Math.PI)); }
+    const barkAt={o:-9,a:-9};
+    function frame(now){
+      if(!open) return; const t=((now-t0)/1000)%4.6;
+      if(t<last) {barkAt.o=-9;barkAt.a=-9;} SEQ.forEach(([s,w])=>{ if(last<s&&t>=s){ barkAt[w]=t; bark(w==='o'?760:430); } }); last=t;
+      [[o2,'o',bO,0.42],[a2,'a',bA,0.5]].forEach(([d,w,el,lift])=>{ const k=(t-barkAt[w])/0.35, on=k>=0&&k<1;
+        const j=reduce?0:jump(d,k)*(on?1:0);
+        d.g.position.y=j*0.22*d.s; d.head.rotation.x=on&&!reduce?-0.35*Math.sin(k*Math.PI):Math.sin(now/600+d.s)*0.05;
+        d.tail.rotation.y=reduce?0:Math.sin(now/(on?70:110))*0.9; d.legs.forEach((l,i)=>l.rotation.x=on&&!reduce?(i<2?-0.5:0.2)*Math.sin(k*Math.PI):0);
+        el.classList.toggle('on',(t-barkAt[w])>=0&&(t-barkAt[w])<0.6); pin(el,d,lift); });
+      r2.render(ps,pc); raf=requestAnimationFrame(frame);
+    }
+    function close(){ open=false; cancelAnimationFrame(raf); box.hidden=true; removeEventListener('resize',size);
+      [a2,o2].forEach(d=>ps.remove(d.g)); r2.dispose(); if(ac&&ac.close) ac.close().catch(()=>{}); go.removeEventListener('click',close); done(); }
+    box.hidden=false; size(); addEventListener('resize',size); go.addEventListener('click',close); go.focus();
+    raf=requestAnimationFrame(frame);
+  }
   // Al abrir la puerta, la cámara entra volando a la zona naranja
   // Al abrir la puerta: primero el video de bienvenida de los gerentes y luego la cámara entra al mapa
   const WELCOME={name:'Bienvenida de nuestros gerentes',video:'bienvenida-gerentes.mp4'};
@@ -1418,7 +1499,7 @@ html.embedded .music{right:auto;left:16px}
     const enter=()=>{fly={fp:camera.position.clone(),tp:VIEW[1].p.clone(),ft:controls.target.clone(),tt:VIEW[1].t.clone(),k:reduce?1:0};};
     // Se habilita el sonido del video dentro del mismo clic (lo exigen los celulares)
     vplayer.src=WELCOME.video; const u=vplayer.play(); if(u&&u.then) u.then(()=>vplayer.pause()).catch(()=>{});
-    setTimeout(()=>openVideo(WELCOME,{kicker:'Mensaje de bienvenida',closeText:'Entrar a la sede',onClose:enter}),reduce?0:1300);
+    setTimeout(()=>openVideo(WELCOME,{kicker:'Mensaje de bienvenida',closeText:'Entrar a la sede',onClose:()=>showDogPhoto(enter)}),reduce?0:1300);
   });
 })();
 </script>
