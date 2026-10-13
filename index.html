@@ -1544,13 +1544,16 @@ html.embedded .music{right:auto;left:16px}
   }
   // Al abrir la puerta, la cámara entra volando a la zona naranja
   // Al abrir la puerta: primero el video de bienvenida de los gerentes y luego la cámara entra al mapa
+  const GG={name:'Bienvenida de nuestra gerente general, Diana Giraldo',video:'bienvenida-gerente-general.mp4'};
   const WELCOME={name:'Bienvenida de nuestros gerentes',video:'bienvenida-gerentes.mp4'};
   window.addEventListener('sitti-door-open',()=>{
     camera.position.set(VIEW[1].p.x+40,VIEW[1].p.y+70,VIEW[1].p.z+90); controls.target.copy(VIEW[1].t);
     const enter=()=>{fly={fp:camera.position.clone(),tp:VIEW[1].p.clone(),ft:controls.target.clone(),tt:VIEW[1].t.clone(),k:reduce?1:0};};
     // Se habilita el sonido del video dentro del mismo clic (lo exigen los celulares)
-    vplayer.src=WELCOME.video; const u=vplayer.play(); if(u&&u.then) u.then(()=>vplayer.pause()).catch(()=>{});
-    setTimeout(()=>openVideo(WELCOME,{kicker:'Mensaje de bienvenida',closeText:'Entrar a la sede',onClose:()=>showDogPhoto(enter)}),reduce?0:1300);
+    // Primero la gerente general, luego los gerentes, y al final Oni y Arya dan la bienvenida
+    vplayer.src=GG.video; const u=vplayer.play(); if(u&&u.then) u.then(()=>vplayer.pause()).catch(()=>{});
+    const toManagers=()=>openVideo(WELCOME,{kicker:'Mensaje de bienvenida · 2 de 2',closeText:'Entrar a la sede',onClose:()=>showDogPhoto(enter)});
+    setTimeout(()=>openVideo(GG,{kicker:'Mensaje de bienvenida · 1 de 2',closeText:'Siguiente video',onClose:toManagers}),reduce?0:1300);
   });
 })();
 </script>
