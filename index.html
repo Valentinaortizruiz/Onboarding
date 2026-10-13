@@ -156,7 +156,15 @@ html.embedded .music{right:auto;left:16px}
 .vhead b{font:900 1.15rem/1.2 var(--body);color:#33357e}
 .vhead small{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#f7a82c;margin-bottom:4px}
 .vclose{font:900 13px/1 var(--body);padding:10px 14px;border-radius:999px;border:0;background:#33357e;color:#fff;cursor:pointer}
-.vbox video{width:100%;max-height:calc(100vh - 150px);border-radius:10px;background:#000}
+.vwrap{position:relative}
+.vbox video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px);border-radius:10px;background:#000}
+.vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:900 15px/1 var(--body);padding:14px 20px;border-radius:999px;border:0;background:#f7a82c;color:#fff;cursor:pointer;box-shadow:0 10px 24px -8px rgba(0,0,0,.6)}
+.vplay[hidden]{display:none}
+@media (max-width:600px){.vmodal{padding:10px 8px}.vbox{padding:10px;gap:8px;border-radius:12px}.vhead b{font-size:1rem}.vhead small{font-size:9px;letter-spacing:.05em;white-space:nowrap}.vclose{padding:9px 12px;font-size:12px;flex:none}}
+@media (max-height:500px){.vbox video{max-height:calc(100vh - 90px);max-height:calc(100dvh - 90px)}.vhead small{display:none}.vmodal{padding:6px}}
+/* Área seleccionada: su etiqueta sobresale y las demás quedan transparentes */
+.labels.focus .tag{opacity:.3;transition:opacity .25s}
+.labels.focus .tag.on{opacity:1;z-index:5;background:#33357e;color:#fff;transform:translate(-50%,-50%) scale(1.25);box-shadow:0 0 0 3px #f7a82c,0 10px 24px -8px rgba(25,27,43,.6)}
 .vbtn{margin-top:10px;font:900 13px/1 var(--body);padding:10px 14px;border-radius:999px;border:0;background:#f7a82c;color:#fff;cursor:pointer}
 .go .vid{font:900 9px/1 var(--body);color:#fff;background:#33357e;padding:2px 5px;border-radius:3px;margin-left:6px;vertical-align:1px}
 
@@ -223,7 +231,8 @@ html.embedded .music{right:auto;left:16px}
 <div class="vmodal" id="vmodal" role="dialog" aria-modal="true" aria-labelledby="vtitle" hidden>
   <div class="vbox">
     <div class="vhead"><div><small id="vkicker">Conoce el área</small><b id="vtitle">Mesa de ayuda</b></div><button type="button" class="vclose" id="vclose">Cerrar video</button></div>
-    <video id="vplayer" controls playsinline preload="metadata"></video>
+    <div class="vwrap"><video id="vplayer" controls playsinline webkit-playsinline preload="metadata"></video>
+      <button type="button" class="vplay" id="vplay" hidden>▶ Reproducir video</button></div>
   </div>
 </div>
 <div class="dogphoto" id="dogPhoto" role="dialog" aria-modal="true" aria-labelledby="dpTitle" hidden>
@@ -1240,9 +1249,14 @@ html.embedded .music{right:auto;left:16px}
     if(vplayer.getAttribute('src')!==a.video) vplayer.src=a.video;
     else if(vplayer.error){ onVideoClose=null; if(opts.onClose) opts.onClose(); return; }
     vmodal.hidden=false; bgmWas=bgmWas||!bgm.paused; bgm.pause();
-    vplayer.currentTime=0; const p=vplayer.play(); if(p&&p.catch) p.catch(()=>{});
+    vplayer.currentTime=0; vplay.hidden=true;
+    // Si el celular no deja arrancar solo el video, se muestra un botón grande para reproducirlo
+    const p=vplayer.play(); if(p&&p.catch) p.catch(()=>{ if(!vmodal.hidden&&vplayer.paused) vplay.hidden=false; });
     vclose.focus({preventScroll:true});
   }
+  const vplay=document.getElementById('vplay');
+  vplay.onclick=()=>{ vplay.hidden=true; const p=vplayer.play(); if(p&&p.catch) p.catch(()=>{vplay.hidden=false;}); };
+  vplayer.addEventListener('playing',()=>{ vplay.hidden=true; });
   function closeVideo(){ vplayer.pause(); vmodal.hidden=true; if(bgmWas){const p=bgm.play(); if(p&&p.catch) p.catch(()=>{});} bgmWas=false;
     const cb=onVideoClose; onVideoClose=null; if(cb) cb(); }
   // El video de bienvenida se cierra solo al terminar y lleva al mapa
@@ -1255,8 +1269,20 @@ html.embedded .music{right:auto;left:16px}
   infoEl.innerHTML=`<div class="kicker">Bienvenida · Zona naranja</div><h3>Oni y Arya te esperan en el acceso</h3><p>Oni, el poodle red, y Arya, la golden, son tus guías. Toca cualquier área del mapa o elige un destino de la lista y ellos te llevan caminando. Si el área está en otra zona, bajan o suben por las escaleras.</p><p class="tip">Usa los botones de la derecha para ver la zona naranja, verde, azul o todas.</p>`;
 
   function nearestNode(){let best=null,bd=Infinity;Object.keys(NP).forEach(k=>{const p=NP[k];const d=Math.hypot(p.x-avatar.position.x,p.z-avatar.position.z)+Math.abs(p.y-avatar.position.y)*5;if(d<bd){bd=d;best=k;}});return best;}
+  // Resaltado del área elegida: su piso toma el color pleno con un borde naranja que late; las demás quedan tenues
+  const selRingM=new THREE.MeshBasicMaterial({color:'#f7a82c',transparent:true,opacity:0.9}); let selRing=null;
+  const areaColor=x=>!sel?x.baseColor:(x.id===sel?new THREE.Color(x.color).lerp(new THREE.Color('#ffffff'),0.15):x.baseColor.clone().lerp(new THREE.Color('#ffffff'),0.55));
+  function highlight(id){
+    AREAS.forEach(x=>{x.el.classList.toggle('on',x.id===id); x.mesh.material.color.copy(areaColor(x));});
+    labelsEl.classList.toggle('focus',!!id);
+    if(selRing){selRing.parent.remove(selRing);selRing=null;}
+    if(!id) return; const a=A[id], fl=F(a.f), x1=fl.X(a.r[0]),x2=fl.X(a.r[2]),z1=fl.Z(a.r[1]),z2=fl.Z(a.r[3]), y=(a.sink?-a.sink:0)+0.14, t=0.22;
+    selRing=new THREE.Group(); fl.g.add(selRing);
+    [[x2-x1+t,(z1+z2)/2-((z2-z1)/2),true],[x2-x1+t,(z1+z2)/2+((z2-z1)/2),true],[z2-z1+t,x1,false],[z2-z1+t,x2,false]].forEach(([len,pos,hz])=>{
+      const b=new THREE.Mesh(new THREE.BoxGeometry(hz?len:t,0.1,hz?t:len),selRingM); b.position.set(hz?(x1+x2)/2:pos,y,hz?pos:(z1+z2)/2); selRing.add(b);});
+  }
   function goTo(id){
-    const a=A[id]; sel=id; AREAS.forEach(x=>x.el.classList.toggle('on',x.id===id));
+    const a=A[id]; sel=id; highlight(id);
     if(a.video&&!tourQ.length) openVideo(a);
     const target=nodeOf(a);
     if(target===current&&!walk){arrive(a);return;}
@@ -1295,8 +1321,8 @@ html.embedded .music{right:auto;left:16px}
   renderer.domElement.addEventListener('pointermove',e=>{
     if(imm&&drag){person.yaw-=(e.clientX-drag[0])*0.005;person.pitch=Math.max(-0.9,Math.min(0.6,person.pitch-(e.clientY-drag[1])*0.004));drag=[e.clientX,e.clientY];return;}
     const a=pick(e);
-    if(hovered&&hovered!==a)hovered.mesh.material.color.copy(hovered.baseColor);
-    if(a)a.mesh.material.color.copy(a.baseColor).lerp(new THREE.Color('#ffffff'),0.35);
+    if(hovered&&hovered!==a)hovered.mesh.material.color.copy(areaColor(hovered));
+    if(a)a.mesh.material.color.copy(areaColor(a)).lerp(new THREE.Color('#ffffff'),0.25);
     hovered=a;renderer.domElement.style.cursor=a?'pointer':'grab';});
   bF.onclick=()=>{follow=!follow;bF.setAttribute('aria-pressed',follow);};
   document.getElementById('bTour').onclick=()=>{tourQ=['L','MA','COC','S','G','EB','SJ','P106','COC2','CA','CAD','CR','RD']; goTo('SEG');};
@@ -1476,6 +1502,7 @@ html.embedded .music{right:auto;left:16px}
     }
     place(youEl,yv.set(avatar.position.x,avatar.position.y+1.8,avatar.position.z));
     place(oniEl,yv.set(foll.g.position.x,foll.g.position.y+2.3,foll.g.position.z));
+    if(selRing) selRingM.opacity=reduce?0.9:0.55+0.4*Math.sin(now/260);
     renderer.render(scene,camera);
   }
   renderDest(); applyFade();
