@@ -968,8 +968,9 @@ html.embedded .music{right:auto;left:16px}
     B(0.27*s,1,0.95,1.05,F1,0,0,0,head);                             // cráneo
     B(o.curly?0.13*s:0.15*s,0.9,0.78,o.curly?1.25:1.6,F2,0,-0.1*s,-0.27*s,head); // hocico
     B(0.055*s,1.25,0.9,1,dark,0,-0.06*s,(o.curly?-0.43:-0.5)*s,head);           // nariz
-    [-1,1].forEach(k=>{const e=B(0.042*s,1,1,0.8,eyeM,k*0.12*s,0.07*s,-0.23*s,head,12);
-      const hl=new THREE.Mesh(new THREE.SphereGeometry(0.012*s,6,4),new THREE.MeshBasicMaterial({color:'#ffffff'}));hl.position.set(k*0.11*s,0.085*s,-0.265*s);head.add(hl);});
+    const ez=o.curly?-0.27:-0.23, er=o.curly?0.05:0.042;
+    [-1,1].forEach(k=>{const e=B(er*s,1,1,0.8,eyeM,k*0.12*s,0.07*s,ez*s,head,12);
+      const hl=new THREE.Mesh(new THREE.SphereGeometry(0.012*s,6,4),new THREE.MeshBasicMaterial({color:'#ffffff'}));hl.position.set(k*0.11*s,0.085*s,(ez-0.035)*s);head.add(hl);});
     if(o.tongue){const t=new THREE.Mesh(new THREE.SphereGeometry(0.08*s,12,8),new THREE.MeshStandardMaterial({color:'#e57a93',roughness:0.4}));t.scale.set(0.9,0.35,1.4);t.position.set(0,-0.22*s,-0.36*s);t.rotation.x=0.6;head.add(t);
       B(0.09*s,1.1,0.45,1.1,dark,0,-0.17*s,-0.33*s,head,12);}
     // Orejas caídas
@@ -983,7 +984,9 @@ html.embedded .music{right:auto;left:16px}
       for(let i=0;i<70;i++){const u=Math.random()*Math.PI*2,v=Math.acos(2*Math.random()-1);
         curl(0.1*s,i%3?F1:F2,Math.sin(v)*Math.cos(u)*0.38*s,0.88*s+Math.cos(v)*0.36*s,0.05*s+Math.sin(v)*Math.sin(u)*0.66*s);}
       for(let i=0;i<26;i++){const u=Math.random()*Math.PI*2,v=Math.random()*Math.PI*0.75;
-        curl(0.09*s,i%2?F1:F2,Math.sin(v)*Math.cos(u)*0.27*s,Math.cos(v)*0.27*s+0.03*s,Math.sin(v)*Math.sin(u)*0.25*s+0.03*s,head);}
+        const cx=Math.sin(v)*Math.cos(u)*0.27*s, cy=Math.cos(v)*0.27*s+0.03*s, cz=Math.sin(v)*Math.sin(u)*0.25*s+0.03*s;
+        if(cz<-0.08*s&&cy<0.2*s&&Math.abs(cx)<0.24*s) continue; // la cara queda despejada para que se vean los dos ojos
+        curl(0.09*s,i%2?F1:F2,cx,cy,cz,head);}
       // Pañoleta de camuflado
       const band=new THREE.Mesh(new THREE.ConeGeometry(0.3*s,0.4*s,3,1),new THREE.MeshStandardMaterial({map:camoTex(),roughness:0.9}));
       band.rotation.set(Math.PI,0,0);band.position.set(0,0.95*s,-0.72*s);band.scale.set(1,1,0.45);body.add(band);
@@ -1486,7 +1489,7 @@ html.embedded .music{right:auto;left:16px}
     try{ r2=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true}); }catch(e){ done(); return; }
     r2.setPixelRatio(Math.min(2,window.devicePixelRatio||1)); r2.shadowMap.enabled=true;
     const ps=new THREE.Scene(), pc=new THREE.PerspectiveCamera(32,16/10,0.1,50);
-    pc.position.set(0,1.45,-4.5); pc.lookAt(0,0.8,0);
+    pc.position.set(0,1.5,-4.9); pc.lookAt(0,0.9,0);
     ps.add(new THREE.HemisphereLight('#fff7e6','#c98f52',0.9));
     const sun=new THREE.DirectionalLight('#ffffff',0.85); sun.position.set(-2,5,-4); sun.castShadow=true; ps.add(sun);
     const flo=new THREE.Mesh(new THREE.CircleGeometry(2.6,40),new THREE.MeshStandardMaterial({color:'#fff1d2',roughness:1})); flo.rotation.x=-Math.PI/2; flo.receiveShadow=true; ps.add(flo);
@@ -1496,20 +1499,37 @@ html.embedded .music{right:auto;left:16px}
     a2.g.position.set(-0.7,0,0.15); a2.g.rotation.y=-0.12;
     o2.g.position.set(0.8,0,-0.3); o2.g.rotation.y=0.15;
     let ac=null; try{ ac=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
-    function bark(p){ if(!ac) return; try{ const t=ac.currentTime, o=ac.createOscillator(), g=ac.createGain(), f=ac.createBiquadFilter();
-      o.type='sawtooth'; o.frequency.setValueAtTime(p,t); o.frequency.exponentialRampToValueAtTime(p*0.55,t+0.16);
-      f.type='lowpass'; f.frequency.value=1500; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.2);
-      o.connect(f); f.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+0.24);}catch(e){} }
+    // Ladrido sintetizado: tono áspero que sube y cae rápido, con soplo de aire y resonancia de hocico (formantes)
+    let noiseBuf=null;
+    function bark(big){ if(!ac) return; try{
+      if(!noiseBuf){ noiseBuf=ac.createBuffer(1,ac.sampleRate*0.4,ac.sampleRate); const d=noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1; }
+      const t=ac.currentTime+0.01, f0=big?240:430, dur=big?0.2:0.13, F1=big?650:950, F2=big?1350:2100;
+      const out=ac.createGain(); out.gain.value=big?0.5:0.4; out.connect(ac.destination);
+      const shp=ac.createWaveShaper(), curve=new Float32Array(256); for(let i=0;i<256;i++){const x=i/128-1; curve[i]=Math.tanh(x*3);} shp.curve=curve;
+      const env=ac.createGain(); env.gain.setValueAtTime(0.0001,t); env.gain.exponentialRampToValueAtTime(1,t+0.012); env.gain.setValueAtTime(1,t+dur*0.35); env.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      const o=ac.createOscillator(); o.type='sawtooth'; o.frequency.setValueAtTime(f0*0.8,t); o.frequency.exponentialRampToValueAtTime(f0*1.3,t+dur*0.25); o.frequency.exponentialRampToValueAtTime(f0*0.6,t+dur);
+      const og=ac.createGain(); og.gain.value=0.6; o.connect(og); og.connect(shp);
+      const n=ac.createBufferSource(); n.buffer=noiseBuf; const ng=ac.createGain(); ng.gain.value=0.35; n.connect(ng); ng.connect(shp);
+      shp.connect(env);
+      [[F1,5,1],[F2,6,0.6],[F2*1.6,8,0.25]].forEach(([fr,q,gn])=>{const bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.setValueAtTime(fr*0.9,t); bp.frequency.linearRampToValueAtTime(fr,t+dur*0.3); bp.Q.value=q;
+        const bg=ac.createGain(); bg.gain.value=gn*3; env.connect(bp); bp.connect(bg); bg.connect(out);});
+      o.start(t); n.start(t); o.stop(t+dur+0.03); n.stop(t+dur+0.03);
+    }catch(e){} }
     function size(){ const w=st.clientWidth, h=st.clientHeight; r2.setSize(w,h,false); pc.aspect=w/h; pc.updateProjectionMatrix(); }
     const hv=new THREE.Vector3();
-    function pin(el,d,lift){ d.head.getWorldPosition(hv); hv.y+=lift; hv.project(pc); el.style.left=((hv.x+1)/2*st.clientWidth)+'px'; el.style.top=((1-hv.y)/2*st.clientHeight)+'px'; }
+    // Globo de texto sobre la cabeza, sin salirse del recuadro (si no cabe arriba, se pone al lado de la cabeza)
+    function pin(el,d,lift){ d.head.getWorldPosition(hv); hv.y+=lift; hv.project(pc);
+      const W=st.clientWidth, H=st.clientHeight, bw=el.offsetWidth||90, bh=el.offsetHeight||32;
+      let x=(hv.x+1)/2*W, y=(1-hv.y)/2*H;
+      y=Math.max(bh*1.15+8,y); x=Math.min(W-bw/2-8,Math.max(bw/2+8,x));
+      el.style.left=x+'px'; el.style.top=y+'px'; }
     // Secuencia de ladridos: Oni, Arya, Oni y Arya juntos; se repite
     const SEQ=[[0.5,'o'],[1.3,'a'],[1.6,'a'],[2.6,'o'],[2.85,'o'],[3.8,'a']]; let t0=performance.now(), last=-1, raf=0, open=true;
     function jump(d,k){ return Math.max(0,Math.sin(Math.min(1,k)*Math.PI)); }
     const barkAt={o:-9,a:-9};
     function frame(now){
       if(!open) return; const t=((now-t0)/1000)%4.6;
-      if(t<last) {barkAt.o=-9;barkAt.a=-9;} SEQ.forEach(([s,w])=>{ if(last<s&&t>=s){ barkAt[w]=t; bark(w==='o'?760:430); } }); last=t;
+      if(t<last) {barkAt.o=-9;barkAt.a=-9;} SEQ.forEach(([s,w])=>{ if(last<s&&t>=s){ barkAt[w]=t; bark(w==='a'); } }); last=t;
       [[o2,'o',bO,0.42],[a2,'a',bA,0.5]].forEach(([d,w,el,lift])=>{ const k=(t-barkAt[w])/0.35, on=k>=0&&k<1;
         const j=reduce?0:jump(d,k)*(on?1:0);
         d.g.position.y=j*0.22*d.s; d.head.rotation.x=on&&!reduce?-0.35*Math.sin(k*Math.PI):Math.sin(now/600+d.s)*0.05;
