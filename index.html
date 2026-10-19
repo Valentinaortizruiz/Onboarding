@@ -169,6 +169,7 @@ html.embedded .music{right:auto;left:16px}
 .status .stop{display:inline-block;margin-right:8px;padding:2px 8px;border-radius:999px;background:#f7a82c;color:#fff;font:900 11px/1.4 var(--body);vertical-align:2px}
 /* Guía numerada debajo del mapa */
 .lg-note{margin:-4px 0 12px;color:var(--muted);font-size:14px}
+.lg-note.sos{margin-top:4px;padding:10px 14px;border-radius:10px;background:#fde8e8;color:#8a1c1c;border-left:4px solid #e02424}
 .legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .legend .lg-col{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .legend .lg-col h3{margin:0;padding:10px 14px;color:#fff;font:900 1rem/1.2 var(--body)}
@@ -372,6 +373,7 @@ html.embedded .music{right:auto;left:16px}
   <section>
     <h2 class="sec">Guía numerada de la sede</h2>
     <p class="lg-note">Cada número del mapa es un área, en el orden del recorrido: desde el ingreso hasta el Centro de servicios. Toca un número para que Oni y Arya te lleven.</p>
+    <p class="lg-note sos"><b>🚨 Salidas de emergencia:</b> donde veas una sirena roja hay una salida de emergencia. Hay una en la zona naranja (las escaleras que bajan a la zona verde, número 18) y otra en la zona azul (número 43, junto a la Sala de lactancia).</p>
     <div class="legend" id="legend"></div>
   </section>
 
@@ -384,7 +386,7 @@ html.embedded .music{right:auto;left:16px}
           <li><div><strong>Experiencia de servicio</strong><span>Puestos, taquillas de atención a usuarios, sala de audiencias virtuales y oficina de líderes. Los baños quedan junto a la sala de juntas, con entrada desde el corredor.</span></div></li>
           <li><div><strong>Taquillas de cobro · Experiencia de servicio</strong><span>Frente a las taquillas de atención.</span></div></li>
           <li><div><strong>Cajeros automáticos y oficina del banco</strong><span>Al inicio de las taquillas.</span></div></li>
-          <li><div><strong>Escaleras de ingreso, ascensor y salida de emergencia</strong><span>Las escaleras de ingreso y el ascensor junto al acceso; la salida de emergencia junto a la cocineta.</span></div></li>
+          <li><div><strong>Escaleras de ingreso, ascensor y salida de emergencia</strong><span>Las escaleras de ingreso y el ascensor junto al acceso; la salida de emergencia, con sirena roja, en las escaleras que bajan a la zona verde.</span></div></li>
           <li><div><strong>Mesa de ayuda</strong><span>Seis puestos frente a la cocineta.</span></div></li>
           <li><div><strong>Gerentes</strong><span>Oficinas de gerentes y gerencia.</span></div></li>
         </ul>
@@ -407,7 +409,8 @@ html.embedded .music{right:auto;left:16px}
         <ul>
           <li><div><strong>Aseguramiento contravencional</strong></div></li>
           <li><div><strong>CAD</strong><span>Área de archivo.</span></div></li>
-          <li><div><strong>Radicación</strong></div></li>
+          <li><div><strong>Radicación</strong><span>Con taquilla para los agentes de tránsito, junto a Correspondencia.</span></div></li>
+          <li><div><strong>Sala de lactancia</strong></div></li>
           <li><div><strong>Digitalización</strong></div></li>
           <li><div><strong>Gestión de notificaciones</strong></div></li>
           <li><div><strong>Correspondencia</strong><span>Taquillas de atención a usuarios.</span></div></li>
@@ -474,11 +477,11 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Punto de ingreso a la sede. El vigilante te recibe, registra tu llegada y te orienta hacia tu área.',tip:'Preséntate aquí al llegar.'},
     {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[410,728,458,778],node:'GER',minor:true,desc:'Oficina de la gerencia general, que dirige integralmente a sitti.',tip:''},
     {f:1,id:'ACC',letter:'',name:'Acceso',color:C.neutral,r:[255,682,300,700],node:'acc',minor:true,desc:'Acceso principal al piso.',tip:''},
-    {f:1,id:'SE',letter:'EM',name:'Salida de emergencia',color:'#3fa535',r:[170,105,211,158],node:'SE',desc:'Salida de emergencia con escaleras, cerrada con una puerta metálica. Úsala solo en caso de evacuación.',tip:'Mantén siempre despejado el paso hacia esta puerta.'},{f:1,id:'BO1',letter:'',name:'Bodega',color:C.neutral,r:[170,15,211,103],node:'BO1',minor:true,desc:'Bodega junto a las escaleras de emergencia.',tip:''},
+    {f:1,id:'BO1',letter:'',name:'Bodega',color:C.neutral,r:[170,15,211,158],node:'BO1',desc:'Bodega junto a la cocineta.',tip:''},
     {f:1,id:'ASC',letter:'A',name:'Ascensor',color:'#9da1bf',r:[150,712,196,788],node:'ASC',desc:'Ascensor del edificio, junto al acceso principal.',tip:''},
     {f:1,id:'EM',letter:'E',name:'Escaleras de ingreso',color:'#3fa535',r:[200,708,258,795],node:'EM',desc:'Escaleras de ingreso a la sede, junto al ascensor y al acceso principal.',tip:''},
     {f:1,id:'CSV',letter:'CS',name:'Centro de servicios',color:C.teal,r:[400,960,580,1070],sink:2,node:'CSV',isNew:true,desc:'Centro de servicios: taquillas donde los asesores atienden de manera presencial a los usuarios, que esperan su turno en la sala. Queda en un nivel más abajo: se llega por las escaleras o por la rampa que salen desde las escaleras de ingreso.',tip:'Baja por las escaleras o por la rampa desde las escaleras de ingreso.'},
-    {f:1,id:'ESC1',letter:'↓',name:'Escaleras a la zona verde',color:C.core,r:[80,15,165,140],node:'core',minor:true,desc:'Escaleras para bajar a la zona verde.',tip:''},
+    {f:1,id:'ESC1',letter:'↓',name:'Salida de emergencia',color:'#3fa535',r:[80,15,165,140],node:'core',desc:'Escaleras que bajan a la zona verde y que también son la salida de emergencia de la zona naranja. Están marcadas con una sirena roja.',tip:'En una emergencia, baja por aquí y sigue la señalización verde.'},
     // Zona verde
     {f:2,id:'P106',letter:'CC',name:'Cobro coactivo / Gestión legal',color:C.green,floor:C.wood,r:[64,145,276,438],node:'P',floorOnly:true,lbl:[170,292],desc:'Gestión jurídica de cobro: ejecuta el cobro coactivo de las obligaciones de tránsito (estudio de títulos, mandamientos de pago, medidas cautelares, excepciones y recursos) y previene la prescripción. Gestión legal: brinda soporte jurídico a toda la operación con tutelas, PQRSD, demandas, actos administrativos y conceptos jurídicos.',tip:'Pregunta a tu líder cuál es tu puesto asignado.'},
     {f:2,id:'EB',letter:'E',name:'Experiencia y bienestar',color:C.amber,r:[8,220,58,334],node:'EB',isNew:true,desc:'Gestiona la experiencia del talento en sitti: atracción y selección, onboarding, formación, desarrollo organizacional con el Modelo Evolucionar, bienestar, comunicaciones y seguridad y salud en el trabajo. Así la organización cuenta con talentos preparados, comprometidos y alineados con su propósito.',tip:'Acércate si tienes dudas sobre bienestar, actividades o tu proceso de onboarding.'},
@@ -502,16 +505,18 @@ html.embedded .music{right:auto;left:16px}
     {f:3,id:'DG',letter:'D',name:'Digitalización',color:C.teal,r:[380,585,505,650],node:'DG',desc:'Digitaliza e indexa los documentos y expedientes del proceso contravencional y los carga al expediente digital. Asegura la calidad de las imágenes y la veracidad de la información en los sistemas.',tip:''},
     {f:3,id:'NT',letter:'GE',name:'Gestión de notificaciones',video:'notificaciones.mp4',color:C.amber,r:[195,585,345,650],node:'NT',desc:'Notifica a los ciudadanos los comparendos, actuaciones y acuerdos de pago del proceso contravencional por los medios definidos (correspondencia y aviso), garantizando el debido proceso.',tip:''},
     {f:3,id:'CAD',letter:'CAD',name:'CAD · Archivo',video:'cad.mp4',color:'#7c80c8',r:[90,650,640,960],sink:1.4,lbl:[370,800],node:'CAD',desc:'Centro de Administración Documental. Custodia, organiza y administra la documentación física y digital de la operación. Registra ingresos y salidas y suministra los documentos que solicitan las áreas, la Secretaría de Movilidad y las entidades autorizadas.',tip:'Baja con cuidado: el CAD está a un nivel más bajo que el resto de la zona azul.'},
-    {f:3,id:'CR',letter:'Co',name:'Correspondencia',video:'correspondencia.mp4',color:C.coral,r:[840,585,925,900],node:'CR',desc:'Taquillas de correspondencia. El equipo recibe, clasifica, radica y direcciona las PQRSD y solicitudes ciudadanas que llegan por Mercurio WEB, correo y taquillas. Envía y notifica las respuestas oficiales y registra las limitaciones en QX, con trazabilidad y oportunidad.',tip:''},
+    {f:3,id:'CR',letter:'Co',name:'Correspondencia',video:'correspondencia.mp4',color:C.coral,r:[840,585,925,855],node:'CR',desc:'Taquillas de correspondencia. El equipo recibe, clasifica, radica y direcciona las PQRSD y solicitudes ciudadanas que llegan por Mercurio WEB, correo y taquillas. Envía y notifica las respuestas oficiales y registra las limitaciones en QX, con trazabilidad y oportunidad.',tip:''},
     {f:3,id:'SEC',letter:'',name:'Usuarios en espera',color:C.neutral,r:[930,595,1072,800],node:'SEC',minor:true,desc:'Sillas para los usuarios que esperan su turno en las taquillas de correspondencia.',tip:''},
-    {f:3,id:'RD',letter:'R',name:'Radicación',video:'radicacion.mp4',color:C.yellow,r:[1000,350,1075,495],node:'RD',desc:'Recibe, radica, folia y registra los comparendos manuales, los expedientes de accidentes (IPAT) y demás documentos que llegan a la operación. Verifica que estén completos y los entrega a Digitalización y al CAD con trazabilidad.',tip:''},
+    {f:3,id:'RD',letter:'R',name:'Radicación',video:'radicacion.mp4',color:C.yellow,r:[840,855,925,930],node:'RD',desc:'Recibe, radica, folia y registra los comparendos manuales, los expedientes de accidentes (IPAT) y demás documentos que llegan a la operación. Verifica que estén completos y los entrega a Digitalización y al CAD con trazabilidad. Tiene su propia taquilla, al lado de Correspondencia, donde atiende a los agentes de tránsito.',tip:''},
+    {f:3,id:'LAC',letter:'L',name:'Sala de lactancia',color:'#e8728f',r:[1000,350,1075,495],node:'LAC',desc:'Sala de lactancia: un espacio privado, cómodo y limpio para las madres lactantes, con sillón, nevera para conservar la leche, lavamanos y mesa auxiliar.',tip:'Pide la llave o el acceso al equipo de experiencia y bienestar.'},
+    {f:3,id:'SE3',letter:'EM',name:'Salida de emergencia',color:'#3fa535',r:[1008,270,1072,340],node:'SE3',desc:'Salida de emergencia de la zona azul, con escaleras y puerta metálica, marcada con una sirena roja. Úsala solo en caso de evacuación.',tip:'Mantén siempre despejado el paso hacia esta puerta.'},
     {f:3,id:'ESC3',letter:'↑',name:'Escaleras a la zona verde',color:C.core,r:[925,45,1065,185],node:'core',minor:true,desc:'Escaleras para subir a la zona verde.',tip:''}
   ];
   const A=Object.fromEntries(AREAS.map(a=>[a.id,a]));
   // Numeración en el orden del recorrido: desde el ingreso hasta el Centro de servicios
-  const NUMORDER=['SEG','L','GER','J2','G','ESP','TQS','TQC','CAJ','OBC','P14','S','J1','BH','MA','COC','SE','BO1','ESC1',
+  const NUMORDER=['SEG','L','GER','J2','G','ESP','TQS','TQC','CAJ','OBC','P14','S','J1','BH','MA','COC','BO1','ESC1',
     'P106','OL','JS','EB','SJ','COC2','BS',
-    'P3','FD3','AS3','CA','FA','BO3','SJ3','OCL','CO3','W3','NT','DG','CAD','CR','SEC','RD',
+    'P3','FD3','AS3','CA','FA','BO3','SJ3','OCL','CO3','W3','NT','DG','CAD','CR','SEC','RD','LAC','SE3',
     'ASC','EM','CSV'];
   NUMORDER.forEach((id,i)=>{A[id].num=i+1;});
   AREAS.forEach(a=>{ if(!a.num) a.nolabel=true; });
@@ -520,10 +525,10 @@ html.embedded .music{right:auto;left:16px}
     1:{acc:[270,692],lob:[330,692],wait:[385,668],s1:[418,668],s2:[418,600],s3:[418,500],s4:[418,420],s5:[418,330],s6:[418,262],
        t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
        cd:[440,252],BOD:[458,226],S:[462,330],bh0:[425,459],bh1:[518,459],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
-       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],SE:[190,168],bw:[150,58],BO1:[190,58],ae:[245,700],ASC:[173,750],EM:[229,750],rmA:[248,794],st0:[229,803],st1:[229,905,-2],st2:[229,1015,-2],rr0:[262,806],rr1:[372,1012,-2],csn:[412,1015,-2],CSV:[490,1022,-2]},
+       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],BO1:[190,140],bon:[190,166],ae:[245,700],ASC:[173,750],EM:[229,750],rmA:[248,794],st0:[229,803],st1:[229,905,-2],st2:[229,1015,-2],rr0:[262,806],rr1:[372,1012,-2],csn:[412,1015,-2],CSV:[490,1022,-2]},
     2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,192],oln:[272,192],JS:[306,268],jsn:[272,268],
        P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[129,150],COC2:[140,118],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
-    3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],RD:[1035,422],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
+    3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],LAC:[1035,422],se3:[995,305],SE3:[1013,305],RD:[862,890],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
        t2:[500,190],CA:[550,120],P:[488,360],CSn:[306,360],ASn:[669,360],t3:[205,190],l1:[205,100],SJ3:[120,100],ocd:[205,212],OCL:[120,212],l2:[205,350],CO3:[150,425],l25:[205,460],k3:[150,460],w3n:[82,560],W3:[82,615],
        l3:[205,550],ntn:[270,560],NT:[270,615],dgn:[442,560],DG:[442,615],b1:[370,550],cadN:[370,640],cad1:[370,705,-1.4],CAD:[370,820,-1.4],
        b2:[670,550],pc:[670,800],b3:[770,550],crn:[884,575],cr2:[862,598],CR:[860,720],tqn:[960,560],SEC:[990,700],TQ:[880,670],f1:[940,100],FA:[850,100]}
@@ -531,13 +536,13 @@ html.embedded .music{right:auto;left:16px}
   const EDGES={
     1:[['acc','lob'],['lob','wait'],['wait','s1'],['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','t1'],['t1','t2'],['t2','t3'],['t3','COC'],
        ['t2','MA'],['MA','w18'],['w18','sp'],['sp','core'],['s6','cd'],['cd','BOD'],['s5','S'],['s3','J1'],['s3','bh0'],['bh0','bh1'],['bh1','BH'],['s2','G'],['lob','L'],['lob','SEG'],
-       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','tq1'],['tq1','obn'],['obn','CAJ'],['obn','OBC'],['w18','SE'],['core','bw'],['bw','BO1'],['acc','ae'],['ae','ASC'],['ae','EM'],['ae','rmA'],['rmA','st0'],['st0','st1'],['st1','st2'],['st2','csn'],['rmA','rr0'],['rr0','rr1'],['rr1','csn'],['csn','CSV']],
+       ['wait','ESP'],['s1','hub'],['hub','J2'],['hub','GER'],['s4','P14'],['acc','tqs'],['tqs','TQS'],['TQS','TQC'],['TQC','tq1'],['tq1','obn'],['obn','CAJ'],['obn','OBC'],['w18','bon'],['bon','BO1'],['acc','ae'],['ae','ASC'],['ae','EM'],['ae','rmA'],['rmA','st0'],['st0','st1'],['st1','st2'],['st2','csn'],['rmA','rr0'],['rr0','rr1'],['rr1','csn'],['csn','CSV']],
     2:[['core','k2'],['k2','v1'],['v1','v2'],['v2','v3'],['v3','v4'],['v4','v5'],['v5','v6'],['v2','oln'],['oln','OL'],['v3','jsn'],['jsn','JS'],['v4','P'],['P','m2'],['m2','e1'],['e1','EB'],
        ['v1','k7'],['k7','BS'],['k7','k4'],['k4','COC2'],['k4','k6'],['k6','SJ']],
     3:[['core','h1'],['h1','t1'],['t1','bd'],['bd','BO3'],['t1','tg'],['tg','tg2'],['tg2','t2'],['t2','CA'],['t2','P'],['t2','CSn'],['tg2','ASn'],['t2','t3'],['t3','l1'],['l1','SJ3'],['t3','ocd'],['ocd','OCL'],
        ['t3','l2'],['l2','l25'],['l25','k3'],['k3','CO3'],['k3','w3n'],['w3n','W3'],['l25','l3'],['l3','ntn'],['ntn','NT'],['ntn','dgn'],['dgn','DG'],['l3','b1'],['b1','cadN'],['cadN','cad1'],['cad1','CAD'],['b1','b2'],['b2','pc'],['b2','b3'],
        ['b3','crn'],['crn','cr2'],['cr2','CR'],['b3','tqn'],['tqn','SEC'],
-       ['b3','h2'],['h2','h3'],['h3','h1'],['h3','RD'],['core','f1'],['f1','FA']]
+       ['b3','h2'],['h2','h3'],['h3','h1'],['h3','LAC'],['h1','se3'],['se3','SE3'],['CR','RD'],['core','f1'],['f1','FA']]
   };
   const NP={}, adj={};
   Object.entries(NODES).forEach(([f,ns])=>Object.entries(ns).forEach(([k,p])=>{const fl=F(+f),id=f+':'+k;NP[id]={x:fl.X(p[0]),y:fl.y+(p[2]||0),z:fl.Z(p[1]),f:+f};adj[id]=[];}));
@@ -672,6 +677,23 @@ html.embedded .music{right:auto;left:16px}
     B(0.16,0.4,0.03,m('#1b1d2e'),0.34,1.25,-0.44); B(0.5,0.16,0.04,m('#1b1d2e'),-0.1,0.3,-0.44);
     B(1.02,0.12,0.87,m('#f7a82c'),0,1.9,0);
   }
+  // Sirena roja que titila (marca las salidas de emergencia)
+  const SIRENS=[];
+  function siren(fl,x,y,z){const {box,m}=mk(fl); box(0.34,0.1,0.34,m('#2b2f45'),x,y,z);
+    const sm=new THREE.MeshBasicMaterial({color:'#ff2a2a'}); const d=new THREE.Mesh(new THREE.SphereGeometry(0.17,16,10,0,Math.PI*2,0,Math.PI/2),sm); d.position.set(x,y+0.05,z); fl.g.add(d);
+    const hm=new THREE.MeshBasicMaterial({color:'#ff2a2a',transparent:true,opacity:0.25,depthWrite:false}); const h=new THREE.Mesh(new THREE.SphereGeometry(0.45,16,10),hm); h.position.set(x,y+0.12,z); fl.g.add(h);
+    SIRENS.push({sm,hm,h});}
+  // Salida de emergencia: recinto con escaleras, puerta metálica gris, letrero verde de salida y sirena roja encima de la puerta
+  function emergencyExit(fl,r,side){const {box,m,X,Z}=mk(fl), x1=X(r[0]),x2=X(r[2]),z1=Z(r[1]),z2=Z(r[3]), hz=side==='n'||side==='s';
+    walls(fl,r,'',0,{skip:side});
+    const len=hz?x2-x1:z2-z1, c=hz?(x1+x2)/2:(z1+z2)/2, p=side==='n'?z1:side==='s'?z2:side==='w'?x1:x2, out=(side==='s'||side==='e')?1:-1, part=(len-2.1)/2;
+    const B=(a,h,th,mm,along,y,off)=>hz?box(a,h,th,mm,c+along,y,p+off):box(th,h,a,mm,p+off,y,c+along);
+    [-1,1].forEach(s=>B(part,WH,WT,m(fl.wall),s*(1.05+part/2),WH/2,0));
+    B(2.1,2.1,0.08,m('#8a8f99'),0,1.05,0); B(0.9,0.06,0.06,m('#d6d9e0'),0,1.0,out*0.06);
+    B(2.3,0.1,0.12,m('#5d6170'),0,2.15,0); B(0.9,0.3,0.06,m('#2e9e44'),0,2.45,out*0.04); B(0.6,0.12,0.07,m('#ffffff'),0,2.45,out*0.05);
+    const depth=(hz?z2-z1:x2-x1)-1.2, n=8, run=depth/n;
+    for(let i=0;i<n;i++){const h=0.2+i*0.2, off=-out*(0.9+run*(i+0.5)); B(Math.min(3.2,len-0.6),h,run,m('#cfd1de'),0,h/2,off);}
+    const sp=hz?[c,2.62,p+out*0.08]:[p+out*0.08,2.62,c]; siren(fl,sp[0],sp[1],sp[2]);}
   // Mesa de ping pong con malla, raquetas y pelota
   function pingpong(fl,px,py){
     const {box,m}=mk(fl), x=fl.X(px), z=fl.Z(py);
@@ -770,15 +792,9 @@ html.embedded .music{right:auto;left:16px}
     {walls(fl,A.OBC.r,'s'); desks(fl,[{px:260,py:262,rot:Math.PI,c:C.amber}],{workers:1,look:{polo:true,shirt:'#2f5fb3'}});
       box(0.5,0.45,0.5,m('#5d78a8'),X(254),0.25,Z(274)); box(0.5,0.45,0.5,m('#5d78a8'),X(266),0.25,Z(274));
       box(0.4,1.5,1.6,m('#e4e6ee'),X(288),0.75,Z(262)); box(0.4,1.5,1.6,m('#e4e6ee'),X(232),0.75,Z(262));}
-    // Salida de emergencia junto a la cocineta: escaleras encerradas con puerta metálica hacia el pasillo; bodega al lado
-    {walls(fl,A.SE.r,'',0,{skip:'s'}); walls(fl,A.BO1.r,'w',0,{skip:'s'});
-      const sx=X(190.5), zs=Z(158);
-      [-1,1].forEach(s=>box(1.0,WH,WT,m(fl.wall),sx+s*1.55,WH/2,zs));
-      box(2.1,2.1,0.08,m('#8a8f99'),sx,1.05,zs); box(0.9,0.06,0.06,m('#d6d9e0'),sx,1.0,zs+0.06);
-      box(2.3,0.1,0.12,m('#5d6170'),sx,2.15,zs); box(0.9,0.3,0.06,m('#2e9e44'),sx,2.45,zs+0.04); box(0.6,0.12,0.07,m('#ffffff'),sx,2.45,zs+0.05);
-      for(let i=0;i<9;i++) box(3.4,0.2+i*0.2,0.5,m('#cfd1de'),sx,(0.2+i*0.2)/2,Z(150-i*4.5));
-      box(0.06,0.06,4.2,m('#3fa535'),sx-1.75,1.6,Z(132)).rotation.x=0.42;
-      for(let i=0;i<3;i++) box(3.0,1.8,0.45,m('#d5d8ea'),X(193),0.9,Z(25+i*24));}
+    // Bodega junto a la cocineta (con estantes) y sirena en las escaleras a la zona verde, que son la salida de emergencia
+    {walls(fl,A.BO1.r,'s'); for(let i=0;i<5;i++) box(3.0,1.8,0.45,m('#d5d8ea'),X(193),0.9,Z(25+i*24));
+      box(0.12,2.5,0.12,m('#5d6170'),X(163),1.25,Z(138)); siren(fl,X(163),2.55,Z(138));}
     // Puerta de vidrio del acceso a sitti, al lado del puesto del vigilante
     {const gx=X(257), gz=Z(691);
       box(0.16,2.3,0.12,m('#33357e'),gx,1.15,gz-0.95); box(0.16,2.3,0.12,m('#33357e'),gx,1.15,gz+0.95); box(0.16,0.14,2.02,m('#33357e'),gx,2.3,gz);
@@ -878,7 +894,7 @@ html.embedded .music{right:auto;left:16px}
     walls(fl,A.CAD.r,'',SK,{skip:'n'});
     const cadN=(xa,xb)=>box(X(xb)-X(xa),WH+SK,WT,W,(X(xa)+X(xb))/2,(WH-SK)/2,Z(650));
     cadN(45,195); cadN(387,640);
-    walls(fl,A.CR.r,'n',0,{skip:'e'});walls(fl,A.RD.r,'w');
+    walls(fl,A.CR.r,'n',0,{skip:'es'});walls(fl,A.RD.r,'',0,{skip:'ne'});walls(fl,A.LAC.r,'w');emergencyExit(fl,A.SE3.r,'w');
     box(x1-x0,WH,0.18,W,(x0+x1)/2,WH/2,z0); box(x1-x0,WH,0.18,W,(x0+x1)/2,WH/2,z1); box(0.18,WH,z1-z0,W,x0,WH/2,(z0+z1)/2); box(0.18,WH,z1-z0,W,x1,WH/2,(z0+z1)/2);
     // Escalones de bajada al CAD desde el pasillo
     const stM=m(C.core);
@@ -893,7 +909,14 @@ html.embedded .music{right:auto;left:16px}
 
     // Taquilla: personal detrás del mostrador, atendiendo hacia la sala de usuarios (oriente)
     const TQL=[]; [610,655,700,745,790,835].forEach(y=>TQL.push({px:880,py:y,rot:-Math.PI/2,c:C.coral})); desks(fl,TQL,{workers:1});
-    L.push({px:1040,py:395,rot:-Math.PI/2,c:C.yellow},{px:1040,py:450,rot:-Math.PI/2,c:C.yellow});
+    // Radicación: taquilla propia al final de Correspondencia, atendiendo hacia el oriente
+    desks(fl,[{px:880,py:875,rot:-Math.PI/2,c:C.yellow},{px:880,py:905,rot:-Math.PI/2,c:C.yellow}],{workers:1,look:{polo:true,shirt:'#2f5fb3'}});
+    box(0.5,1.1,Z(925)-Z(860),m('#ffffff'),X(922),0.55,(Z(860)+Z(925))/2); box(0.7,0.06,Z(925)-Z(860),m(C.yellow),X(922),1.12,(Z(860)+Z(925))/2);
+    box(0.06,1.4,0.9,m('#fff0b3'),X(922),0.7,Z(890)); box(0.06,1.4,0.9,m('#fff0b3'),X(922),0.7,Z(858));
+    // Sala de lactancia: sillón, mesa auxiliar, nevera pequeña, lavamanos, biombo y matera
+    {const pk=m('#e8728f'), cu=m('#f6c1cf'); box(1.2,0.45,1.0,pk,X(1055),0.23,Z(375)); box(1.2,0.7,0.25,pk,X(1055),0.7,Z(366)); [-1,1].forEach(s=>box(0.2,0.6,1.0,pk,X(1055)+s*0.6,0.4,Z(375))); box(1.0,0.12,0.85,cu,X(1055),0.5,Z(377));
+      box(0.6,0.55,0.6,m('#f3f3f6'),X(1040),0.28,Z(390)); box(0.7,0.9,0.7,m('#e4e6ee'),X(1066),0.45,Z(470)); box(1.2,0.85,0.55,m('#ffffff'),X(1067),0.43,Z(440)); box(0.06,0.6,1.0,m('#cfe6f3'),X(1071),1.4,Z(440));
+      box(0.06,1.6,1.8,m('#f6c1cf'),X(1018),0.8,Z(395)); plant(fl,1060,485,0.9);}
     // Digitalización: puestos mirando hacia la ventana del CAD
     [400,442,484].forEach(x=>L.push({px:x,py:615,rot:Math.PI,c:C.teal}));
     // Gestión de notificaciones, junto a Digitalización
@@ -939,7 +962,7 @@ html.embedded .music{right:auto;left:16px}
     const GREY='#8e9199';
     [[428,350],[483,532],[434,556],[160,232],[300,236],[262,640],[524,668]].forEach(([x,y])=>plant(f1,x,y,1.1,GREY));
     [[278,200],[278,400],[120,310],[220,310]].forEach(([x,y])=>plant(f2,x,y,1.1,GREY));
-    [[212,300],[212,430],[450,522],[820,522],[600,580],[995,300],[995,480]].forEach(([x,y])=>plant(f3,x,y,1.1,GREY));
+    [[212,300],[212,430],[450,522],[820,522],[600,580],[990,365],[995,480]].forEach(([x,y])=>plant(f3,x,y,1.1,GREY));
     // Puestos internos en oficinas
     desks(f1,[{px:445,py:764,rot:0},{px:470,py:300,rot:0}]);
 
@@ -1105,6 +1128,12 @@ html.embedded .music{right:auto;left:16px}
       const visor=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.02,0.14),m('#1b1d2e'));visor.position.set(0,1.69,-0.14);g.add(visor);
       const patch=new THREE.Mesh(new THREE.BoxGeometry(0.07,0.07,0.01),m('#c9cbd6'));patch.position.set(-0.1,1.25,-0.195);g.add(patch);
     }
+    if(o.transit){ // agente de tránsito: chaleco verde limón reflectivo con franjas y gorra blanca
+      const vest=new THREE.Mesh(new THREE.CylinderGeometry(0.21,0.185,0.46,12,1,true),m('#c6f03a'));vest.position.y=1.14;g.add(vest);
+      [1.02,1.24].forEach(y=>{const s=new THREE.Mesh(new THREE.CylinderGeometry(0.212,0.2,0.04,12,1,true),m('#e8eef2'));s.position.y=y;g.add(s);});
+      const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.155,0.155,0.07,16),m('#ffffff'));cap.position.y=1.71;g.add(cap);
+      const visor=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.02,0.14),m('#1f2a44'));visor.position.set(0,1.69,-0.14);g.add(visor);
+    }
     if(o.tools){ // mantenimiento: cinturón de herramientas y caja en la mano
       [-1,1].forEach(sx=>{const st=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.5,0.01),m('#f7a82c'));st.position.set(sx*0.09,1.12,-0.2);g.add(st);});
       const belt=new THREE.Mesh(new THREE.CylinderGeometry(0.185,0.185,0.08,12),m('#5a3a22'));belt.position.y=0.86;g.add(belt);
@@ -1172,6 +1201,9 @@ html.embedded .music{right:auto;left:16px}
     });
   }
   {let n=0;[960,1005,1050].forEach(x=>[620,660,700,740,780].forEach(y=>{n++;seated(3,x,y,Math.PI/2,true,n%3===0?-1:n);}));}
+  // Agentes de tránsito haciendo fila en la taquilla de Radicación
+  [[937,874],[937,904],[962,889],[984,896]].forEach(([x,y],i)=>{const fl=F(3), p=makePerson(fl,{transit:true,shirt:'#ffffff',pants:'#1f2a44',skin:SKINS[(i+1)%SKINS.length],hair:HAIRS[i%HAIRS.length],long:i===1});
+    p.g.position.set(fl.X(x),0,fl.Z(y)); p.g.rotation.y=Math.PI/2; if(i>1) p.arms.forEach(a=>a.rotation.x=0.15);});
   [0,1,3,4].forEach(i=>seated(1,308,290+i*55,Math.PI*1.5,false,i+20));
   [2,3,5].forEach(i=>seated(1,257,290+i*55,Math.PI/2,false,i+30));
   // Usuarios esperando su turno en el pasillo central, entre las dos filas de taquillas
@@ -1545,6 +1577,7 @@ html.embedded .music{right:auto;left:16px}
     }
     place(youEl,yv.set(avatar.position.x,avatar.position.y+1.8,avatar.position.z));
     place(oniEl,yv.set(foll.g.position.x,foll.g.position.y+2.3,foll.g.position.z));
+    {const k=reduce?1:(Math.sin(now/170)>0?1:0.25); SIRENS.forEach(s=>{s.sm.color.setRGB(1,0.12*k,0.12*k).multiplyScalar(0.45+0.55*k); s.hm.opacity=0.32*k; s.h.scale.setScalar(0.8+0.4*k);});}
     if(selRing) selRingM.opacity=reduce?0.9:0.55+0.4*Math.sin(now/260);
     renderer.render(scene,camera);
   }
