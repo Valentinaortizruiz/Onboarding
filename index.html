@@ -477,7 +477,7 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Punto de ingreso a la sede. El vigilante te recibe, registra tu llegada y te orienta hacia tu área.',tip:'Preséntate aquí al llegar.'},
     {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[410,728,458,778],node:'GER',minor:true,desc:'Oficina de la gerencia general, que dirige integralmente a sitti.',tip:''},
     {f:1,id:'ACC',letter:'',name:'Acceso',color:C.neutral,r:[255,682,300,700],node:'acc',minor:true,desc:'Acceso principal al piso.',tip:''},
-    {f:1,id:'BO1',letter:'',name:'Bodega',color:C.neutral,r:[170,15,211,158],node:'BO1',desc:'Bodega junto a la cocineta.',tip:''},
+    {f:1,id:'BO1',letter:'',name:'Bodega',color:C.neutral,r:[170,105,211,158],node:'BO1',desc:'Bodega junto a la cocineta.',tip:''},
     {f:1,id:'ASC',letter:'A',name:'Ascensor',color:'#9da1bf',r:[150,712,196,788],node:'ASC',desc:'Ascensor del edificio, junto al acceso principal.',tip:''},
     {f:1,id:'EM',letter:'E',name:'Escaleras de ingreso',color:'#3fa535',r:[200,708,258,795],node:'EM',desc:'Escaleras de ingreso a la sede, junto al ascensor y al acceso principal.',tip:''},
     {f:1,id:'CSV',letter:'CS',name:'Centro de servicios',color:C.teal,r:[400,960,580,1070],sink:2,node:'CSV',isNew:true,desc:'Centro de servicios: taquillas donde los asesores atienden de manera presencial a los usuarios, que esperan su turno en la sala. Queda en un nivel más abajo: se llega por las escaleras o por la rampa que salen desde las escaleras de ingreso.',tip:'Baja por las escaleras o por la rampa desde las escaleras de ingreso.'},
@@ -525,7 +525,7 @@ html.embedded .music{right:auto;left:16px}
     1:{acc:[270,692],lob:[330,692],wait:[385,668],s1:[418,668],s2:[418,600],s3:[418,500],s4:[418,420],s5:[418,330],s6:[418,262],
        t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
        cd:[440,252],BOD:[458,226],S:[462,330],bh0:[425,459],bh1:[518,459],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
-       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],BO1:[190,140],bon:[190,166],ae:[245,700],ASC:[173,750],EM:[229,750],rmA:[248,794],st0:[229,803],st1:[229,905,-2],st2:[229,1015,-2],rr0:[262,806],rr1:[372,1012,-2],csn:[412,1015,-2],CSV:[490,1022,-2]},
+       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],BO1:[190,132],bon:[190,166],ae:[245,700],ASC:[173,750],EM:[229,750],rmA:[248,794],st0:[229,803],st1:[229,905,-2],st2:[229,1015,-2],rr0:[262,806],rr1:[372,1012,-2],csn:[412,1015,-2],CSV:[490,1022,-2]},
     2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,192],oln:[272,192],JS:[306,268],jsn:[272,268],
        P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[129,150],COC2:[140,118],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
     3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],LAC:[1035,422],se3:[995,305],SE3:[1013,305],RD:[862,890],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
@@ -744,7 +744,7 @@ html.embedded .music{right:auto;left:16px}
 
   // ---------- Piso 1 ----------
   {const fl=F(1),{box,rect,m,X,Z}=mk(fl);
-    [[165,155,392,240],[213,13,362,160],[353,235,547,662],[418,186,497,264],[255,605,547,780],[25,155,170,240],[78,13,165,160],[210,240,356,610],[165,13,213,160],[145,700,262,800]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
+    [[165,155,392,240],[213,13,362,160],[353,235,547,662],[418,186,497,264],[255,605,547,780],[25,155,170,240],[78,13,165,160],[210,240,356,610],[165,100,213,160],[145,700,262,800]].forEach(r=>rect(r,0.4,m(C.slab),-0.4));
     [[405,240,430,662],[290,170,392,238],[300,655,460,700],[165,140,215,165]].forEach(r=>rect(r,0.04,m(C.cor),0.01));
     rect([216,168,288,238],0.04,m(C.wood),0.012);
     // Escaleras (bajan al sótano)
@@ -793,7 +793,7 @@ html.embedded .music{right:auto;left:16px}
       box(0.5,0.45,0.5,m('#5d78a8'),X(254),0.25,Z(274)); box(0.5,0.45,0.5,m('#5d78a8'),X(266),0.25,Z(274));
       box(0.4,1.5,1.6,m('#e4e6ee'),X(288),0.75,Z(262)); box(0.4,1.5,1.6,m('#e4e6ee'),X(232),0.75,Z(262));}
     // Bodega junto a la cocineta (con estantes) y sirena en las escaleras a la zona verde, que son la salida de emergencia
-    {walls(fl,A.BO1.r,'s'); for(let i=0;i<5;i++) box(3.0,1.8,0.45,m('#d5d8ea'),X(193),0.9,Z(25+i*24));
+    {walls(fl,A.BO1.r,'s'); for(let i=0;i<2;i++) box(3.0,1.8,0.45,m('#d5d8ea'),X(190.5),0.9,Z(110+i*14));
       box(0.12,2.5,0.12,m('#5d6170'),X(163),1.25,Z(138)); siren(fl,X(163),2.55,Z(138));}
     // Puerta de vidrio del acceso a sitti, al lado del puesto del vigilante
     {const gx=X(257), gz=Z(691);
