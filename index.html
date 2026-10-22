@@ -157,6 +157,8 @@ html.embedded .music{right:auto;left:16px}
 .vhead small{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#f7a82c;margin-bottom:4px}
 .vclose{font:900 13px/1 var(--body);padding:10px 14px;border-radius:999px;border:0;background:#33357e;color:#fff;cursor:pointer}
 .vwrap{position:relative}
+.vbox video.vert{width:auto;max-width:100%;aspect-ratio:9/16;margin:0 auto}
+.vmodal.vertical .vbox{width:min(480px,100%)}
 .vbox video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px);border-radius:10px;background:#000}
 .vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:900 15px/1 var(--body);padding:14px 20px;border-radius:999px;border:0;background:#f7a82c;color:#fff;cursor:pointer;box-shadow:0 10px 24px -8px rgba(0,0,0,.6)}
 .vplay[hidden]{display:none}
@@ -508,7 +510,7 @@ html.embedded .music{right:auto;left:16px}
     {f:3,id:'CR',letter:'Co',name:'Correspondencia',video:'correspondencia.mp4',color:C.coral,r:[840,585,925,855],node:'CR',desc:'Taquillas de correspondencia. El equipo recibe, clasifica, radica y direcciona las PQRSD y solicitudes ciudadanas que llegan por Mercurio WEB, correo y taquillas. Envía y notifica las respuestas oficiales y registra las limitaciones en QX, con trazabilidad y oportunidad.',tip:''},
     {f:3,id:'SEC',letter:'',name:'Usuarios en espera',color:C.neutral,r:[930,595,1072,800],node:'SEC',minor:true,desc:'Sillas para los usuarios que esperan su turno en las taquillas de correspondencia.',tip:''},
     {f:3,id:'RD',letter:'R',name:'Radicación',video:'radicacion.mp4',color:C.yellow,r:[840,855,925,930],node:'RD',desc:'Recibe, radica, folia y registra los comparendos manuales, los expedientes de accidentes (IPAT) y demás documentos que llegan a la operación. Verifica que estén completos y los entrega a Digitalización y al CAD con trazabilidad. Tiene su propia taquilla, al lado de Correspondencia, donde atiende a los agentes de tránsito.',tip:''},
-    {f:3,id:'LAC',letter:'L',name:'Sala de lactancia',color:'#e8728f',r:[1000,350,1075,495],node:'LAC',desc:'Sala de lactancia: un espacio privado, cómodo y limpio para las madres lactantes, con sillón, nevera para conservar la leche, lavamanos y mesa auxiliar.',tip:'Pide la llave o el acceso al equipo de experiencia y bienestar.'},
+    {f:3,id:'LAC',letter:'L',name:'Sala de lactancia',video:'sala-de-lactancia.mp4',color:'#e8728f',r:[1000,350,1075,495],node:'LAC',desc:'Sala de lactancia: un espacio privado, cómodo y limpio para las madres lactantes, con sillón, nevera para conservar la leche, lavamanos y mesa auxiliar.',tip:'Pide la llave o el acceso al equipo de experiencia y bienestar.'},
     {f:3,id:'SE3',letter:'EM',name:'Salida de emergencia',color:'#3fa535',r:[1008,270,1072,340],node:'SE3',desc:'Salida de emergencia de la zona azul, con escaleras y puerta metálica, marcada con una sirena roja. Úsala solo en caso de evacuación.',tip:'Mantén siempre despejado el paso hacia esta puerta.'},
     {f:3,id:'ESC3',letter:'↑',name:'Escaleras a la zona verde',color:C.core,r:[925,45,1065,185],node:'core',minor:true,desc:'Escaleras para subir a la zona verde.',tip:''}
   ];
@@ -1331,6 +1333,8 @@ html.embedded .music{right:auto;left:16px}
   const vplay=document.getElementById('vplay');
   vplay.onclick=()=>{ vplay.hidden=true; const p=vplayer.play(); if(p&&p.catch) p.catch(()=>{vplay.hidden=false;}); };
   vplayer.addEventListener('playing',()=>{ vplay.hidden=true; });
+  // Videos verticales (grabados con el celular): se muestran altos y centrados, sin franjas a los lados
+  vplayer.addEventListener('loadedmetadata',()=>{ const v=vplayer.videoHeight>vplayer.videoWidth; vplayer.classList.toggle('vert',v); vmodal.classList.toggle('vertical',v); });
   function closeVideo(){ vplayer.pause(); vmodal.hidden=true; if(bgmWas){const p=bgm.play(); if(p&&p.catch) p.catch(()=>{});} bgmWas=false;
     const cb=onVideoClose; onVideoClose=null; if(cb) cb(); }
   // El video de bienvenida se cierra solo al terminar y lleva al mapa
@@ -1645,18 +1649,18 @@ html.embedded .music{right:auto;left:16px}
     box.hidden=false; size(); addEventListener('resize',size); go.addEventListener('click',close); go.focus();
     raf=requestAnimationFrame(frame);
   }
-  // Al abrir la puerta, la cámara entra volando a la zona naranja
-  // Al abrir la puerta: primero el video de bienvenida de los gerentes y luego la cámara entra al mapa
+  // Al abrir la puerta: cómo ingresar a la sede, la gerente general, los gerentes y luego Oni y Arya dan la bienvenida
+  const INGRESO={name:'¿Por dónde ingresar a la sede?',video:'como-ingresar.mp4'};
   const GG={name:'Bienvenida de nuestra gerente general, Diana Giraldo',video:'bienvenida-gerente-general.mp4?v=3'};
   const WELCOME={name:'Bienvenida de nuestros gerentes',video:'bienvenida-gerentes.mp4'};
   window.addEventListener('sitti-door-open',()=>{
     camera.position.set(VIEW[1].p.x+40,VIEW[1].p.y+70,VIEW[1].p.z+90); controls.target.copy(VIEW[1].t);
     const enter=()=>{fly={fp:camera.position.clone(),tp:VIEW[1].p.clone(),ft:controls.target.clone(),tt:VIEW[1].t.clone(),k:reduce?1:0};};
     // Se habilita el sonido del video dentro del mismo clic (lo exigen los celulares)
-    // Primero la gerente general, luego los gerentes, y al final Oni y Arya dan la bienvenida
-    vplayer.src=GG.video; const u=vplayer.play(); if(u&&u.then) u.then(()=>{ if(vmodal.hidden) vplayer.pause(); }).catch(()=>{});
-    const toManagers=()=>openVideo(WELCOME,{kicker:'Mensaje de bienvenida · 2 de 2',closeText:'Entrar a la sede',onClose:()=>showDogPhoto(enter)});
-    setTimeout(()=>openVideo(GG,{kicker:'Mensaje de bienvenida · 1 de 2',closeText:'Siguiente video',onClose:toManagers}),reduce?0:1300);
+    vplayer.src=INGRESO.video; const u=vplayer.play(); if(u&&u.then) u.then(()=>{ if(vmodal.hidden) vplayer.pause(); }).catch(()=>{});
+    const toManagers=()=>openVideo(WELCOME,{kicker:'Mensaje de bienvenida · 3 de 3',closeText:'Entrar a la sede',onClose:()=>showDogPhoto(enter)});
+    const toDiana=()=>openVideo(GG,{kicker:'Mensaje de bienvenida · 2 de 3',closeText:'Siguiente video',onClose:toManagers});
+    setTimeout(()=>openVideo(INGRESO,{kicker:'Antes de entrar · 1 de 3',closeText:'Siguiente video',onClose:toDiana}),reduce?0:1300);
   });
 })();
 </script>

@@ -7,7 +7,8 @@ Sitio estático: no necesita instalar dependencias ni compilar.
 | Archivo | Para qué sirve |
 |---|---|
 | `index.html` | El recorrido completo: puerta de bienvenida, mapa 3D, Oni y Arya, "Caminar adentro" |
-| `bienvenida-gerente-general.mp4` | Video de bienvenida de la gerente general, Diana Giraldo (se ve primero al abrir la puerta) |
+| `como-ingresar.mp4` | Video vertical que muestra por dónde ingresar a la sede (se ve primero al abrir la puerta) |
+| `bienvenida-gerente-general.mp4` | Video de bienvenida de la gerente general, Diana Giraldo (se ve en segundo lugar) |
 | `musica-fondo.mp3` | Música de fondo (suena bajita y se puede pausar) |
 | `mesa-de-ayuda.mp4` | Video que se abre al elegir Mesa de ayuda |
 | `experiencia-de-servicio.mp4` | Video que se abre al elegir Experiencia de servicio |
@@ -19,6 +20,7 @@ Sitio estático: no necesita instalar dependencias ni compilar.
 | `cad.mp4` | Video que se abre al elegir CAD · Archivo |
 | `correspondencia.mp4` | Video que se abre al elegir Correspondencia |
 | `radicacion.mp4` | Video que se abre al elegir Radicación |
+| `sala-de-lactancia.mp4` | Video vertical que se abre al elegir Sala de lactancia |
 | `vercel.json` | Configuración mínima de Vercel (caché para música y videos) |
 
 ## Opción A · Desde el navegador, con GitHub (sin instalar nada)
