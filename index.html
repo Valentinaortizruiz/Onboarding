@@ -966,7 +966,15 @@ html.embedded .music{right:auto;left:16px}
     [[278,200],[278,400],[120,310],[220,310]].forEach(([x,y])=>plant(f2,x,y,1.1,GREY));
     [[212,300],[212,430],[450,522],[820,522],[600,580],[990,365],[995,480]].forEach(([x,y])=>plant(f3,x,y,1.1,GREY));
     // Puestos internos en oficinas
-    desks(f1,[{px:445,py:764,rot:0},{px:470,py:300,rot:0}]);
+    desks(f1,[{px:470,py:300,rot:0}]);
+    // Oficina de la gerente general: ella sentada en el borde del escritorio y dos personas reunidas en el sofá
+    desks(f1,[{px:445,py:764,rot:0}],{workers:0});
+    {const dx=f1.X(445), dz=f1.Z(764), sx=f1.X(418), sz=f1.Z(741);
+      const gg=makePerson(f1,{shirt:'#f4f4f6',pants:'#1b1d2e',skin:'#f1c9a5',hair:'#d9b36c',long:true});
+      gg.g.scale.set(0.8,1,0.8); gg.g.position.set(dx+0.45,0.05,dz+0.3); gg.g.rotation.y=Math.PI;
+      gg.legs[0].rotation.x=0.55; gg.legs[1].rotation.x=0.3; gg.arms.forEach(a=>a.rotation.x=0.2); gg.arms[0].rotation.z=-0.35; gg.arms[1].rotation.z=0.35;
+      SEATS.push({fl:f1,parent:f1.g,x:sx+0.2,y:-0.2,z:sz-0.55,yaw:-Math.PI/2-0.35,kind:'meet',look:{shirt:'#33357e',pants:'#2b2f45',skin:'#c68e6a',hair:'#1a1410',long:false}},
+                 {fl:f1,parent:f1.g,x:sx+0.2,y:-0.2,z:sz+0.55,yaw:-Math.PI/2+0.35,kind:'meet',look:{shirt:'#3fa9ac',pants:'#4a4f5c',skin:'#e0b48f',hair:'#5a3a22',long:true}});}
 
   }
 
@@ -1171,7 +1179,7 @@ html.embedded .music{right:auto;left:16px}
   // Colaboradores trabajando en los puestos y reunidos en las salas de juntas
   const sitters=SEATS.map((s,i)=>{
     const p=makePerson(s.fl,Object.assign({parent:s.parent,noShadow:true,shirt:SHIRTS[(i*5+1)%SHIRTS.length],pants:i%2?'#2b2f45':'#4a4f5c',skin:SKINS[(i*3)%SKINS.length],hair:HAIRS[(i*7)%HAIRS.length],long:i%3===0,sleeve:i%4===1},s.look||{}));
-    p.g.position.set(s.x,-0.3,s.z); p.g.rotation.y=s.yaw; p.legs.forEach(l=>l.rotation.x=1.45);
+    p.g.position.set(s.x,s.y===undefined?-0.3:s.y,s.z); p.g.rotation.y=s.yaw; p.legs.forEach(l=>l.rotation.x=1.45);
     p.arms.forEach(a=>a.rotation.x=s.kind==='work'?1.15:0.6); return Object.assign(p,{kind:s.kind,ph:i*1.7});});
   // Equipo de experiencia y bienestar haciendo una actividad (pausa activa) en la sala de juntas de al lado
   const actors=[];
