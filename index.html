@@ -779,11 +779,11 @@ html.embedded .music{right:auto;left:16px}
       desks(fl,GR.map(([x,y])=>({px:x,py:y,rot:rotOf(y)})),{workers:0});
       GR.forEach(([x,y,lk],i)=>SEATS.push({fl,parent:fl.g,x:X(x),z:Z(y)+(y>600?0.62:-0.62),yaw:rotOf(y),kind:'work',look:Object.assign({skin:['#c68e6a','#f1c9a5','#e0b48f','#a8714a','#f6d5b8','#e0b48f'][i],hair:['#2b2230','#5a3a22','#1a1410','#3d2a1e','#141414','#2b2230'][i]},lk)}));}
     // Oficina de la gerencia: sofá grande blanco y gris contra el muro occidental y baño privado en la esquina nororiental
-    {const sx=X(453),sz=Z(728),sm=m('#f4f4f6'),cu=m('#9a9ca6'),L=3.0;
-      box(0.95,0.42,L,sm,sx,0.21,sz); box(0.3,0.55,L,sm,sx+0.33,0.68,sz);
+    {const sx=X(406),sz=Z(735),sm=m('#f4f4f6'),cu=m('#9a9ca6'),L=3.0;
+      box(0.95,0.42,L,sm,sx,0.21,sz); box(0.3,0.55,L,sm,sx-0.33,0.68,sz);
       [-1,1].forEach(s=>box(0.95,0.62,0.22,sm,sx,0.31,sz+s*L/2));
-      [-0.95,0,0.95].forEach(dz=>box(0.62,0.12,0.9,cu,sx-0.12,0.48,sz+dz));
-      [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx+0.12,0.72,sz+s*1.05);p.rotation.z=0.25;});
+      [-0.95,0,0.95].forEach(dz=>box(0.62,0.12,0.9,cu,sx+0.12,0.48,sz+dz));
+      [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx-0.12,0.72,sz+s*1.05);p.rotation.z=-0.25;});
       const GB=[398,764,414,778]; walls(fl,GB,'e',0,{skip:'ws'}); bath(fl,GB,'s',1);
       const GB2=[529,551,545,576]; walls(fl,GB2,'w',0,{skip:'ne'}); bath(fl,GB2,'n',1);}
     // Cajeros automáticos contra el muro occidental, mirando al pasillo de las taquillas
@@ -968,18 +968,20 @@ html.embedded .music{right:auto;left:16px}
     // Puestos internos en oficinas
     desks(f1,[{px:470,py:300,rot:0}]);
     // Oficina de la gerente general: ella sentada en el borde del escritorio y dos personas reunidas en el sofá
-    desks(f1,[{px:445,py:764,rot:0}],{workers:0});
-    {const dx=f1.X(445), dz=f1.Z(764), sx=f1.X(453), sz=f1.Z(728);
+    {const {box,m}=mk(f1), dx=f1.X(448), dz=f1.Z(737), sx=f1.X(406), sz=f1.Z(735), wood=m('#c9a97f'), leg=m('#9b9a95');
+      // Escritorio plano (sin pantalla ni divisor), mirando hacia el sofá
+      box(0.85,0.06,1.7,wood,dx,0.75,dz); [-1,1].forEach(a=>[-1,1].forEach(b=>box(0.06,0.72,0.06,leg,dx+a*0.36,0.36,dz+b*0.78)));
       const gg=makePerson(f1,{shirt:'#f4f4f6',pants:'#1b1d2e',skin:'#f1c9a5',hair:'#9c6b3e',long:true});
-      gg.g.scale.set(0.8,1,0.8); gg.g.position.set(dx+0.45,0.05,dz+0.3); gg.g.rotation.y=Math.PI;
+      gg.g.scale.set(0.8,1,0.8); gg.g.position.set(dx-0.4,0.05,dz); gg.g.rotation.y=Math.PI/2;
       gg.legs[0].rotation.x=0.55; gg.legs[1].rotation.x=0.3; gg.arms[0].rotation.x=0.2; gg.arms[0].rotation.z=-0.35;
       gg.arms[1].rotation.x=1.25; gg.arms[1].rotation.z=0.15;
       // Café en la mano: vaso blanco con tapa café
       const cup=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.048,0.15,12),new THREE.MeshLambertMaterial({color:'#ffffff'})); cup.position.set(0,-0.64,-0.05); gg.arms[1].add(cup);
       const lid=new THREE.Mesh(new THREE.CylinderGeometry(0.063,0.063,0.025,12),new THREE.MeshLambertMaterial({color:'#5a3a22'})); lid.position.set(0,-0.555,-0.05); gg.arms[1].add(lid);
       const sleeve=new THREE.Mesh(new THREE.CylinderGeometry(0.062,0.055,0.06,12),new THREE.MeshLambertMaterial({color:'#c8a26a'})); sleeve.position.set(0,-0.65,-0.05); gg.arms[1].add(sleeve);
-      SEATS.push({fl:f1,parent:f1.g,x:sx-0.2,y:-0.2,z:sz-0.75,yaw:Math.PI/2+0.35,kind:'meet',look:{shirt:'#33357e',pants:'#2b2f45',skin:'#c68e6a',hair:'#1a1410',long:false}},
-                 {fl:f1,parent:f1.g,x:sx-0.2,y:-0.2,z:sz+0.75,yaw:Math.PI/2-0.35,kind:'meet',look:{shirt:'#3fa9ac',pants:'#4a4f5c',skin:'#e0b48f',hair:'#5a3a22',long:true}});}
+      // Reunión en el sofá, de frente a Diana
+      SEATS.push({fl:f1,parent:f1.g,x:sx+0.2,y:-0.2,z:sz-0.75,yaw:-Math.PI/2-0.25,kind:'meet',look:{shirt:'#33357e',pants:'#2b2f45',skin:'#c68e6a',hair:'#1a1410',long:false}},
+                 {fl:f1,parent:f1.g,x:sx+0.2,y:-0.2,z:sz+0.75,yaw:-Math.PI/2+0.25,kind:'meet',look:{shirt:'#3fa9ac',pants:'#4a4f5c',skin:'#e0b48f',hair:'#5a3a22',long:true}});}
 
   }
 
