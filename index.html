@@ -968,11 +968,11 @@ html.embedded .music{right:auto;left:16px}
     // Puestos internos en oficinas
     desks(f1,[{px:470,py:300,rot:0}]);
     // Oficina de la gerente general: ella sentada en el borde del escritorio y dos personas reunidas en el sofá
-    {const {box,m}=mk(f1), dx=f1.X(448), dz=f1.Z(737), sx=f1.X(406), sz=f1.Z(735), wood=m('#c9a97f'), leg=m('#9b9a95');
+    {const {box,m}=mk(f1), dx=f1.X(432), dz=f1.Z(766), sx=f1.X(406), sz=f1.Z(735), wood=m('#c9a97f'), leg=m('#9b9a95');
       // Escritorio plano (sin pantalla ni divisor), mirando hacia el sofá
-      box(0.85,0.06,1.7,wood,dx,0.75,dz); [-1,1].forEach(a=>[-1,1].forEach(b=>box(0.06,0.72,0.06,leg,dx+a*0.36,0.36,dz+b*0.78)));
+      box(1.7,0.06,0.85,wood,dx,0.75,dz); [-1,1].forEach(a=>[-1,1].forEach(b=>box(0.06,0.72,0.06,leg,dx+a*0.78,0.36,dz+b*0.36)));
       const gg=makePerson(f1,{shirt:'#f4f4f6',pants:'#1b1d2e',skin:'#f1c9a5',hair:'#9c6b3e',long:true});
-      gg.g.scale.set(0.8,1,0.8); gg.g.position.set(dx-0.4,0.05,dz); gg.g.rotation.y=Math.PI/2;
+      gg.g.scale.set(0.8,1,0.8); gg.g.position.set(dx-0.2,0.05,dz-0.4); gg.g.rotation.y=0.72;
       gg.legs[0].rotation.x=0.55; gg.legs[1].rotation.x=0.3; gg.arms[0].rotation.x=0.2; gg.arms[0].rotation.z=-0.35;
       gg.arms[1].rotation.x=1.25; gg.arms[1].rotation.z=0.15;
       // Café en la mano: vaso blanco con tapa café
@@ -1100,7 +1100,7 @@ html.embedded .music{right:auto;left:16px}
     return {g,body,legs,tail,head,s};
   }
   // Arya: golden retriever crema dorado. Oni: poodle toy rojo, crespo, con pañoleta de camuflado. Oni guía y Arya lo sigue
-  const arya=makeDog({s:1,name:'Arya',base:'#d8ab72',tongue:true,mat:furMat('#d8ab72','#e6c08e','#cb9c62'),mat2:furMat('#ecd3aa','#f6e4c6','#dcbb8c'),mat3:furMat('#c98f52','#d8a46a','#b47a40')});
+  const arya=makeDog({s:0.8,name:'Arya',base:'#d8ab72',tongue:true,mat:furMat('#d8ab72','#e6c08e','#cb9c62'),mat2:furMat('#ecd3aa','#f6e4c6','#dcbb8c'),mat3:furMat('#c98f52','#d8a46a','#b47a40')});
   const oni=makeDog({s:0.66,name:'Oni',base:'#a2441c',curly:true,mat:furMat('#a2441c','#c46636','#6e2a10',true),mat2:furMat('#b5522a','#d47444','#7d3214',true)});
   const lead=oni, foll=arya, avatar=lead.g;
 
