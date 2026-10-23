@@ -477,7 +477,7 @@ html.embedded .music{right:auto;left:16px}
     {f:1,id:'TQC',letter:'T',name:'Taquillas de cobro · Experiencia de servicio',color:C.amber,r:[215,283,295,600],node:'TQC',desc:'Taquillas de cobro de experiencia de servicio, donde los asesores atienden de manera presencial a los ciudadanos en sus trámites de cobro. Quedan frente a las taquillas de atención: los usuarios se ubican en el pasillo central, entre las dos filas.',tip:''},
     {f:1,id:'ESP',letter:'',name:'Sala de espera',color:C.neutral,r:[362,605,410,655],node:'ESP',minor:true,desc:'Sala de espera para visitantes.',tip:''},
     {f:1,id:'SEG',letter:'IN',name:'Ingreso Sitti',color:C.navy,r:[285,620,352,682],node:'SEG',desc:'Punto de ingreso a la sede. El vigilante te recibe, registra tu llegada y te orienta hacia tu área.',tip:'Preséntate aquí al llegar.'},
-    {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[410,728,458,778],node:'GER',minor:true,desc:'Oficina de la gerencia general, que dirige integralmente a Sitti.',tip:''},
+    {f:1,id:'GER',letter:'',name:'Gerencia',color:C.navy,r:[398,710,458,778],node:'GER',minor:true,desc:'Oficina de la gerencia general, que dirige integralmente a Sitti.',tip:''},
     {f:1,id:'ACC',letter:'',name:'Acceso',color:C.neutral,r:[255,682,300,700],node:'acc',minor:true,desc:'Acceso principal al piso.',tip:''},
     {f:1,id:'BO1',letter:'',name:'Bodega',color:C.neutral,r:[170,105,211,158],node:'BO1',desc:'Bodega junto a la cocineta.',tip:''},
     {f:1,id:'ASC',letter:'A',name:'Ascensor',color:'#9da1bf',r:[150,712,196,788],node:'ASC',desc:'Ascensor del edificio, junto al acceso principal.',tip:''},
@@ -527,7 +527,7 @@ html.embedded .music{right:auto;left:16px}
     1:{acc:[270,692],lob:[330,692],wait:[385,668],s1:[418,668],s2:[418,600],s3:[418,500],s4:[418,420],s5:[418,330],s6:[418,262],
        t1:[395,205],t2:[300,205],t3:[285,163],COC:[288,90],MA:[252,205],w18:[184,205],sp:[170,152],core:[122,135],
        cd:[440,252],BOD:[458,226],S:[462,330],bh0:[425,459],bh1:[518,459],J1:[460,500],BH:[518,500],G:[486,600],L:[326,740],SEG:[318,655],
-       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[434,752],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],BO1:[190,132],bon:[190,166],ae:[245,700],ASC:[173,750],EM:[229,750],rmA:[248,794],st0:[229,803],st1:[229,905,-2],st2:[229,1015,-2],rr0:[262,806],rr1:[372,1012,-2],csn:[412,1015,-2],CSV:[490,1022,-2]},
+       ESP:[386,632],hub:[448,688],J2:[496,718],GER:[428,742],P14:[388,420],tqs:[300,612],TQS:[300,470],TQC:[300,330],tq1:[300,288],CAJ:[240,299],obn:[260,291],OBC:[260,270],BO1:[190,132],bon:[190,166],ae:[245,700],ASC:[173,750],EM:[229,750],rmA:[248,794],st0:[229,803],st1:[229,905,-2],st2:[229,1015,-2],rr0:[262,806],rr1:[372,1012,-2],csn:[412,1015,-2],CSV:[490,1022,-2]},
     2:{core:[360,214],k2:[340,150],v1:[274,150],v2:[274,180],v3:[274,255],v4:[274,292],v5:[274,330],v6:[274,425],OL:[306,192],oln:[272,192],JS:[306,268],jsn:[272,268],
        P:[170,292],m2:[80,292],e1:[72,276],EB:[33,276],k4:[129,150],COC2:[140,118],k7:[232,150],BS:[232,120],k6:[76,180],SJ:[35,180]},
     3:{core:[960,200],h1:[960,260],h3:[960,422],h2:[960,545],LAC:[1035,422],se3:[995,305],SE3:[1013,305],RD:[862,890],t1:[800,255],bd:[850,255],BO3:[850,205],tg:[768,255],tg2:[768,190],
@@ -779,12 +779,12 @@ html.embedded .music{right:auto;left:16px}
       desks(fl,GR.map(([x,y])=>({px:x,py:y,rot:rotOf(y)})),{workers:0});
       GR.forEach(([x,y,lk],i)=>SEATS.push({fl,parent:fl.g,x:X(x),z:Z(y)+(y>600?0.62:-0.62),yaw:rotOf(y),kind:'work',look:Object.assign({skin:['#c68e6a','#f1c9a5','#e0b48f','#a8714a','#f6d5b8','#e0b48f'][i],hair:['#2b2230','#5a3a22','#1a1410','#3d2a1e','#141414','#2b2230'][i]},lk)}));}
     // Oficina de la gerencia: sofá grande blanco y gris contra el muro occidental y baño privado en la esquina nororiental
-    {const sx=X(418),sz=Z(741),sm=m('#f4f4f6'),cu=m('#9a9ca6');
-      box(0.95,0.42,2.2,sm,sx,0.21,sz); box(0.3,0.55,2.2,sm,sx-0.33,0.68,sz);
-      [-1,1].forEach(s=>box(0.95,0.62,0.22,sm,sx,0.31,sz+s*1.1));
-      [-0.5,0.5].forEach(dz=>box(0.62,0.12,0.95,cu,sx+0.12,0.48,sz+dz));
-      [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx-0.12,0.72,sz+s*0.7);p.rotation.z=-0.25;});
-      const GB=[410,756,432,778]; walls(fl,GB,'e',0,{skip:'ws'}); bath(fl,GB,'s',1);
+    {const sx=X(453),sz=Z(728),sm=m('#f4f4f6'),cu=m('#9a9ca6'),L=3.0;
+      box(0.95,0.42,L,sm,sx,0.21,sz); box(0.3,0.55,L,sm,sx+0.33,0.68,sz);
+      [-1,1].forEach(s=>box(0.95,0.62,0.22,sm,sx,0.31,sz+s*L/2));
+      [-0.95,0,0.95].forEach(dz=>box(0.62,0.12,0.9,cu,sx-0.12,0.48,sz+dz));
+      [-1,1].forEach(s=>{const p=box(0.14,0.36,0.4,cu,sx+0.12,0.72,sz+s*1.05);p.rotation.z=0.25;});
+      const GB=[398,764,414,778]; walls(fl,GB,'e',0,{skip:'ws'}); bath(fl,GB,'s',1);
       const GB2=[529,551,545,576]; walls(fl,GB2,'w',0,{skip:'ne'}); bath(fl,GB2,'n',1);}
     // Cajeros automáticos contra el muro occidental, mirando al pasillo de las taquillas
     [292,306].forEach(py=>{const g=new THREE.Group(); g.position.set(X(221),0,Z(py)); g.rotation.y=Math.PI/2; fl.g.add(g);
@@ -969,12 +969,17 @@ html.embedded .music{right:auto;left:16px}
     desks(f1,[{px:470,py:300,rot:0}]);
     // Oficina de la gerente general: ella sentada en el borde del escritorio y dos personas reunidas en el sofá
     desks(f1,[{px:445,py:764,rot:0}],{workers:0});
-    {const dx=f1.X(445), dz=f1.Z(764), sx=f1.X(418), sz=f1.Z(741);
-      const gg=makePerson(f1,{shirt:'#f4f4f6',pants:'#1b1d2e',skin:'#f1c9a5',hair:'#d9b36c',long:true});
+    {const dx=f1.X(445), dz=f1.Z(764), sx=f1.X(453), sz=f1.Z(728);
+      const gg=makePerson(f1,{shirt:'#f4f4f6',pants:'#1b1d2e',skin:'#f1c9a5',hair:'#9c6b3e',long:true});
       gg.g.scale.set(0.8,1,0.8); gg.g.position.set(dx+0.45,0.05,dz+0.3); gg.g.rotation.y=Math.PI;
-      gg.legs[0].rotation.x=0.55; gg.legs[1].rotation.x=0.3; gg.arms.forEach(a=>a.rotation.x=0.2); gg.arms[0].rotation.z=-0.35; gg.arms[1].rotation.z=0.35;
-      SEATS.push({fl:f1,parent:f1.g,x:sx+0.2,y:-0.2,z:sz-0.55,yaw:-Math.PI/2-0.35,kind:'meet',look:{shirt:'#33357e',pants:'#2b2f45',skin:'#c68e6a',hair:'#1a1410',long:false}},
-                 {fl:f1,parent:f1.g,x:sx+0.2,y:-0.2,z:sz+0.55,yaw:-Math.PI/2+0.35,kind:'meet',look:{shirt:'#3fa9ac',pants:'#4a4f5c',skin:'#e0b48f',hair:'#5a3a22',long:true}});}
+      gg.legs[0].rotation.x=0.55; gg.legs[1].rotation.x=0.3; gg.arms[0].rotation.x=0.2; gg.arms[0].rotation.z=-0.35;
+      gg.arms[1].rotation.x=1.25; gg.arms[1].rotation.z=0.15;
+      // Café en la mano: vaso blanco con tapa café
+      const cup=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.048,0.15,12),new THREE.MeshLambertMaterial({color:'#ffffff'})); cup.position.set(0,-0.64,-0.05); gg.arms[1].add(cup);
+      const lid=new THREE.Mesh(new THREE.CylinderGeometry(0.063,0.063,0.025,12),new THREE.MeshLambertMaterial({color:'#5a3a22'})); lid.position.set(0,-0.555,-0.05); gg.arms[1].add(lid);
+      const sleeve=new THREE.Mesh(new THREE.CylinderGeometry(0.062,0.055,0.06,12),new THREE.MeshLambertMaterial({color:'#c8a26a'})); sleeve.position.set(0,-0.65,-0.05); gg.arms[1].add(sleeve);
+      SEATS.push({fl:f1,parent:f1.g,x:sx-0.2,y:-0.2,z:sz-0.75,yaw:Math.PI/2+0.35,kind:'meet',look:{shirt:'#33357e',pants:'#2b2f45',skin:'#c68e6a',hair:'#1a1410',long:false}},
+                 {fl:f1,parent:f1.g,x:sx-0.2,y:-0.2,z:sz+0.75,yaw:Math.PI/2-0.35,kind:'meet',look:{shirt:'#3fa9ac',pants:'#4a4f5c',skin:'#e0b48f',hair:'#5a3a22',long:true}});}
 
   }
 
