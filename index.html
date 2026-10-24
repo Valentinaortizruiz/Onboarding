@@ -686,17 +686,18 @@ html.embedded .music{right:auto;left:16px}
   const idlers=[];   // personas quietas (de pie o sentadas): respiran y parpadean
 
   var BADGE=null;
-  var _w=new THREE.Vector3();
+  var _w=new THREE.Vector3(),_u=new THREE.Vector3(),_pl=new THREE.Vector3(),_el=new THREE.Vector3(),_h=new THREE.Vector3(),_bx=new THREE.Vector3(),_yy=new THREE.Vector3(),_zz=new THREE.Vector3(),_mt=new THREE.Matrix4();
   var _g1=new THREE.Vector3();
   var _m=new THREE.Vector3();
   function desks(fl,list,opts={}){
     const {m}=mk(fl), ratio=opts.workers===undefined?0.38:opts.workers;
     const dk=new THREE.InstancedMesh(deskG,m('#c9a97f'),list.length), lg=new THREE.InstancedMesh(legG,m('#9b9a95'),list.length), dv=new THREE.InstancedMesh(divG,m(fl.div),list.length), sc=new THREE.InstancedMesh(scrG,m('#2a2c45'),list.length);
-    dk.castShadow=true; dv.castShadow=true; fl.g.add(dk,lg,dv,sc);
+    const kb=new THREE.InstancedMesh(new THREE.BoxGeometry(0.46,0.02,0.16),m('#2a2c45'),list.length), kk=new THREE.InstancedMesh(new THREE.BoxGeometry(0.42,0.008,0.13),m('#e3e5ef'),list.length), ms=new THREE.InstancedMesh(new THREE.BoxGeometry(0.06,0.018,0.1),m('#2a2c45'),list.length);
+    dk.castShadow=true; dv.castShadow=true; fl.g.add(dk,lg,dv,sc,kb,kk,ms);
     const dm=new THREE.Object3D(), t=new THREE.Vector3(), byC={};
     const mat4=d=>{const g=new THREE.Object3D();g.position.set(fl.X(d.px),0,fl.Z(d.py));g.rotation.y=d.rot;g.updateMatrixWorld();return g.matrixWorld;};
     list.forEach((d,i)=>{const mw=mat4(d);const put=(im,x,y,z)=>{dm.position.copy(t.set(x,y,z).applyMatrix4(mw));dm.rotation.set(0,d.rot,0);dm.updateMatrix();im.setMatrixAt(i,dm.matrix);};
-      put(dk,0,0.75,0);put(lg,0.42,0.36,0);put(dv,0,0.99,-0.32);put(sc,0,0.95,-0.15);(byC[d.c||'#4a4f5c']=byC[d.c||'#4a4f5c']||[]).push(d);
+      put(dk,0,0.75,0);put(lg,0.42,0.36,0);put(dv,0,0.99,-0.32);put(sc,0,0.95,-0.15);put(kb,0,0.787,0.14);put(kk,0,0.8,0.14);put(ms,0.36,0.789,0.14);(byC[d.c||'#4a4f5c']=byC[d.c||'#4a4f5c']||[]).push(d);
       if(((i*37+Math.round(d.px*3+d.py))%100)<ratio*100){const c=new THREE.Vector3(0,0,0.62).applyMatrix4(mw);SEATS.push({fl,parent:fl.g,x:c.x,z:c.z,yaw:d.rot,kind:'work',look:d.look||opts.look});}});
     Object.entries(byC).forEach(([c,arr])=>{const ch=new THREE.InstancedMesh(chairG,m(c),arr.length);ch.castShadow=true;
       arr.forEach((d,i)=>{dm.position.copy(t.set(0,0.28,0.62).applyMatrix4(mat4(d)));dm.rotation.set(0,d.rot,0);dm.updateMatrix();ch.setMatrixAt(i,dm.matrix);});fl.g.add(ch);});
@@ -1035,7 +1036,7 @@ html.embedded .music{right:auto;left:16px}
       const gg=makePerson(f1,{shirt:'#f4f4f6',pants:'#1b1d2e',skin:'#f1c9a5',hair:'#9c6b3e',long:true});
       gg.g.scale.set(0.8,1,0.8); gg.g.position.set(dx-0.2,0.05,dz-0.4); gg.g.rotation.y=0.72;
       gg.legs[0].rotation.x=1.3; gg.legs[1].rotation.x=1.2; gg.knees[0].rotation.x=-1.25; gg.knees[1].rotation.x=-1.4; gg.feet.forEach(f=>f.rotation.x=0.3); gg.up.rotation.x=-0.05;
-      gg.arms[0].rotation.x=0.4; gg.elbows[0].rotation.x=1.1; gg.arms[1].rotation.set(0.55,0,0.1); gg.elbows[1].rotation.x=1.35; gg.ph=2.2; idlers.push(gg);
+      gg.arms[0].rotation.x=0.4; gg.elbows[0].rotation.x=1.1; gg.arms[1].rotation.set(0.55,0,0.1); gg.elbows[1].rotation.x=1.35; gg.ph=2.2; gg.idle='sip'; idlers.push(gg);
       // Café en la mano: vaso blanco con tapa café
       const cup=new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.048,0.15,12),new THREE.MeshLambertMaterial({color:'#ffffff'})); cup.position.set(0,-0.35,-0.05); gg.elbows[1].add(cup);
       const lid=new THREE.Mesh(new THREE.CylinderGeometry(0.063,0.063,0.025,12),new THREE.MeshLambertMaterial({color:'#5a3a22'})); lid.position.set(0,-0.275,-0.05); gg.elbows[1].add(lid);
@@ -1110,17 +1111,20 @@ html.embedded .music{right:auto;left:16px}
     B(0.055*s,1.25,0.9,1,dark,0,(o.curly?-0.06:-0.075)*s,(o.curly?-0.43:-0.53)*s,head);           // nariz
     {const hn=new THREE.Mesh(new THREE.SphereGeometry(0.014*s,6,4),new THREE.MeshBasicMaterial({color:'#8a8a8a'}));hn.position.set(0.02*s,(o.curly?-0.03:-0.045)*s,(o.curly?-0.47:-0.575)*s);head.add(hn);} // brillo de nariz húmeda
     const ez=o.curly?-0.27:-0.23, er=o.curly?0.05:0.042;
-    [-1,1].forEach(k=>{B(er*1.25*s,1.15,1,0.7,dark,k*0.12*s,0.07*s,(ez+0.01)*s,head,10); // borde oscuro del ojo
+    const eyeP=[];   // piezas del ojo, para el parpadeo
+    [-1,1].forEach(k=>{eyeP.push(B(er*1.25*s,1.15,1,0.7,dark,k*0.12*s,0.07*s,(ez+0.01)*s,head,10)); // borde oscuro del ojo
       const e=B(er*s,1,1,0.8,eyeM,k*0.12*s,0.07*s,ez*s,head,12);
-      const hl=new THREE.Mesh(new THREE.SphereGeometry(0.012*s,6,4),new THREE.MeshBasicMaterial({color:'#ffffff'}));hl.position.set(k*0.11*s,0.085*s,(ez-0.035)*s);head.add(hl);});
-    if(o.tongue){const t=new THREE.Mesh(new THREE.SphereGeometry(0.08*s,12,8),new THREE.MeshStandardMaterial({color:'#e57a93',roughness:0.4}));t.scale.set(0.9,0.35,1.4);t.position.set(0,-0.22*s,-0.36*s);t.rotation.x=0.6;head.add(t);
+      const hl=new THREE.Mesh(new THREE.SphereGeometry(0.012*s,6,4),new THREE.MeshBasicMaterial({color:'#ffffff'}));hl.position.set(k*0.11*s,0.085*s,(ez-0.035)*s);head.add(hl);eyeP.push(e,hl);});
+    let tongueM=null;
+    if(o.tongue){const t=new THREE.Mesh(new THREE.SphereGeometry(0.08*s,12,8),new THREE.MeshStandardMaterial({color:'#e57a93',roughness:0.4}));t.scale.set(0.9,0.35,1.4);t.position.set(0,-0.22*s,-0.36*s);t.rotation.x=0.6;head.add(t);tongueM=t;
       B(0.09*s,1.1,0.45,1.1,dark,0,-0.17*s,-0.33*s,head,12);}
-    // Orejas caídas
-    [-1,1].forEach(k=>{
-      if(o.curly){ for(let i=0;i<4;i++) curl(0.085*s,i%2?F1:F2,k*0.26*s,(0.02-i*0.1)*s,0.02*s,head); }
+    // Orejas caídas, cada una en su grupo para que se muevan al caminar
+    const ears=[];
+    [-1,1].forEach(k=>{const eg=new THREE.Group(); eg.position.set(k*0.25*s,0.06*s,0.02*s); eg.userData.k=k; head.add(eg); ears.push(eg);
+      if(o.curly){ for(let i=0;i<4;i++) curl(0.085*s,i%2?F1:F2,k*0.01*s,(-0.04-i*0.1)*s,0,eg); }
       else { // oreja de golden: mediana, caída, pegada a la mejilla, con un fleco corto en el borde
-        const e=B(0.13*s,0.4,1.6,1,F3,k*0.255*s,-0.1*s,0.03*s,head);e.rotation.z=k*0.15;
-        for(let j=0;j<2;j++){const f=B(0.045*s,1,2.2,0.5,F3,k*(0.265+j*0.01)*s,(-0.2-j*0.02)*s,(0.06-j*0.04)*s,head,8);f.rotation.z=k*0.12;} }
+        const e=B(0.13*s,0.4,1.6,1,F3,k*0.005*s,-0.16*s,0.01*s,eg);e.rotation.z=k*0.15;
+        for(let j=0;j<2;j++){const f=B(0.045*s,1,2.2,0.5,F3,k*(0.015+j*0.01)*s,(-0.26-j*0.02)*s,(0.04-j*0.04)*s,eg,8);f.rotation.z=k*0.12;} }
     });
     if(o.curly){ // poodle: cuerpo y cabeza cubiertos de rizos, con copete
       for(let i=0;i<70;i++){const u=Math.random()*Math.PI*2,v=Math.acos(2*Math.random()-1);
@@ -1164,7 +1168,7 @@ html.embedded .music{right:auto;left:16px}
     else { for(let k=0;k<6;k++){const t=k/5;B((0.11-t*0.04)*s,1,0.9,1.3,k%2?F2:F1,0,(0.05+t*0.2-t*t*0.15)*s,(0.12+t*0.55)*s,tail,12);
       if(k%2) B(0.05*s,0.8,1.6,0.9,F2,0,(-0.05+t*0.18-t*t*0.15)*s,(0.14+t*0.55)*s,tail,8);} } // cola de golden con fleco suave
     scene.add(g);
-    return {g,body,legs,tail,head,s};
+    return {g,body,legs,tail,head,s,ears,eyeP,tongue:tongueM,nb:performance.now()+1500+Math.random()*3000,ph:Math.random()*6};
   }
   // Arya: golden retriever crema dorado. Oni: poodle toy rojo, crespo, con pañoleta de camuflado. Oni guía y Arya lo sigue
   const arya=makeDog({s:0.8,name:'Arya',base:'#d8ab72',tongue:true,mat:furMat('#d8ab72','#e6c08e','#cb9c62'),mat2:furMat('#ecd3aa','#f6e4c6','#dcbb8c'),mat3:furMat('#c98f52','#d8a46a','#b47a40')});
@@ -1272,11 +1276,15 @@ html.embedded .music{right:auto;left:16px}
       BADGE=new THREE.MeshLambertMaterial({map:new THREE.CanvasTexture(c)});}
     const g=new THREE.Group();const b=new THREE.Mesh(new THREE.BoxGeometry(0.09,0.115,0.008),m('#ffffff'));g.add(b);
     const f=new THREE.Mesh(new THREE.PlaneGeometry(0.088,0.112),BADGE);f.position.z=-0.0045;f.rotation.y=Math.PI;g.add(f);return g;}
-  // Brazo con dos huesos (hombro y codo) que lleva la mano a un punto: así las manos agarran la escoba, la bandeja, la taza o al perrito
-  function reachU(p,i,v){const a=p.arms[i];_w.copy(v).sub(a.position);
-    const L=0.29, d=Math.max(0.12,Math.min(_w.length(),0.575)), e=Math.PI-Math.acos(Math.max(-1,Math.min(1,(2*L*L-d*d)/(2*L*L))));
-    const A=L+L*Math.cos(e), B=L*Math.sin(e), th=Math.asin(Math.max(-1,Math.min(1,_w.x/A)));   // primero abre el brazo hacia el lado, luego lo lleva adelante: el codo queda abajo
-    a.rotation.set(Math.atan2(_w.z,_w.y)-Math.atan2(-B,-A*Math.cos(th)),0,th);p.elbows[i].rotation.x=e;}
+  // Brazo con dos huesos (hombro y codo): cinemática inversa exacta. El codo cae hacia abajo y un poco hacia afuera, y la mano llega al punto indicado
+  function reachU(p,i,v){const a=p.arms[i]; _w.copy(v).sub(a.position); const L=0.29, d=Math.max(0.1,Math.min(_w.length(),0.575)); _w.setLength(d);
+    const wh=_u.copy(_w).normalize(), ang=Math.acos(Math.min(1,d/(2*L)));
+    _pl.set(i?0.35:-0.35,-1,0.15); _pl.addScaledVector(wh,-_pl.dot(wh)).normalize();
+    _el.copy(wh).multiplyScalar(Math.cos(ang)*L).addScaledVector(_pl,Math.sin(ang)*L);      // posición del codo respecto al hombro
+    _u.copy(_el).normalize(); _h.copy(_w).sub(_el).normalize();
+    _bx.crossVectors(_u,_h); if(_bx.lengthSq()<1e-6) _bx.set(1,0,0); _bx.normalize();
+    _yy.copy(_u).negate(); _zz.crossVectors(_bx,_yy); _mt.makeBasis(_bx,_yy,_zz); a.quaternion.setFromRotationMatrix(_mt);
+    p.elbows[i].rotation.set(Math.acos(Math.max(-1,Math.min(1,_u.dot(_h)))),0,0);}
   function reachW(p,i,w){p.u.updateMatrixWorld(true);reachU(p,i,p.u.worldToLocal(_w.copy(w)).clone());}
   function carryHands(p){
     if(p.carry==='broom'){p.g.updateMatrixWorld(true);
@@ -1321,19 +1329,40 @@ html.embedded .music{right:auto;left:16px}
     p.feet.forEach((f,i)=>f.rotation.x=-p.knees[i].rotation.x);
     p.rig.position.y=-Math.abs(w)*0.012;p.rig.rotation.z=w*0.02;p.rig.position.x=w*0.015;p.up.rotation.set(0.02,0,-w*0.025);
     p.head.rotation.y=Math.sin(now/2300+p.ph*2)*0.35;p.head.rotation.x=Math.sin(now/1900+p.ph)*0.05;
-    if(!p.carry){p.arms.forEach(a=>a.rotation.x=0.04);p.elbows.forEach(e=>e.rotation.x=0.18);}
+    if(!p.carry){p.arms.forEach((a,i)=>{a.rotation.x=0.04+Math.sin(now/1400+p.ph+i*1.7)*0.05;a.rotation.z=(i?0.08:-0.08)+Math.sin(now/2100+p.ph+i)*0.03;});
+      p.elbows.forEach((e,i)=>e.rotation.x=0.18+Math.sin(now/1100+p.ph*2+i)*0.06);
+      p.hands.forEach((h,i)=>{h.rotation.x=0.22+Math.sin(now/800+p.ph+i*2)*0.12;h.rotation.y=(i?-1:1)*(0.2+Math.sin(now/1300+p.ph)*0.12);});}
     breathe(p,now);
   }
   // Sentado: muslo horizontal, pantorrilla vertical y pies apoyados
   function sitPose(p,arms){p.legs.forEach(l=>l.rotation.x=1.5);p.knees.forEach(k=>k.rotation.x=-1.5);p.feet.forEach(f=>f.rotation.x=0);
     p.legs[0].rotation.z=-0.06;p.legs[1].rotation.z=0.06;
     if(arms==='lap'){p.arms.forEach(a=>a.rotation.x=0.35);p.elbows.forEach(e=>e.rotation.x=1.0);}}
-  // Tecleando: codos a 90°, manos que se alternan, cabeza hacia la pantalla con pequeñas pausas
-  function animType(p,now){const t=now/110+p.ph;
-    p.arms.forEach((a,i)=>{a.rotation.x=0.42;a.rotation.z=i?0.14:-0.14;});
-    p.elbows[0].rotation.x=1.12+Math.max(0,Math.sin(t))*0.12;p.elbows[1].rotation.x=1.12+Math.max(0,Math.sin(t+2.1))*0.12;
-    p.up.rotation.x=-0.06;p.head.rotation.x=-0.12+Math.sin(now/2600+p.ph)*0.04;p.head.rotation.y=Math.sin(now/3100+p.ph)*0.12;
-    breathe(p,now);
+  // Tecleando: las manos van al teclado del escritorio y golpean las teclas por turnos; a ratos se mueve el mouse y se mira la pantalla
+  function animType(p,now){const t=now/1000+p.ph, dt=Math.min(0.1,(now-(p._lt||now))/1000); p._lt=now; const s0=snapPose(p);
+    const burst=Math.sin(t*0.9+p.ph)>-0.35, mouse=Math.sin(t*0.45+p.ph*2)>0.72, tk=i=>burst?Math.max(0,Math.sin(t*11+i*2.4+p.ph))*0.022:0;
+    reachU(p,0,_m.set(-0.14,1.1-tk(0),-0.47));
+    if(mouse) reachU(p,1,_m.set(0.36+Math.sin(t*3)*0.02,1.09,-0.47+Math.sin(t*2.4)*0.015)); else reachU(p,1,_m.set(0.14,1.1-tk(1),-0.47));
+    p.hands.forEach((h,i)=>{h.rotation.x=0.45+(burst?Math.sin(t*11+i*2.4)*0.12:0);h.rotation.y=(i?-1:1)*0.1;});
+    p.up.rotation.x=-0.05+Math.sin(t*0.5)*0.01; p.head.rotation.x=-0.1+Math.sin(t*0.7+p.ph)*0.05; p.head.rotation.y=Math.sin(t*0.37+p.ph)*0.14;
+    easePose(p,s0,1-Math.exp(-dt*10)); breathe(p,now);
+  }
+  // Esperando sentado: mira el celular con las dos manos y el pulgar moviéndose, y luego se acomoda, mueve las manos y mira alrededor
+  function animWait(p,now){const t=now/1000+p.ph, c=(t%16)/16, dt=Math.min(0.1,(now-(p._lt||now))/1000); p._lt=now; const s0=snapPose(p);
+    if(!p.phone){const ph=new THREE.Mesh(new THREE.BoxGeometry(0.07,0.14,0.012),new THREE.MeshLambertMaterial({color:'#1b1d2e'}));ph.position.set(0,-0.05,-0.05);ph.rotation.x=-0.5;p.hands[1].add(ph);ph.visible=false;p.phone=ph;}
+    const usePhone=c<0.5; p.phone.visible=usePhone;
+    if(usePhone){reachU(p,0,_m.set(-0.07,1.08,-0.3)); reachU(p,1,_m.set(0.07,1.09,-0.3));
+      p.hands[1].rotation.x=0.5+Math.sin(t*7)*0.1; p.hands[0].rotation.x=0.4; p.head.rotation.x=-0.3+Math.sin(t*0.8)*0.04; p.head.rotation.y=Math.sin(t*0.3)*0.1;}
+    else{p.arms.forEach((a,i)=>a.rotation.set(0.35+Math.sin(t*0.8+i)*0.04,0,i?0.1:-0.1)); p.elbows.forEach((e,i)=>e.rotation.x=1.0+Math.sin(t*0.9+i*1.7)*0.1);
+      p.hands.forEach((h,i)=>{h.rotation.x=0.22+Math.sin(t*1.7+i)*0.15;h.rotation.y=(i?-1:1)*(0.2+Math.sin(t*1.1+i)*0.2);});
+      p.head.rotation.x=Math.sin(t*0.6)*0.05; p.head.rotation.y=Math.sin(t*0.5)*0.55;}
+    easePose(p,s0,1-Math.exp(-dt*6)); breathe(p,now);
+  }
+  // Diana con su café: toma sorbos, mueve la otra mano al conversar y mira hacia el sofá
+  function animSip(p,now){const t=now/1000+p.ph, c=(t%9)/9, lift=c<0.22?Math.sin(c/0.22*Math.PI):0;
+    p.arms[1].rotation.set(0.55+lift*0.35,0,0.1); p.elbows[1].rotation.x=1.35+lift*0.55;
+    p.arms[0].rotation.x=0.4+Math.sin(t*0.7)*0.05; p.elbows[0].rotation.x=1.1+Math.sin(t*0.9)*0.08; p.hands[0].rotation.x=0.2+Math.sin(t*1.3)*0.15;
+    p.head.rotation.y=Math.sin(t*0.4)*0.35; p.head.rotation.x=lift*0.1; animFace(p,now,c>0.3&&Math.sin(t*0.9)>0.2,false);
   }
   // En reunión: turnos de palabra; quien habla gesticula con un brazo y mueve la boca, quien escucha asiente
   function animMeet(p,now){const turn=Math.sin(now/2600+p.ph)>0.25, t=now/380+p.ph;
@@ -1342,6 +1371,7 @@ html.embedded .music{right:auto;left:16px}
       p.head.rotation.x=Math.sin(t*0.9)*0.05;p.head.rotation.y=Math.sin(now/1500+p.ph)*0.25;}
     else {p.arms[1].rotation.x=0.35;p.arms[1].rotation.z=0.08;p.elbows[1].rotation.x=1.0;p.head.rotation.x=-Math.max(0,Math.sin(now/420+p.ph))*0.12;p.head.rotation.y*=0.95;}
     p.arms[0].rotation.x=0.35;p.elbows[0].rotation.x=1.0;
+    p.hands.forEach((h,i)=>{h.rotation.x=0.25+Math.sin(now/300+p.ph+i*1.4)*(turn&&i?0.3:0.12);h.rotation.y=(i?-1:1)*(0.15+Math.sin(now/500+p.ph)*0.2);});
     animFace(p,now,turn,!turn&&Math.sin(now/900+p.ph)>0.7);breathe(p,now);
   }
   // Barriendo: la escoba va de lado a lado, el tronco la acompaña y las manos la sostienen
@@ -1384,7 +1414,7 @@ html.embedded .music{right:auto;left:16px}
     if(chair){const cm=m('#5d78a8');box(0.5,0.45,0.5,cm,x,0.23,z);const b=box(0.5,0.6,0.06,cm,x+Math.sin(yaw)*0.25,0.75,z+Math.cos(yaw)*0.25);b.rotation.y=yaw;}
     if(i<0) return;
     const p=makePerson(fl,{shirt:SHIRTS[i%SHIRTS.length],pants:i%2?'#2b2f45':'#3c5a8a',skin:SKINS[i%SKINS.length],hair:HAIRS[(i+2)%HAIRS.length],long:i%2===1,sleeve:i%3===1});
-    p.g.position.set(x,-0.3,z); p.g.rotation.y=yaw; sitPose(p,'lap'); p.ph=i*1.9; idlers.push(p);
+    p.g.position.set(x,-0.3,z); p.g.rotation.y=yaw; sitPose(p,'lap'); p.ph=i*1.9; p.idle='wait'; idlers.push(p);
   }
   // Colaboradores trabajando en los puestos y reunidos en las salas de juntas
   const sitters=SEATS.map((s,i)=>{
@@ -1413,7 +1443,7 @@ html.embedded .music{right:auto;left:16px}
   function updateActors(dt,now){
     if(reduce) return;
     sitters.forEach(s=>{ if(s.kind==='work') animType(s,now); else animMeet(s,now); animFace(s,now,false,false); });
-    idlers.forEach(p=>{breathe(p,now);animFace(p,now,false,false);});
+    idlers.forEach(p=>{if(p.idle==='wait')animWait(p,now); else if(p.idle==='stand'){animIdle(p,now);} else if(p.idle==='sip')animSip(p,now); breathe(p,now); if(p.idle!=='sip')animFace(p,now,false,false);});
     actors.forEach(a=>{
       animIdle(a,now); animFace(a,now,a.role==='guide',a.role==='stretch');
       if(a.role==='stretch'){const t=(Math.sin(now/600+a.ph)+1)/2; a.arms[0].rotation.z=-t*2.6; a.arms[1].rotation.z=t*2.6; a.elbows.forEach(e=>e.rotation.x=0.15); a.up.rotation.z=(t-0.5)*0.1;}
@@ -1424,7 +1454,7 @@ html.embedded .music{right:auto;left:16px}
   {let n=0;[960,1005,1050].forEach(x=>[620,660,700,740,780].forEach(y=>{n++;seated(3,x,y,Math.PI/2,true,n%3===0?-1:n);}));}
   // Agentes de tránsito haciendo fila en la taquilla de Radicación
   [[937,874],[937,904],[962,889],[984,896]].forEach(([x,y],i)=>{const fl=F(3), p=makePerson(fl,{transit:true,shirt:'#ffffff',pants:'#1f2a44',skin:SKINS[(i+1)%SKINS.length],hair:HAIRS[i%HAIRS.length],long:i===1});
-    p.g.position.set(fl.X(x),0,fl.Z(y)); p.g.rotation.y=Math.PI/2; p.ph=i*1.7; idlers.push(p);});
+    p.g.position.set(fl.X(x),0,fl.Z(y)); p.g.rotation.y=Math.PI/2; p.ph=i*1.7; p.idle='stand'; idlers.push(p);});
   [0,1,3,4].forEach(i=>seated(1,308,290+i*55,Math.PI*1.5,false,i+20));
   [2,3,5].forEach(i=>seated(1,257,290+i*55,Math.PI/2,false,i+30));
   // Usuarios esperando su turno en el pasillo central, entre las dos filas de taquillas
@@ -1708,6 +1738,11 @@ html.embedded .music{right:auto;left:16px}
     dog.body.position.y=(gait?Math.abs(Math.sin(ph))*(gait===2?0.16:0.06)*s:0)-0.16*s*st-0.12*s*bw+hop;
     dog.tail.rotation.y=reduce?0:Math.sin(now/(gait||bw>0.3?90:220))*(bw>0.3?0.9:0.6);
     dog.head.rotation.x=(gait||reduce?0:Math.sin(now/900)*0.08)-0.3*st+0.25*bw;
+    // Respiración, orejas, parpadeo y lengua: el perro se ve vivo aunque esté quieto
+    if(!reduce){const br=Math.sin(now/(gait?260:900)+dog.ph); dog.body.scale.set(1+br*0.006,1+br*(gait?0.012:0.018),1);
+      dog.ears.forEach((e,i)=>{const k=e.userData.k; e.rotation.z=k*(0.1+Math.sin(ph*2+i)*0.18*amp)+Math.sin(now/700+dog.ph+i)*0.02; e.rotation.x=Math.sin(ph*2+i*1.3)*0.12*amp+(Math.sin(now/2300+dog.ph)>0.97?0.3:0);});
+      const bl=now>dog.nb&&now<dog.nb+130; if(now>dog.nb+130) dog.nb=now+1800+Math.random()*4500; dog.eyeP.forEach(m=>m.scale.y=bl?0.12:1);
+      if(dog.tongue){const pant=(gait||st<0.5)?1:0.6, sn=Math.abs(Math.sin(now/230)); dog.tongue.scale.y=0.35+sn*0.08*pant; dog.tongue.position.y=-0.22*s-sn*0.02*s;}}
   }
   const ease=(d,target,dt,k=5)=>d+(target-d)*Math.min(1,dt*k);
   function toward(dog,tg,dt,k=4){const dx=tg.x-dog.g.position.x,dz=tg.z-dog.g.position.z,dd=Math.hypot(dx,dz);
